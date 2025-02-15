@@ -2,7 +2,7 @@ import {type TableColumnSize} from './shared'
 
 import {tw} from '@/lib/tailwind'
 
-import {Card} from '@/components/ui/card'
+import {Card} from '@/components/ui'
 
 export function TableContainer({children}: {children?: React.ReactNode}) {
     return (
