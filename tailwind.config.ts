@@ -11,7 +11,7 @@ export default {
     theme: {
         extend: {
             colors: {
-                accent: colors.emerald[800],
+                accent: colors.indigo[700],
                 g: colors.zinc,
                 line: {
                     DEFAULT: colors.zinc[200],

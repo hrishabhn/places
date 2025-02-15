@@ -1,13 +1,12 @@
 'use client'
 
 import {type PlaceComplete} from '@/model/types'
-import {ForkKnife, MapPin} from '@phosphor-icons/react'
+import {Circle, ForkKnife, MapPin, Pencil} from '@phosphor-icons/react'
 import Link from 'next/link'
-
-import {notionColorToTheme} from '@/lib/notion/color'
+import {Fragment} from 'react'
 
 import {Heading} from '@/components/layout'
-import {Badge, Card, IconButton, SimpleImage, TooltipText} from '@/components/ui'
+import {Card, IconButton, SimpleImage, TooltipText} from '@/components/ui'
 
 export function PlaceCard({place}: {place: PlaceComplete}) {
     const info = [...place.type.map(({name}) => name), ...place.tags.map(({name}) => name)]
@@ -27,24 +26,35 @@ export function PlaceCard({place}: {place: PlaceComplete}) {
             <div className="h-px w-full bg-line dark:bg-line-dark" />
 
             <div className="flex flex-col items-start gap-1 px-4 py-3">
-                <div className="flex w-full gap-2">
+                <div className="flex w-full gap-0.5">
                     <Heading size="h3" withoutPadding>
                         <p className="line-clamp-2">{place.name}</p>
                     </Heading>
                     <div className="grow" />
+                    <Link href={place.url} target="_blank">
+                        <TooltipText text="Edit">
+                            <IconButton theme="hover" icon={Pencil} />
+                        </TooltipText>
+                    </Link>
                     {place.maps_data?.url && (
                         <Link href={place.maps_data.url} target="_blank">
-                            <TooltipText text="Maps">
+                            <TooltipText text="Open in Maps">
                                 <IconButton theme="hover" icon={MapPin} />
                             </TooltipText>
                         </Link>
                     )}
                 </div>
-                {info.length > 0 && <p className="text-xs font-semibold opacity-60">{info.join(' • ')}</p>}
-                <div className="py-1">
-                    <Badge theme={notionColorToTheme(place.city.color)}>{place.city.name}</Badge>
+                <div className="flex flex-wrap items-center gap-1.5 text-xs font-medium">
+                    <MapPin weight="bold" className="opacity-60" />
+                    <p>{place.city.name}</p>
+
+                    {info.map(tag => (
+                        <Fragment key={tag}>
+                            <Circle weight="fill" size={5} className="opacity-60" />
+                            <p className="opacity-60">{tag}</p>
+                        </Fragment>
+                    ))}
                 </div>
-                {place.maps_data?.formatted_address && <p className="line-clamp-2 text-xs font-medium opacity-80">{place.maps_data.formatted_address}</p>}
             </div>
         </Card>
     )

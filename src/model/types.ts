@@ -6,6 +6,7 @@ import {NotionMultiSelectSchema, NotionOptionalRichTextSchema, NotionSingleSelec
 export const NotionPlaceSchema = z
     .object({
         id: z.string().uuid(),
+        url: z.string().url(),
         properties: z.object({
             name: NotionTitleSchema,
             city: NotionSingleSelectSchema,
@@ -14,7 +15,7 @@ export const NotionPlaceSchema = z
             maps_id: NotionOptionalRichTextSchema,
         }),
     })
-    .transform(({id, properties}) => ({id, ...properties}))
+    .transform(({id, url, properties}) => ({id, url, ...properties}))
 
 export type NotionPlace = z.infer<typeof NotionPlaceSchema>
 export type PlaceComplete = NotionPlace & {maps_data: MapsPlace | null; maps_photo: string | null}
