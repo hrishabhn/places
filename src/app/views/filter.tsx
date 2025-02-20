@@ -16,6 +16,10 @@ export function HomeFilter() {
         allType,
         allTags,
 
+        cityIsSelected,
+        typeIsSelected,
+        tagIsSelected,
+
         selectedCity,
         selectedType,
         selectedTags,
@@ -36,7 +40,7 @@ export function HomeFilter() {
                     <MenuButton className="active:opacity-60">
                         <FilterItem active={selectedCity.length > 0}>
                             <City weight="duotone" />
-                            <p>{selectedCity.length > 0 ? selectedCity.map(({name}) => name).join(', ') : 'City'}</p>
+                            <p className="line-clamp-1">{selectedCity.length > 0 ? selectedCity.map(({name}) => name).join(', ') : 'City'}</p>
                         </FilterItem>
                     </MenuButton>
                     <DropdownMenuItems>
@@ -48,7 +52,7 @@ export function HomeFilter() {
                                 action={{onClick: () => toggleSelectedCity(city)}}
                                 image={{theme: notionColorToTheme(city.color)}}
                                 title={city.name}
-                                active={selectedCity.map(({id}) => id).includes(city.id)}
+                                active={cityIsSelected(city)}
                             />
                         ))}
                     </DropdownMenuItems>
@@ -58,7 +62,7 @@ export function HomeFilter() {
                     <MenuButton className="active:opacity-60">
                         <FilterItem active={selectedType.length > 0}>
                             <ForkKnife weight="duotone" />
-                            <p>{selectedType.length > 0 ? selectedType.map(({name}) => name).join(', ') : 'Type'}</p>
+                            <p className="line-clamp-1">{selectedType.length > 0 ? selectedType.map(({name}) => name).join(', ') : 'Type'}</p>
                         </FilterItem>
                     </MenuButton>
                     <DropdownMenuItems>
@@ -70,7 +74,7 @@ export function HomeFilter() {
                                 action={{onClick: () => toggleSelectedType(type)}}
                                 image={{theme: notionColorToTheme(type.color)}}
                                 title={type.name}
-                                active={selectedType.map(({id}) => id).includes(type.id)}
+                                active={typeIsSelected(type)}
                             />
                         ))}
                     </DropdownMenuItems>
@@ -80,7 +84,7 @@ export function HomeFilter() {
                     <MenuButton className="active:opacity-60">
                         <FilterItem active={selectedTags.length > 0}>
                             <Tag weight="duotone" />
-                            <p>{selectedTags.length > 0 ? selectedTags.map(({name}) => name).join(', ') : 'Tags'}</p>
+                            <p className="line-clamp-1">{selectedTags.length > 0 ? selectedTags.map(({name}) => name).join(', ') : 'Tags'}</p>
                         </FilterItem>
                     </MenuButton>
                     <DropdownMenuItems>
@@ -92,7 +96,7 @@ export function HomeFilter() {
                                 action={{onClick: () => toggleSelectedTag(tag)}}
                                 image={{theme: notionColorToTheme(tag.color)}}
                                 title={tag.name}
-                                active={selectedTags.map(({id}) => id).includes(tag.id)}
+                                active={tagIsSelected(tag)}
                             />
                         ))}
                     </DropdownMenuItems>

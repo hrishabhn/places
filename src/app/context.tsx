@@ -18,6 +18,10 @@ type HomeContext = {
     query: string
     setQuery: (query: string) => void
 
+    cityIsSelected: (city: NotionSelect) => boolean
+    typeIsSelected: (type: NotionSelect) => boolean
+    tagIsSelected: (tag: NotionSelect) => boolean
+
     selectedCity: NotionSelect[]
     selectedType: NotionSelect[]
     selectedTags: NotionSelect[]
@@ -109,6 +113,10 @@ export function HomeContextProvider({
 
                 query,
                 setQuery,
+
+                cityIsSelected,
+                typeIsSelected,
+                tagIsSelected,
 
                 selectedCity,
                 selectedType,
