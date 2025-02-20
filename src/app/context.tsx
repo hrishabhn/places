@@ -1,8 +1,10 @@
 'use client'
 
+import {revalidateNotion} from './action'
+
 import {type PlaceComplete} from '@/model/types'
 import {parseAsArrayOf, parseAsString, useQueryState} from 'nuqs'
-import {createContext, useCallback, useContext, useMemo} from 'react'
+import {createContext, useCallback, useContext, useEffect, useMemo} from 'react'
 
 import {kebabify} from '@/lib/kebab'
 import {type NotionSelect} from '@/lib/notion/types'
@@ -93,6 +95,10 @@ export function HomeContextProvider({
                 ),
         [allPlace, selectedCity, selectedType, selectedTags, cityIsSelected, typeIsSelected, tagIsSelected, query]
     )
+
+    useEffect(() => {
+        revalidateNotion()
+    }, [])
 
     return (
         <HomeContext.Provider
