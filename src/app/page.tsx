@@ -1,5 +1,3 @@
-'use cache'
-
 import {HomeContextProvider} from './context'
 import {HomeFilter} from './views/filter'
 import {HomeSearch} from './views/search'

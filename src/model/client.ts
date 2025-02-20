@@ -2,7 +2,7 @@ import {database_id} from './config'
 import {NotionPlaceSchema, type PlaceComplete} from './types'
 
 import {Client} from '@notionhq/client'
-import {unstable_cacheTag as cacheTag} from 'next/cache'
+import {unstable_cacheLife as cacheLife, unstable_cacheTag as cacheTag} from 'next/cache'
 import 'server-only'
 import {z} from 'zod'
 
@@ -21,6 +21,7 @@ const PlaceSchema = NotionPlaceSchema.transform(async notionPlace => {
 export async function getAllPlace(): Promise<PlaceComplete[]> {
     'use cache'
     cacheTag('notion')
+    cacheLife('days')
 
     let next_cursor: string | null | undefined = undefined
     const pages: unknown[] = []
@@ -58,6 +59,7 @@ const AllDropdownSchema = z
 export async function getAllDropdown() {
     'use cache'
     cacheTag('notion')
+    cacheLife('days')
 
     const {properties} = await notion.databases.retrieve({database_id})
     return AllDropdownSchema.parse(properties)
