@@ -9,7 +9,7 @@ type PageHeaderProps = {
 
 export function PageHeader({title, subtitle}: PageHeaderProps) {
     return (
-        <div className="flex items-end pb-6 pt-12">
+        <div className="flex flex-col items-start pb-6 pt-12">
             <Heading size="h1" withoutPadding>
                 {title}
             </Heading>

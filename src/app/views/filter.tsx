@@ -2,20 +2,18 @@
 
 import {useHomeContext} from '../context'
 
-import {City, ForkKnife, Tag} from '@phosphor-icons/react'
+import {database_id} from '@/model/config'
+import {City, Database, DotsThreeVertical, ForkKnife, GithubLogo, MapPin, Tag, Triangle} from '@phosphor-icons/react'
 
 import {notionColorToTheme} from '@/lib/notion/color'
 
-import {DropdownDivider, DropdownMenuItem, DropdownMenuItems, FilterItem, FilterSearch, FilterTray, Menu, MenuButton} from '@/components/ui'
+import {DropdownDivider, DropdownHeader, DropdownMenuItem, DropdownMenuItems, FilterIcon, FilterItem, FilterTray, Menu, MenuButton} from '@/components/ui'
 
 export function HomeFilter() {
     const {
         allCity,
         allType,
         allTags,
-
-        query,
-        setQuery,
 
         selectedCity,
         selectedType,
@@ -28,8 +26,6 @@ export function HomeFilter() {
         clearSelectedCity,
         clearSelectedType,
         clearSelectedTags,
-
-        displayPlace,
     } = useHomeContext()
 
     return (
@@ -103,11 +99,30 @@ export function HomeFilter() {
 
                 <div className="grow" />
 
-                <FilterItem>
-                    {displayPlace.length} {displayPlace.length === 1 ? 'Place' : 'Places'}
-                </FilterItem>
+                <Menu>
+                    <MenuButton>
+                        <FilterIcon icon={DotsThreeVertical} />
+                    </MenuButton>
+                    <DropdownMenuItems anchor="bottom end">
+                        <DropdownMenuItem action={{href: `https://notion.so/${database_id}`, target: '_blank'}} image={{icon: Database}} title="Database" subtitle="Notion" />
+                        <DropdownMenuItem
+                            action={{href: 'https://developers.google.com/maps/documentation/places/web-service/place-id', target: '_blank'}}
+                            image={{icon: MapPin}}
+                            title="Place ID"
+                            subtitle="Google Maps"
+                        />
 
-                <FilterSearch value={query} setValue={setQuery} />
+                        <DropdownDivider />
+                        <DropdownHeader text="Resources" />
+                        <DropdownMenuItem
+                            action={{href: 'https://github.com/hrishabhn/places', target: '_blank'}}
+                            image={{icon: GithubLogo}}
+                            title="Source Code"
+                            subtitle="GitHub"
+                        />
+                        <DropdownMenuItem action={{href: 'https://vercel.com/hrishabhn/places', target: '_blank'}} image={{icon: Triangle}} title="Preview" subtitle="Vercel" />
+                    </DropdownMenuItems>
+                </Menu>
             </FilterTray>
         </>
     )
