@@ -1,9 +1,10 @@
 'use client'
 
+import {revalidateNotion} from '../action'
 import {useHomeContext} from '../context'
 
 import {database_id} from '@/model/config'
-import {City, Database, DotsThreeVertical, ForkKnife, GithubLogo, MapPin, Tag, Triangle} from '@phosphor-icons/react'
+import {ArrowCounterClockwise, City, Database, DotsThreeVertical, ForkKnife, GithubLogo, MapPin, Tag, Triangle} from '@phosphor-icons/react'
 
 import {notionColorToTheme} from '@/lib/notion/color'
 
@@ -104,6 +105,10 @@ export function HomeFilter() {
                         <FilterIcon icon={DotsThreeVertical} />
                     </MenuButton>
                     <DropdownMenuItems anchor="bottom end">
+                        <DropdownMenuItem action={{onClick: async () => await revalidateNotion()}} image={{icon: ArrowCounterClockwise}} title="Refresh Data" />
+
+                        <DropdownDivider />
+
                         <DropdownMenuItem action={{href: `https://notion.so/${database_id}`, target: '_blank'}} image={{icon: Database}} title="Database" subtitle="Notion" />
                         <DropdownMenuItem
                             action={{href: 'https://developers.google.com/maps/documentation/places/web-service/place-id', target: '_blank'}}
@@ -113,6 +118,7 @@ export function HomeFilter() {
                         />
 
                         <DropdownDivider />
+
                         <DropdownHeader text="Resources" />
                         <DropdownMenuItem
                             action={{href: 'https://github.com/hrishabhn/places', target: '_blank'}}

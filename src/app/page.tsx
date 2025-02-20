@@ -30,5 +30,3 @@ async function HomeContent() {
         </HomeContextProvider>
     )
 }
-
-export const revalidate = 0
