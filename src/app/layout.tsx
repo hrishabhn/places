@@ -3,8 +3,7 @@ import {Providers} from './providers'
 
 import type {Metadata} from 'next'
 
-import {karla} from '@/components/layout'
-import {StyledToastContainer} from '@/components/layout'
+import {PageHeader, PageSection, karla} from '@/components/layout'
 
 export const metadata: Metadata = {
     title: 'Places | HN',
@@ -21,8 +20,10 @@ export default function RootLayout({
         <html lang="en">
             <Providers>
                 <body className={`${karla.className} flex min-h-screen w-full flex-col bg-layer-0 text-black antialiased dark:bg-layer-0-dark dark:text-white`}>
-                    {children}
-                    <StyledToastContainer />
+                    <PageSection fullWidth>
+                        <PageHeader title="Places" subtitle="A list of the best places that I have encountered on my travels. These are the special ones that I've curated." />
+                        {children}
+                    </PageSection>
                 </body>
             </Providers>
         </html>
