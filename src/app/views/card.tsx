@@ -25,8 +25,8 @@ export function PlaceCard({place}: {place: PlaceComplete}) {
 
             <div className="h-px w-full bg-line dark:bg-line-dark" />
 
-            <div className="flex flex-col items-start gap-1 px-4 py-3">
-                <div className="flex w-full gap-0.5">
+            <div className="flex flex-col items-start gap-1 py-3">
+                <div className="flex w-full gap-0.5 px-4">
                     <Heading size="h3" withoutPadding>
                         <p className="line-clamp-2">{place.name}</p>
                     </Heading>
@@ -44,7 +44,7 @@ export function PlaceCard({place}: {place: PlaceComplete}) {
                         </Link>
                     )}
                 </div>
-                <div className="flex flex-wrap items-center gap-1.5 text-xs font-medium">
+                <div className="flex flex-wrap items-center gap-1.5 px-4 text-xs font-medium">
                     <MapPin weight="bold" className="opacity-60" />
                     <p>{place.city.name}</p>
 
@@ -55,6 +55,13 @@ export function PlaceCard({place}: {place: PlaceComplete}) {
                         </Fragment>
                     ))}
                 </div>
+
+                {place.description && (
+                    <>
+                        <div className="my-2 h-px w-full bg-line dark:bg-line-dark" />
+                        <p className="px-4">{place.description}</p>
+                    </>
+                )}
             </div>
         </Card>
     )

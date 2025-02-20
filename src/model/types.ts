@@ -12,6 +12,7 @@ export const NotionPlaceSchema = z
             city: NotionSingleSelectSchema,
             type: NotionMultiSelectSchema,
             tags: NotionMultiSelectSchema,
+            description: NotionOptionalRichTextSchema,
             maps_id: NotionOptionalRichTextSchema,
         }),
     })
