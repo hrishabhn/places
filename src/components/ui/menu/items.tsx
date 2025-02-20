@@ -19,7 +19,7 @@ export function DropdownMenuItems({anchor = 'bottom start', children}: DropdownM
                 }}
                 className="z-50 origin-top rounded-lg bg-layer-1 shadow-md ring-1 ring-line transition dark:bg-layer-1-dark dark:ring-line-dark"
             >
-                <div className="max-h-96 w-64 overflow-y-scroll p-1">{children}</div>
+                <div className="max-h-96 w-64 overflow-y-scroll py-1">{children}</div>
             </MenuItems>
         </DropdownTransition>
     )

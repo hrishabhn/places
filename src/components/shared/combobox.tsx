@@ -50,7 +50,7 @@ export function StyledComboboxOptions<T>({
                 }}
                 className="z-50 origin-top rounded-lg bg-layer-1 shadow-md ring-1 ring-line transition dark:bg-layer-1-dark dark:ring-line-dark"
             >
-                <div className="max-h-96 w-64 overflow-y-scroll p-1">
+                <div className="max-h-96 w-64 overflow-y-scroll py-1">
                     {query.length === 0 ? (
                         <ComboboxOption value={null}>{({focus, selected}) => <DropdownItem title="None" active={selected} focus={focus} disabled />}</ComboboxOption>
                     ) : null}
