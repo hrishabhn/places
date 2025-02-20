@@ -4,10 +4,11 @@ import {revalidateNotion} from '../action'
 import {useHomeContext} from '../context'
 
 import {database_id} from '@/model/config'
-import {ArrowCounterClockwise, City, Database, DotsThreeVertical, ForkKnife, GithubLogo, MapPin, Tag, Triangle} from '@phosphor-icons/react'
+import {ArrowCounterClockwise, City, Database, DotsThreeVertical, ForkKnife, GithubLogo, type Icon, MapPin, Tag, Triangle} from '@phosphor-icons/react'
 import {useIntersectionObserver} from 'usehooks-ts'
 
 import {notionColorToTheme} from '@/lib/notion/color'
+import {type NotionSelect} from '@/lib/notion/types'
 
 import {DropdownDivider, DropdownHeader, DropdownMenuItem, DropdownMenuItems, FilterIcon, FilterItem, FilterTray, Menu, MenuButton} from '@/components/ui'
 
@@ -23,7 +24,7 @@ export function HomeFilter() {
             </FilterTray>
 
             {!isIntersecting && (
-                <div className="fixed left-0 top-0 z-10 flex w-full items-center gap-2 bg-gradient-to-b from-layer-0 from-25% to-layer-0/80 px-4 py-3 backdrop-blur dark:from-layer-0-dark dark:to-layer-0-dark/80">
+                <div className="fixed left-0 top-0 z-10 flex w-full flex-wrap items-center gap-2 bg-gradient-to-b from-layer-0 from-25% to-layer-0/80 px-4 py-3 backdrop-blur dark:from-layer-0-dark dark:to-layer-0-dark/80">
                     <HomeFilterContent />
                 </div>
             )}
@@ -56,71 +57,33 @@ function HomeFilterContent() {
 
     return (
         <>
-            <Menu>
-                <MenuButton className="active:opacity-60">
-                    <FilterItem active={selectedCity.length > 0}>
-                        <City weight="duotone" />
-                        <p className="line-clamp-1">{selectedCity.length > 0 ? selectedCity.map(({name}) => name).join(', ') : 'City'}</p>
-                    </FilterItem>
-                </MenuButton>
-                <DropdownMenuItems>
-                    <DropdownMenuItem action={{onClick: () => clearSelectedCity()}} title="Show All" active={selectedCity.length === 0} />
-                    <DropdownDivider />
-                    {allCity.map(city => (
-                        <DropdownMenuItem
-                            key={city.id}
-                            action={{onClick: () => toggleSelectedCity(city)}}
-                            image={{theme: notionColorToTheme(city.color)}}
-                            title={city.name}
-                            active={cityIsSelected(city)}
-                        />
-                    ))}
-                </DropdownMenuItems>
-            </Menu>
-
-            <Menu>
-                <MenuButton className="active:opacity-60">
-                    <FilterItem active={selectedType.length > 0}>
-                        <ForkKnife weight="duotone" />
-                        <p className="line-clamp-1">{selectedType.length > 0 ? selectedType.map(({name}) => name).join(', ') : 'Type'}</p>
-                    </FilterItem>
-                </MenuButton>
-                <DropdownMenuItems>
-                    <DropdownMenuItem action={{onClick: () => clearSelectedType()}} title="Show All" active={selectedType.length === 0} />
-                    <DropdownDivider />
-                    {allType.map(type => (
-                        <DropdownMenuItem
-                            key={type.id}
-                            action={{onClick: () => toggleSelectedType(type)}}
-                            image={{theme: notionColorToTheme(type.color)}}
-                            title={type.name}
-                            active={typeIsSelected(type)}
-                        />
-                    ))}
-                </DropdownMenuItems>
-            </Menu>
-
-            <Menu>
-                <MenuButton className="active:opacity-60">
-                    <FilterItem active={selectedTags.length > 0}>
-                        <Tag weight="duotone" />
-                        <p className="line-clamp-1">{selectedTags.length > 0 ? selectedTags.map(({name}) => name).join(', ') : 'Tags'}</p>
-                    </FilterItem>
-                </MenuButton>
-                <DropdownMenuItems>
-                    <DropdownMenuItem action={{onClick: () => clearSelectedTags()}} title="Show All" active={selectedTags.length === 0} />
-                    <DropdownDivider />
-                    {allTags.map(tag => (
-                        <DropdownMenuItem
-                            key={tag.id}
-                            action={{onClick: () => toggleSelectedTag(tag)}}
-                            image={{theme: notionColorToTheme(tag.color)}}
-                            title={tag.name}
-                            active={tagIsSelected(tag)}
-                        />
-                    ))}
-                </DropdownMenuItems>
-            </Menu>
+            <HomeFilterItem
+                allItem={allCity}
+                icon={City}
+                placeholder="City"
+                itemIsSelected={cityIsSelected}
+                selectedItem={selectedCity}
+                toggleSelectedItem={toggleSelectedCity}
+                clearSelectedItem={clearSelectedCity}
+            />
+            <HomeFilterItem
+                allItem={allType}
+                icon={ForkKnife}
+                placeholder="Type"
+                itemIsSelected={typeIsSelected}
+                selectedItem={selectedType}
+                toggleSelectedItem={toggleSelectedType}
+                clearSelectedItem={clearSelectedType}
+            />
+            <HomeFilterItem
+                allItem={allTags}
+                icon={Tag}
+                placeholder="Tags"
+                itemIsSelected={tagIsSelected}
+                selectedItem={selectedTags}
+                toggleSelectedItem={toggleSelectedTag}
+                clearSelectedItem={clearSelectedTags}
+            />
 
             <div className="grow" />
 
@@ -149,5 +112,42 @@ function HomeFilterContent() {
                 </DropdownMenuItems>
             </Menu>
         </>
+    )
+}
+
+type HomeFilterItemProps<T> = {
+    allItem: T[]
+    icon: Icon
+    placeholder: string
+    itemIsSelected: (item: T) => boolean
+    selectedItem: T[]
+    toggleSelectedItem: (item: T) => void
+    clearSelectedItem: () => void
+}
+
+function HomeFilterItem({allItem, icon, placeholder, itemIsSelected, selectedItem, toggleSelectedItem, clearSelectedItem}: HomeFilterItemProps<NotionSelect>) {
+    const Icon = icon
+    return (
+        <Menu>
+            <MenuButton className="active:opacity-60">
+                <FilterItem active={selectedItem.length > 0}>
+                    <Icon weight="duotone" className="shrink-0" />
+                    <p className="line-clamp-1">{selectedItem.length > 0 ? selectedItem.map(({name}) => name).join(', ') : placeholder}</p>
+                </FilterItem>
+            </MenuButton>
+            <DropdownMenuItems>
+                <DropdownMenuItem action={{onClick: () => clearSelectedItem()}} title="Show All" active={selectedItem.length === 0} />
+                <DropdownDivider />
+                {allItem.map(item => (
+                    <DropdownMenuItem
+                        key={item.id}
+                        action={{onClick: () => toggleSelectedItem(item)}}
+                        image={{theme: notionColorToTheme(item.color)}}
+                        title={item.name}
+                        active={itemIsSelected(item)}
+                    />
+                ))}
+            </DropdownMenuItems>
+        </Menu>
     )
 }

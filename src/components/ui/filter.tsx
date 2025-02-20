@@ -8,7 +8,7 @@ import {useEffect, useState} from 'react'
 export function FilterTray({children}: {children?: React.ReactNode}) {
     return (
         <Card rounded="xl">
-            <div className="flex items-center gap-2 p-2">{children}</div>
+            <div className="flex flex-wrap items-center gap-2 p-2">{children}</div>
         </Card>
     )
 }
