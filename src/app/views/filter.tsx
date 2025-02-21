@@ -2,33 +2,45 @@
 
 import {revalidateNotion} from '../action'
 import {useHomeContext} from '../context'
+import './style.css'
 
 import {database_id} from '@/model/config'
 import {ArrowCounterClockwise, City, Database, DotsThreeVertical, ForkKnife, GithubLogo, type Icon, MapPin, Tag, Triangle} from '@phosphor-icons/react'
-import {useIntersectionObserver} from 'usehooks-ts'
+import {motion} from 'motion/react'
 
+import {useSticky} from '@/lib/hooks/is-stuck'
 import {notionColorToTheme} from '@/lib/notion/color'
 import {type NotionSelect} from '@/lib/notion/types'
 
-import {DropdownDivider, DropdownHeader, DropdownMenuItem, DropdownMenuItems, FilterIcon, FilterItem, FilterTray, Menu, MenuButton} from '@/components/ui'
+import {DropdownDivider, DropdownHeader, DropdownMenuItem, DropdownMenuItems, FilterIcon, FilterItem, Menu, MenuButton} from '@/components/ui'
 
 export function HomeFilter() {
-    const {isIntersecting, ref} = useIntersectionObserver()
+    const {isStuck, ref} = useSticky()
+
+    const padding = isStuck ? 0 : 'var(--px)'
+    const transition = {duration: 0.15}
 
     return (
-        <>
-            <div ref={ref} />
-
-            <FilterTray>
+        <motion.div
+            ref={ref}
+            animate={{
+                paddingLeft: padding,
+                paddingRight: padding,
+            }}
+            transition={transition}
+            className="sticky top-0 z-10 w-full"
+        >
+            <motion.div
+                animate={{
+                    borderRadius: isStuck ? 0 : 'var(--radius)',
+                    background: isStuck ? 'linear-gradient(to bottom, var(--tw-gradient-stops))' : 'var(--layer-1)',
+                }}
+                transition={transition}
+                className="flex w-full flex-wrap items-center gap-2 from-layer-0 from-25% to-layer-0/80 p-2 backdrop-blur dark:from-layer-0-dark dark:to-layer-0-dark/80"
+            >
                 <HomeFilterContent />
-            </FilterTray>
-
-            {!isIntersecting && (
-                <div className="fixed left-0 top-0 z-10 flex w-full flex-wrap items-center gap-2 bg-gradient-to-b from-layer-0 from-25% to-layer-0/80 px-4 py-3 backdrop-blur dark:from-layer-0-dark dark:to-layer-0-dark/80">
-                    <HomeFilterContent />
-                </div>
-            )}
-        </>
+            </motion.div>
+        </motion.div>
     )
 }
 
