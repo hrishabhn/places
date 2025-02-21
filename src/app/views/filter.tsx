@@ -154,21 +154,38 @@ function HomeFilterItem({allItem, icon, placeholder, itemIsSelected, selectedIte
             <MenuButton className="active:opacity-60">
                 <FilterItem active={selectedItem.length > 0}>
                     <Icon weight="duotone" className="shrink-0" />
-                    <p className="line-clamp-1">{selectedItem.length > 0 ? selectedItem.map(({name}) => name).join(', ') : placeholder}</p>
+                    <p className="line-clamp-1">{placeholder}</p>
                 </FilterItem>
             </MenuButton>
             <DropdownMenuItems>
                 <DropdownMenuItem action={{onClick: () => clearSelectedItem()}} title="Show All" active={selectedItem.length === 0} />
+                {selectedItem.length > 0 && (
+                    <>
+                        <DropdownDivider />
+                        {selectedItem.map(item => (
+                            <DropdownMenuItem
+                                key={item.id}
+                                action={{onClick: () => toggleSelectedItem(item)}}
+                                image={{theme: notionColorToTheme(item.color)}}
+                                title={item.name}
+                                active
+                            />
+                        ))}
+                    </>
+                )}
+
                 <DropdownDivider />
-                {allItem.map(item => (
-                    <DropdownMenuItem
-                        key={item.id}
-                        action={{onClick: () => toggleSelectedItem(item)}}
-                        image={{theme: notionColorToTheme(item.color)}}
-                        title={item.name}
-                        active={itemIsSelected(item)}
-                    />
-                ))}
+                {allItem
+                    .filter(item => !itemIsSelected(item))
+                    .map(item => (
+                        <DropdownMenuItem
+                            key={item.id}
+                            action={{onClick: () => toggleSelectedItem(item)}}
+                            image={{theme: notionColorToTheme(item.color)}}
+                            title={item.name}
+                            active={itemIsSelected(item)}
+                        />
+                    ))}
             </DropdownMenuItems>
         </Menu>
     )
