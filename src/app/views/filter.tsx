@@ -17,14 +17,13 @@ import {DropdownDivider, DropdownHeader, DropdownMenuItem, DropdownMenuItems, Fi
 export function HomeFilter() {
     const {isStuck, ref} = useSticky()
 
-    const transition = {duration: 0.15}
+    const transition = {duration: 0.1}
 
     return (
         <motion.div
             ref={ref}
             animate={{
-                paddingLeft: isStuck ? 0 : 'var(--px)',
-                paddingRight: isStuck ? 0 : 'var(--px)',
+                paddingInline: isStuck ? 0 : 'var(--px)',
             }}
             transition={transition}
             className="sticky top-0 z-10 w-full"
@@ -33,11 +32,10 @@ export function HomeFilter() {
                 animate={{
                     borderRadius: isStuck ? 0 : '0.75rem',
                     backgroundColor: isStuck ? 'var(--bg-after)' : 'var(--bg-before)',
-                    paddingLeft: isStuck ? 'var(--px)' : '0.5rem',
-                    paddingRight: isStuck ? 'var(--px)' : '0.5rem',
+                    padding: isStuck ? '1rem' : '0.5rem',
                 }}
                 transition={transition}
-                className={`flex w-full flex-wrap items-center gap-2 p-2 backdrop-blur ${isStuck ? 'bg-gradient-to-b from-layer-0 from-25% to-transparent dark:from-layer-0-dark' : ''}`}
+                className={`flex w-full flex-wrap items-center gap-2 py-4 backdrop-blur ${isStuck ? 'bg-gradient-to-b from-layer-0 from-25% to-transparent dark:from-layer-0-dark' : ''}`}
             >
                 <HomeFilterContent />
             </motion.div>
