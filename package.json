@@ -9,7 +9,6 @@
         "lint": "next lint"
     },
     "dependencies": {
-        "@googlemaps/google-maps-services-js": "^3.4.0",
         "@headlessui/react": "^2.2.0",
         "@notionhq/client": "^2.2.15",
         "@phosphor-icons/react": "^2.1.7",

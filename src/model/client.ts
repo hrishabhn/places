@@ -1,24 +1,15 @@
+import 'server-only'
+
 import {database_id} from './config'
-import {NotionPlaceSchema, type PlaceComplete} from './types'
+import {AllDropdownSchema, PlaceCompleteSchema} from './types'
 
 import {Client} from '@notionhq/client'
 import {unstable_cacheLife as cacheLife, unstable_cacheTag as cacheTag} from 'next/cache'
-import 'server-only'
 import {z} from 'zod'
-
-import {getPhoto, getPlaceDetails} from '@/lib/google-maps'
-import {NotionSelectSchema} from '@/lib/notion/types'
 
 const notion = new Client({auth: process.env.NOTION_API_KEY})
 
-const PlaceSchema = NotionPlaceSchema.transform(async notionPlace => {
-    const maps_data = notionPlace.maps_id ? await getPlaceDetails(notionPlace.maps_id) : null
-    const photo_reference = maps_data?.photos?.at(0)?.photo_reference
-    const maps_photo = photo_reference ? await getPhoto(photo_reference) : null
-    return {...notionPlace, maps_data, maps_photo}
-})
-
-export async function getAllPlace(): Promise<PlaceComplete[]> {
+export async function getAllPlace() {
     'use cache'
     cacheTag('notion')
     cacheLife('days')
@@ -44,17 +35,8 @@ export async function getAllPlace(): Promise<PlaceComplete[]> {
         pages.push(...response.results)
     }
 
-    return await z.array(PlaceSchema).parseAsync(pages)
+    return await z.array(PlaceCompleteSchema).parseAsync(pages)
 }
-
-const NotionSelectOptionsSchema = z.object({options: z.array(NotionSelectSchema)})
-const AllDropdownSchema = z
-    .object({
-        city: z.object({select: NotionSelectOptionsSchema}),
-        type: z.object({multi_select: NotionSelectOptionsSchema}),
-        tags: z.object({multi_select: NotionSelectOptionsSchema}),
-    })
-    .transform(({city, type, tags}) => ({allCity: city.select.options, allType: type.multi_select.options, allTags: tags.multi_select.options}))
 
 export async function getAllDropdown() {
     'use cache'

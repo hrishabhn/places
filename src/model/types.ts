@@ -1,9 +1,9 @@
 import {z} from 'zod'
 
-import {type MapsPlace} from '@/lib/google-maps'
-import {NotionCheckboxSchema, NotionMultiSelectSchema, NotionOptionalRichTextSchema, NotionSingleSelectSchema, NotionTitleSchema} from '@/lib/notion/types'
+import {getPlaceDetails, getPlacePhoto} from '@/lib/google-maps'
+import {NotionCheckboxSchema, NotionMultiSelectSchema, NotionOptionalRichTextSchema, NotionSelectSchema, NotionSingleSelectSchema, NotionTitleSchema} from '@/lib/notion/types'
 
-export const NotionPlaceSchema = z
+const NotionPlaceSchema = z
     .object({
         id: z.string().uuid(),
         url: z.string().url(),
@@ -19,5 +19,21 @@ export const NotionPlaceSchema = z
     })
     .transform(({id, url, properties}) => ({id, url, ...properties}))
 
-export type NotionPlace = z.infer<typeof NotionPlaceSchema>
-export type PlaceComplete = NotionPlace & {maps_data: MapsPlace | null; maps_photo: string | null}
+export const PlaceCompleteSchema = NotionPlaceSchema.transform(async notionPlace => {
+    if (!notionPlace.maps_id) return {...notionPlace, maps_photo: null}
+
+    const photoName = (await getPlaceDetails(notionPlace.maps_id)).photos?.at(0)?.name
+    if (!photoName) return {...notionPlace, maps_photo: null}
+
+    const {photoUri: maps_photo} = await getPlacePhoto(photoName)
+    return {...notionPlace, maps_photo}
+})
+
+const NotionSelectOptionsSchema = z.object({options: z.array(NotionSelectSchema)})
+export const AllDropdownSchema = z
+    .object({
+        city: z.object({select: NotionSelectOptionsSchema}),
+        type: z.object({multi_select: NotionSelectOptionsSchema}),
+        tags: z.object({multi_select: NotionSelectOptionsSchema}),
+    })
+    .transform(({city, type, tags}) => ({allCity: city.select.options, allType: type.multi_select.options, allTags: tags.multi_select.options}))
