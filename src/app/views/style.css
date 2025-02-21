@@ -1,9 +1,8 @@
 :root {
     --px: theme('padding.4');
-    --layer-0: theme('colors.layer.0.DEFAULT');
-    --layer-1: theme('colors.layer.1.DEFAULT');
-    --radius: theme('borderRadius.xl');
-    --gradient: linear-gradient(to bottom, theme('colors.layer.0.dark') 25%, transparent 100%);
+
+    --bg-before: theme('colors.layer.1.DEFAULT');
+    --bg-after: theme('colors.layer.0.DEFAULT')cc;
 }
 
 @screen sm {
@@ -14,7 +13,7 @@
 
 @media (prefers-color-scheme: dark) {
     :root {
-        --layer-0: theme('colors.layer.0.dark');
-        --layer-1: theme('colors.layer.1.dark');
+        --bg-before: theme('colors.layer.1.dark');
+        --bg-after: theme('colors.layer.0.dark')cc;
     }
 }
