@@ -37,4 +37,6 @@ export const NotionMultiSelectSchema = z.object({multi_select: z.array(NotionSel
 export const NotionStatusSchema = z.object({status: NotionSelectSchema}).transform(value => value.status)
 export const NotionOptionalStatusSchema = z.object({status: NotionSelectSchema.nullable()}).transform(value => value.status || null)
 
+export const NotionCheckboxSchema = z.object({checkbox: z.boolean()}).transform(value => value.checkbox)
+
 export const NotionFileSchema = z.object({files: z.array(z.object({type: z.literal('file'), file: z.object({url: z.string().url()})}))}).transform(value => value.files.shift()?.file.url || null)

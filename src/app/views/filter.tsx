@@ -5,7 +5,7 @@ import {useHomeContext} from '../context'
 import './style.css'
 
 import {database_id} from '@/model/config'
-import {ArrowCounterClockwise, City, Database, DotsThreeVertical, ForkKnife, GithubLogo, type Icon, MapPin, Tag, Triangle} from '@phosphor-icons/react'
+import {ArrowCounterClockwise, City, Database, DotsThreeVertical, ForkKnife, GithubLogo, type Icon, MapPin, Star, Tag, Triangle} from '@phosphor-icons/react'
 import {motion} from 'motion/react'
 
 import {useSticky} from '@/lib/hooks/is-stuck'
@@ -46,6 +46,9 @@ export function HomeFilter() {
 
 function HomeFilterContent() {
     const {
+        top,
+        setTop,
+
         allCity,
         allType,
         allTags,
@@ -69,6 +72,13 @@ function HomeFilterContent() {
 
     return (
         <>
+            <button onClick={() => setTop(!top)} className="active:opacity-60">
+                <FilterItem active={top}>
+                    <Star weight="fill" className="shrink-0" />
+                    <p className="line-clamp-1">Top</p>
+                </FilterItem>
+            </button>
+
             <HomeFilterItem
                 allItem={allCity}
                 icon={City}

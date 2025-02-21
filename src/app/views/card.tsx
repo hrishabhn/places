@@ -1,7 +1,7 @@
 'use client'
 
 import {type PlaceComplete} from '@/model/types'
-import {Circle, ForkKnife, MapPin, Pencil} from '@phosphor-icons/react'
+import {Circle, ForkKnife, MapPin, Pencil, Star} from '@phosphor-icons/react'
 import Link from 'next/link'
 import {Fragment} from 'react'
 
@@ -45,6 +45,13 @@ export function PlaceCard({place}: {place: PlaceComplete}) {
                     )}
                 </div>
                 <div className="flex flex-wrap items-center gap-1.5 px-4 text-xs font-medium">
+                    {place.top && (
+                        <>
+                            <Star weight="fill" className="text-yellow-400" />
+                            <Circle weight="fill" size={5} className="opacity-60" />
+                        </>
+                    )}
+
                     <MapPin weight="bold" className="opacity-60" />
                     <p>{place.city.name}</p>
 

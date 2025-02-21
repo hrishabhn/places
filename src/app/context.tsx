@@ -3,7 +3,7 @@
 import {revalidateNotion} from './action'
 
 import {type PlaceComplete} from '@/model/types'
-import {parseAsArrayOf, parseAsString, useQueryState} from 'nuqs'
+import {parseAsArrayOf, parseAsBoolean, parseAsString, useQueryState} from 'nuqs'
 import {createContext, useCallback, useContext, useEffect, useMemo} from 'react'
 
 import {kebabify} from '@/lib/kebab'
@@ -17,6 +17,9 @@ type HomeContext = {
 
     query: string
     setQuery: (query: string) => void
+
+    top: boolean
+    setTop: (top: boolean) => void
 
     cityIsSelected: (city: NotionSelect) => boolean
     typeIsSelected: (type: NotionSelect) => boolean
@@ -54,6 +57,8 @@ export function HomeContextProvider({
 }) {
     const [query, setQuery] = useQueryState('q', parseAsString.withDefault(''))
 
+    const [top, setTop] = useQueryState('top', parseAsBoolean.withDefault(false))
+
     const [selectedCityParam, setSelectedCityParam] = useQueryState('city', parseAsArrayOf(parseAsString).withDefault([]))
     const [selectedTypeParam, setSelectedTypeParam] = useQueryState('type', parseAsArrayOf(parseAsString).withDefault([]))
     const [selectedTagsParam, setSelectedTagsParam] = useQueryState('tags', parseAsArrayOf(parseAsString).withDefault([]))
@@ -86,6 +91,7 @@ export function HomeContextProvider({
     const displayPlace = useMemo(
         () =>
             allPlace
+                .filter(place => (top ? place.top : true))
                 .filter(place => (selectedCity.length ? cityIsSelected(place.city) : true))
                 .filter(place => (selectedType.length ? place.type.some(typeIsSelected) : true))
                 .filter(place => (selectedTags.length ? place.tags.some(tagIsSelected) : true))
@@ -97,7 +103,7 @@ export function HomeContextProvider({
                           })
                         : true
                 ),
-        [allPlace, selectedCity, selectedType, selectedTags, cityIsSelected, typeIsSelected, tagIsSelected, query]
+        [allPlace, top, selectedCity, selectedType, selectedTags, cityIsSelected, typeIsSelected, tagIsSelected, query]
     )
 
     useEffect(() => {
@@ -113,6 +119,9 @@ export function HomeContextProvider({
 
                 query,
                 setQuery,
+
+                top,
+                setTop,
 
                 cityIsSelected,
                 typeIsSelected,

@@ -1,7 +1,7 @@
 import {z} from 'zod'
 
 import {type MapsPlace} from '@/lib/google-maps'
-import {NotionMultiSelectSchema, NotionOptionalRichTextSchema, NotionSingleSelectSchema, NotionTitleSchema} from '@/lib/notion/types'
+import {NotionCheckboxSchema, NotionMultiSelectSchema, NotionOptionalRichTextSchema, NotionSingleSelectSchema, NotionTitleSchema} from '@/lib/notion/types'
 
 export const NotionPlaceSchema = z
     .object({
@@ -9,6 +9,7 @@ export const NotionPlaceSchema = z
         url: z.string().url(),
         properties: z.object({
             name: NotionTitleSchema,
+            top: NotionCheckboxSchema,
             city: NotionSingleSelectSchema,
             type: NotionMultiSelectSchema,
             tags: NotionMultiSelectSchema,
