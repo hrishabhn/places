@@ -2,13 +2,12 @@
 
 import {Envelope, type Icon, Link, Password, TextAa} from '@phosphor-icons/react'
 import {type ChangeEventHandler} from 'react'
-import TextareaAutosize from 'react-textarea-autosize'
 
 import {inputDebounce} from '@/lib/debounce'
 
 import {type InputProps} from '@/components/shared'
 
-type TextInputType = 'text' | 'multilineText' | 'url' | 'email' | 'password'
+type TextInputType = 'text' | 'url' | 'email' | 'password'
 
 type TextInputProps = {
     type: TextInputType
@@ -37,30 +36,16 @@ export function TextInput({type = 'text', placeholder, name, required, debounce 
                 }[type]
             }
         >
-            {type === 'multilineText' ? (
-                <TextareaAutosize
-                    minRows={2}
-                    maxRows={8}
-                    placeholder={placeholder}
-                    required={required}
-                    name={name}
-                    defaultValue={defaultValue}
-                    value={value}
-                    onChange={onChange}
-                    className="flex-1 resize-none bg-transparent py-2 outline-none disabled:text-g-500"
-                />
-            ) : (
-                <input
-                    type={type}
-                    placeholder={placeholder}
-                    required={required}
-                    name={name}
-                    defaultValue={defaultValue}
-                    value={value}
-                    onChange={onChange}
-                    className="flex-1 bg-transparent py-2 outline-none disabled:text-g-500"
-                />
-            )}
+            <input
+                type={type}
+                placeholder={placeholder}
+                required={required}
+                name={name}
+                defaultValue={defaultValue}
+                value={value}
+                onChange={onChange}
+                className="flex-1 bg-transparent py-2 outline-none disabled:text-g-500"
+            />
         </TextInputContainer>
     )
 }

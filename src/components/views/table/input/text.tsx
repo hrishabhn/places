@@ -4,7 +4,6 @@ import {TableColumn} from '../layout'
 import {type TableInputProps, tableInputClass} from './shared'
 
 import {type ChangeEventHandler} from 'react'
-import TextareaAutosize from 'react-textarea-autosize'
 
 import {inputDebounce} from '@/lib/debounce'
 
@@ -22,26 +21,14 @@ export function TableTextInput({multiline, debounce = false, size, defaultValue,
 
     return (
         <TableColumn size={size}>
-            {multiline ? (
-                <TextareaAutosize
-                    //
-                    minRows={2}
-                    maxRows={8}
-                    defaultValue={defaultValue}
-                    value={value}
-                    onChange={onChange}
-                    className={`resize-none ${tableInputClass}`}
-                />
-            ) : (
-                <input
-                    //
-                    type="text"
-                    defaultValue={defaultValue}
-                    value={value}
-                    onChange={onChange}
-                    className={tableInputClass}
-                />
-            )}
+            <input
+                //
+                type="text"
+                defaultValue={defaultValue}
+                value={value}
+                onChange={onChange}
+                className={tableInputClass}
+            />
         </TableColumn>
     )
 }
