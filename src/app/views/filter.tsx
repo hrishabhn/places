@@ -2,6 +2,7 @@
 
 import {revalidateNotion} from '../action'
 import {useHomeContext} from '../context'
+import {useAdminMode} from '../state'
 import './style.css'
 
 import {database_id} from '@/model/config'
@@ -44,10 +45,8 @@ export function HomeFilter() {
 }
 
 function HomeFilterContent() {
+    const {adminMode, toggleAdminMode} = useAdminMode()
     const {
-        adminMode,
-        setAdminMode,
-
         top,
         setTop,
 
@@ -119,7 +118,7 @@ function HomeFilterContent() {
                     <DropdownMenuItem action={{onClick: async () => await revalidateNotion()}} image={{icon: ArrowCounterClockwise}} title="Refresh Data" />
 
                     <DropdownDivider />
-                    <DropdownMenuItem action={{onClick: () => setAdminMode(!adminMode)}} image={{icon: User}} title="Admin Mode" active={adminMode} />
+                    <DropdownMenuItem action={{onClick: toggleAdminMode}} image={{icon: User}} title="Admin Mode" active={adminMode} />
                     <DropdownMenuItem action={{href: `https://notion.so/${database_id}`, target: '_blank'}} image={{icon: Database}} title="Database" subtitle="Notion" />
                     <DropdownMenuItem
                         action={{href: 'https://developers.google.com/maps/documentation/places/web-service/place-id', target: '_blank'}}
