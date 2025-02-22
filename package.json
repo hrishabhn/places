@@ -12,6 +12,7 @@
         "@headlessui/react": "^2.2.0",
         "@notionhq/client": "^2.2.15",
         "@phosphor-icons/react": "^2.1.7",
+        "babel-plugin-react-compiler": "19.0.0-beta-21e868a-20250216",
         "chrono-node": "^2.7.8",
         "dayjs": "^1.11.13",
         "lodash": "^4.17.21",

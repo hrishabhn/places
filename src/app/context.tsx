@@ -1,19 +1,14 @@
 'use client'
 
-import {revalidateNotion} from './action'
-
 import {type NotionPlace} from '@/model/types'
 import {parseAsArrayOf, parseAsBoolean, parseAsString, useQueryState} from 'nuqs'
-import {createContext, useCallback, useContext, useEffect, useMemo, useState} from 'react'
+import {createContext, useContext} from 'react'
 
 import {kebabify} from '@/lib/kebab'
 import {type NotionSelect} from '@/lib/notion/types'
 import {searchKeywords} from '@/lib/search'
 
 type HomeContext = {
-    adminMode: boolean
-    setAdminMode: (adminMode: boolean) => void
-
     allCity: NotionSelect[]
     allType: NotionSelect[]
     allTags: NotionSelect[]
@@ -58,8 +53,6 @@ export function HomeContextProvider({
     allTags: NotionSelect[]
     children?: React.ReactNode
 }) {
-    const [adminMode, setAdminMode] = useState<boolean>(false)
-
     const [query, setQuery] = useQueryState('q', parseAsString.withDefault(''))
 
     const [top, setTop] = useQueryState('top', parseAsBoolean.withDefault(false))
@@ -68,59 +61,42 @@ export function HomeContextProvider({
     const [selectedTypeParam, setSelectedTypeParam] = useQueryState('type', parseAsArrayOf(parseAsString).withDefault([]))
     const [selectedTagsParam, setSelectedTagsParam] = useQueryState('tags', parseAsArrayOf(parseAsString).withDefault([]))
 
-    const cityIsSelected = useCallback((city: NotionSelect) => selectedCityParam.includes(kebabify(city.name)), [selectedCityParam])
-    const typeIsSelected = useCallback((type: NotionSelect) => selectedTypeParam.includes(kebabify(type.name)), [selectedTypeParam])
-    const tagIsSelected = useCallback((tag: NotionSelect) => selectedTagsParam.includes(kebabify(tag.name)), [selectedTagsParam])
+    const cityIsSelected = (city: NotionSelect) => selectedCityParam.includes(kebabify(city.name))
+    const typeIsSelected = (type: NotionSelect) => selectedTypeParam.includes(kebabify(type.name))
+    const tagIsSelected = (tag: NotionSelect) => selectedTagsParam.includes(kebabify(tag.name))
 
-    const selectedCity = useMemo(() => allCity.filter(cityIsSelected), [allCity, cityIsSelected])
-    const selectedType = useMemo(() => allType.filter(typeIsSelected), [allType, typeIsSelected])
-    const selectedTags = useMemo(() => allTags.filter(tagIsSelected), [allTags, tagIsSelected])
+    const selectedCity = allCity.filter(cityIsSelected)
+    const selectedType = allType.filter(typeIsSelected)
+    const selectedTags = allTags.filter(tagIsSelected)
 
-    const toggleSelectedCity = useCallback(
-        (city: NotionSelect) => setSelectedCityParam(cityIsSelected(city) ? selectedCityParam.filter(c => c !== kebabify(city.name)) : [...selectedCityParam, kebabify(city.name)]),
-        [cityIsSelected, selectedCityParam, setSelectedCityParam]
-    )
-    const toggleSelectedType = useCallback(
-        (type: NotionSelect) => setSelectedTypeParam(typeIsSelected(type) ? selectedTypeParam.filter(t => t !== kebabify(type.name)) : [...selectedTypeParam, kebabify(type.name)]),
-        [typeIsSelected, selectedTypeParam, setSelectedTypeParam]
-    )
-    const toggleSelectedTag = useCallback(
-        (tag: NotionSelect) => setSelectedTagsParam(tagIsSelected(tag) ? selectedTagsParam.filter(t => t !== kebabify(tag.name)) : [...selectedTagsParam, kebabify(tag.name)]),
-        [tagIsSelected, selectedTagsParam, setSelectedTagsParam]
-    )
+    const toggleSelectedCity = (city: NotionSelect) =>
+        setSelectedCityParam(cityIsSelected(city) ? selectedCityParam.filter(c => c !== kebabify(city.name)) : [...selectedCityParam, kebabify(city.name)])
+    const toggleSelectedType = (type: NotionSelect) =>
+        setSelectedTypeParam(typeIsSelected(type) ? selectedTypeParam.filter(t => t !== kebabify(type.name)) : [...selectedTypeParam, kebabify(type.name)])
+    const toggleSelectedTag = (tag: NotionSelect) =>
+        setSelectedTagsParam(tagIsSelected(tag) ? selectedTagsParam.filter(t => t !== kebabify(tag.name)) : [...selectedTagsParam, kebabify(tag.name)])
 
-    const clearSelectedCity = useCallback(() => setSelectedCityParam([]), [setSelectedCityParam])
-    const clearSelectedType = useCallback(() => setSelectedTypeParam([]), [setSelectedTypeParam])
-    const clearSelectedTags = useCallback(() => setSelectedTagsParam([]), [setSelectedTagsParam])
+    const clearSelectedCity = () => setSelectedCityParam([])
+    const clearSelectedType = () => setSelectedTypeParam([])
+    const clearSelectedTags = () => setSelectedTagsParam([])
 
-    const displayPlace = useMemo(
-        () =>
-            allPlace
-                .filter(place => (top ? place.top : true))
-                .filter(place => (selectedCity.length ? cityIsSelected(place.city) : true))
-                .filter(place => (selectedType.length ? place.type.some(typeIsSelected) : true))
-                .filter(place => (selectedTags.length ? place.tags.some(tagIsSelected) : true))
-                .filter(place =>
-                    query
-                        ? searchKeywords({
-                              query,
-                              keywords: [place.name, place.city.name, ...place.type.map(({name}) => name), ...place.tags.map(({name}) => name)],
-                          })
-                        : true
-                ),
-        [allPlace, top, selectedCity, selectedType, selectedTags, cityIsSelected, typeIsSelected, tagIsSelected, query]
-    )
-
-    useEffect(() => {
-        revalidateNotion()
-    }, [])
+    const displayPlace = allPlace
+        .filter(place => (top ? place.top : true))
+        .filter(place => (selectedCity.length ? cityIsSelected(place.city) : true))
+        .filter(place => (selectedType.length ? place.type.some(typeIsSelected) : true))
+        .filter(place => (selectedTags.length ? place.tags.some(tagIsSelected) : true))
+        .filter(place =>
+            query
+                ? searchKeywords({
+                      query,
+                      keywords: [place.name, place.city.name, ...place.type.map(({name}) => name), ...place.tags.map(({name}) => name)],
+                  })
+                : true
+        )
 
     return (
         <HomeContext.Provider
             value={{
-                adminMode,
-                setAdminMode,
-
                 allCity,
                 allType,
                 allTags,
