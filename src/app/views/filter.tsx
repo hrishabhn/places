@@ -5,7 +5,7 @@ import {useHomeContext} from '../context'
 import './style.css'
 
 import {database_id} from '@/model/config'
-import {ArrowCounterClockwise, City, Database, DotsThreeVertical, ForkKnife, GithubLogo, type Icon, MapPin, Star, Tag, Triangle} from '@phosphor-icons/react'
+import {ArrowCounterClockwise, City, Database, DotsThreeVertical, ForkKnife, GithubLogo, type Icon, MapPin, Star, Tag, Triangle, User} from '@phosphor-icons/react'
 import {motion} from 'motion/react'
 
 import {useSticky} from '@/lib/hooks/is-stuck'
@@ -45,6 +45,9 @@ export function HomeFilter() {
 
 function HomeFilterContent() {
     const {
+        adminMode,
+        setAdminMode,
+
         top,
         setTop,
 
@@ -116,7 +119,7 @@ function HomeFilterContent() {
                     <DropdownMenuItem action={{onClick: async () => await revalidateNotion()}} image={{icon: ArrowCounterClockwise}} title="Refresh Data" />
 
                     <DropdownDivider />
-
+                    <DropdownMenuItem action={{onClick: () => setAdminMode(!adminMode)}} image={{icon: User}} title="Admin Mode" active={adminMode} />
                     <DropdownMenuItem action={{href: `https://notion.so/${database_id}`, target: '_blank'}} image={{icon: Database}} title="Database" subtitle="Notion" />
                     <DropdownMenuItem
                         action={{href: 'https://developers.google.com/maps/documentation/places/web-service/place-id', target: '_blank'}}

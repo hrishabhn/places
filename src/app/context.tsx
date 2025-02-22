@@ -2,15 +2,18 @@
 
 import {revalidateNotion} from './action'
 
-import {type PlaceComplete} from '@/model/types'
+import {type NotionPlace} from '@/model/types'
 import {parseAsArrayOf, parseAsBoolean, parseAsString, useQueryState} from 'nuqs'
-import {createContext, useCallback, useContext, useEffect, useMemo} from 'react'
+import {createContext, useCallback, useContext, useEffect, useMemo, useState} from 'react'
 
 import {kebabify} from '@/lib/kebab'
 import {type NotionSelect} from '@/lib/notion/types'
 import {searchKeywords} from '@/lib/search'
 
 type HomeContext = {
+    adminMode: boolean
+    setAdminMode: (adminMode: boolean) => void
+
     allCity: NotionSelect[]
     allType: NotionSelect[]
     allTags: NotionSelect[]
@@ -37,7 +40,7 @@ type HomeContext = {
     clearSelectedType: () => void
     clearSelectedTags: () => void
 
-    displayPlace: PlaceComplete[]
+    displayPlace: NotionPlace[]
 }
 
 const HomeContext = createContext<HomeContext | null>(null)
@@ -49,12 +52,14 @@ export function HomeContextProvider({
     allTags,
     children,
 }: {
-    allPlace: PlaceComplete[]
+    allPlace: NotionPlace[]
     allCity: NotionSelect[]
     allType: NotionSelect[]
     allTags: NotionSelect[]
     children?: React.ReactNode
 }) {
+    const [adminMode, setAdminMode] = useState<boolean>(false)
+
     const [query, setQuery] = useQueryState('q', parseAsString.withDefault(''))
 
     const [top, setTop] = useQueryState('top', parseAsBoolean.withDefault(false))
@@ -113,6 +118,9 @@ export function HomeContextProvider({
     return (
         <HomeContext.Provider
             value={{
+                adminMode,
+                setAdminMode,
+
                 allCity,
                 allType,
                 allTags,

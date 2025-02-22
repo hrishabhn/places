@@ -40,3 +40,19 @@ export const NotionOptionalStatusSchema = z.object({status: NotionSelectSchema.n
 export const NotionCheckboxSchema = z.object({checkbox: z.boolean()}).transform(value => value.checkbox)
 
 export const NotionFileSchema = z.object({files: z.array(z.object({type: z.literal('file'), file: z.object({url: z.string().url()})}))}).transform(value => value.files.shift()?.file.url || null)
+
+export const NotionCoverSchema = z
+    .discriminatedUnion('type', [
+        z.object({type: z.literal('external'), external: z.object({url: z.string().url()})}),
+        z.object({type: z.literal('file'), file: z.object({url: z.string().url()})}),
+    ])
+    .nullable()
+    .transform(value => {
+        if (!value) return null
+        switch (value.type) {
+            case 'external':
+                return value.external.url
+            case 'file':
+                return value.file.url
+        }
+    })

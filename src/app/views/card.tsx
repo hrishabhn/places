@@ -1,21 +1,24 @@
 'use client'
 
-import {type PlaceComplete} from '@/model/types'
-import {Circle, ForkKnife, MapPin, Pencil, Star} from '@phosphor-icons/react'
+import {useHomeContext} from '../context'
+
+import {type NotionPlace} from '@/model/types'
+import {Circle, ForkKnife, GoogleLogo, type Icon, MagnifyingGlass, MapPin, Pencil, Star} from '@phosphor-icons/react'
 import Link from 'next/link'
 import {Fragment} from 'react'
 
 import {Heading} from '@/components/layout'
-import {Card, IconButton, SimpleImage, TooltipText} from '@/components/ui'
+import {Button, Card, SimpleImage} from '@/components/ui'
 
-export function PlaceCard({place}: {place: PlaceComplete}) {
+export function PlaceCard({place}: {place: NotionPlace}) {
     const info = [...place.type.map(({name}) => name), ...place.tags.map(({name}) => name)]
+    const {adminMode} = useHomeContext()
 
     return (
         <Card rounded="md" ring shadow="sm">
-            {place.maps_photo ? (
+            {place.cover ? (
                 <Card aspect="video">
-                    <SimpleImage url={place.maps_photo || undefined} alt="maps" />
+                    <SimpleImage url={place.cover} alt="maps" />
                 </Card>
             ) : (
                 <div className="flex aspect-video items-center justify-center bg-accent/20">
@@ -26,24 +29,10 @@ export function PlaceCard({place}: {place: PlaceComplete}) {
             <div className="h-px w-full bg-line dark:bg-line-dark" />
 
             <div className="flex flex-col items-start gap-1 py-3">
-                <div className="flex w-full gap-0.5 px-4">
-                    <Heading size="h3" withoutPadding>
-                        <p className="line-clamp-2">{place.name}</p>
-                    </Heading>
-                    <div className="grow" />
-                    <Link href={place.url} target="_blank">
-                        <TooltipText text="Edit">
-                            <IconButton theme="hover" icon={Pencil} />
-                        </TooltipText>
-                    </Link>
-                    {place.maps_data?.url && (
-                        <Link href={place.maps_data.url} target="_blank">
-                            <TooltipText text="Open in Maps">
-                                <IconButton theme="hover" icon={MapPin} />
-                            </TooltipText>
-                        </Link>
-                    )}
-                </div>
+                <Heading size="h3" withoutPadding>
+                    <p className="line-clamp-2 px-4">{place.name}</p>
+                </Heading>
+
                 <div className="flex flex-wrap items-center gap-1.5 px-4 text-xs font-medium">
                     {place.top && (
                         <>
@@ -62,14 +51,36 @@ export function PlaceCard({place}: {place: PlaceComplete}) {
                         </Fragment>
                     ))}
                 </div>
+                <div className="flex w-full flex-wrap gap-2 px-4 py-2">
+                    {place.maps_id && <ExternalLink url={`https://www.google.com/maps/place/?q=place_id:${place.maps_id}`} icon={MapPin} title="Open in Maps" />}
 
+                    {adminMode && (
+                        <>
+                            <ExternalLink url={place.url} icon={Pencil} title="Edit" />
+                            <ExternalLink url={`https://www.google.com/images?q=${encodeURIComponent(place.name)}`} icon={GoogleLogo} title="Google Images" />
+                            <ExternalLink url={`https://www.bing.com/images/search?q=${encodeURIComponent(place.name)}`} icon={MagnifyingGlass} title="Bing Images" />
+                        </>
+                    )}
+                </div>
                 {place.description && (
                     <>
-                        <div className="my-2 h-px w-full bg-line dark:bg-line-dark" />
+                        <div className="my-1 h-px w-full bg-line dark:bg-line-dark" />
                         <p className="px-4">{place.description}</p>
                     </>
                 )}
             </div>
         </Card>
+    )
+}
+
+function ExternalLink({url, icon, title}: {url: string; icon: Icon; title: string}) {
+    const Icon = icon
+    return (
+        <Link href={url} target="_blank" className="active:opacity-60">
+            <Button size="xs" theme="layer-0" ring>
+                <Icon weight="bold" />
+                <p>{title}</p>
+            </Button>
+        </Link>
     )
 }

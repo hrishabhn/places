@@ -1,7 +1,7 @@
 import 'server-only'
 
 import {database_id} from './config'
-import {AllDropdownSchema, PlaceCompleteSchema} from './types'
+import {AllDropdownSchema, NotionPlaceSchema} from './types'
 
 import {Client} from '@notionhq/client'
 import {unstable_cacheLife as cacheLife, unstable_cacheTag as cacheTag} from 'next/cache'
@@ -35,7 +35,7 @@ export async function getAllPlace() {
         pages.push(...response.results)
     }
 
-    return await z.array(PlaceCompleteSchema).parseAsync(pages)
+    return await z.array(NotionPlaceSchema).parseAsync(pages)
 }
 
 export async function getAllDropdown() {
