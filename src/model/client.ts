@@ -12,7 +12,7 @@ const notion = new Client({auth: process.env.NOTION_API_KEY})
 export async function getAllPlace() {
     'use cache'
     cacheTag('notion')
-    cacheLife('days')
+    cacheLife('seconds')
 
     let next_cursor: string | null | undefined = undefined
     const pages: unknown[] = []
@@ -41,7 +41,7 @@ export async function getAllPlace() {
 export async function getAllDropdown() {
     'use cache'
     cacheTag('notion')
-    cacheLife('days')
+    cacheLife('seconds')
 
     const {properties} = await notion.databases.retrieve({database_id})
     return AllDropdownSchema.parse(properties)

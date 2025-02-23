@@ -53,10 +53,11 @@ export function PlaceCard({place}: {place: NotionPlace}) {
                 </div>
                 <div className="flex w-full flex-wrap gap-2 px-4 py-2">
                     {place.maps_id && <ExternalLink url={`https://www.google.com/maps/place/?q=place_id:${place.maps_id}`} icon={MapPin} title="Open in Maps" />}
+                    <ExternalLink url={place.url} icon={Pencil} title="Edit" />
 
                     {adminMode && (
                         <>
-                            <ExternalLink url={place.url} icon={Pencil} title="Edit" />
+                            <ExternalLink url={`https://www.google.com/search?q=${encodeURIComponent(place.name)}`} icon={GoogleLogo} title="Google Search" />
                             <ExternalLink url={`https://www.google.com/images?q=${encodeURIComponent(place.name)}`} icon={GoogleLogo} title="Google Images" />
                             <ExternalLink url={`https://www.bing.com/images/search?q=${encodeURIComponent(place.name)}`} icon={MagnifyingGlass} title="Bing Images" />
                         </>
