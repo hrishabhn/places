@@ -23,20 +23,20 @@ export function HomeFilter() {
     return (
         <motion.div
             ref={ref}
+            initial={false}
             animate={{
                 paddingInline: isStuck ? 0 : 'var(--px)',
             }}
             transition={transition}
-            className="sticky top-0 z-10 w-full"
+            className={`sticky top-0 z-10 w-full ${isStuck ? 'shadow-md' : ''}`}
         >
             <motion.div
+                initial={false}
                 animate={{
                     borderRadius: isStuck ? 0 : '0.75rem',
-                    backgroundColor: isStuck ? 'var(--bg-after)' : 'var(--bg-before)',
-                    padding: isStuck ? '1rem' : '0.5rem',
                 }}
                 transition={transition}
-                className={`flex w-full flex-wrap items-center gap-2 py-4 backdrop-blur ${isStuck ? 'bg-gradient-to-b from-layer-0 from-25% to-transparent dark:from-layer-0-dark' : ''}`}
+                className="flex w-full flex-wrap items-center gap-2 bg-layer-1 p-2 dark:bg-layer-1-dark"
             >
                 <HomeFilterContent />
             </motion.div>

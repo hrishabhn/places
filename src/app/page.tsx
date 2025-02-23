@@ -11,9 +11,7 @@ export default async function Home() {
     const [allPlace, allDropdown] = await Promise.all([getAllPlace(), getAllDropdown()])
     return (
         <HomeContextProvider allPlace={allPlace} {...allDropdown}>
-            <PageSection>
-                <HomeSearch />
-            </PageSection>
+            <HomeSearch />
             <HomeFilter />
             <PageSection>
                 <HomeStack />

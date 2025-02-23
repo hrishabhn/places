@@ -1,8 +1,8 @@
 :root {
     --px: theme('padding.4');
 
-    --bg-before: theme('colors.layer.1.DEFAULT');
-    --bg-after: theme('colors.layer.0.DEFAULT')cc;
+    --layer-0: theme('colors.layer.0.DEFAULT');
+    --layer-1: theme('colors.layer.1.DEFAULT');
 }
 
 @screen sm {
@@ -13,7 +13,7 @@
 
 @media (prefers-color-scheme: dark) {
     :root {
-        --bg-before: theme('colors.layer.1.dark');
-        --bg-after: theme('colors.layer.0.dark')cc;
+        --layer-0: theme('colors.layer.0.dark');
+        --layer-1: theme('colors.layer.1.dark');
     }
 }

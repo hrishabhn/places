@@ -16,7 +16,7 @@ export function HomeSearch() {
     } = useHomeContext()
 
     return (
-        <div className="flex w-full items-center pb-4">
+        <div className="flex w-full items-center p-4 font-medium sm:px-10">
             <p>{`${displayPlace.length} Place${displayPlace.length === 1 ? '' : 's'}`}</p>
             <div className="grow" />
             <HomeFilter value={query} setValue={setQuery} />
