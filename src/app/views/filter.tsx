@@ -131,7 +131,7 @@ function HomeFilterContent() {
 
                     <DropdownHeader text="Resources" />
                     <DropdownMenuItem action={{href: 'https://github.com/hrishabhn/places', target: '_blank'}} image={{icon: GithubLogo}} title="Source Code" subtitle="GitHub" />
-                    <DropdownMenuItem action={{href: 'https://vercel.com/hrishabhn/places', target: '_blank'}} image={{icon: Triangle}} title="Preview" subtitle="Vercel" />
+                    <DropdownMenuItem action={{href: 'https://vercel.com/hrishabhns/places', target: '_blank'}} image={{icon: Triangle}} title="Preview" subtitle="Vercel" />
                 </DropdownMenuItems>
             </Menu>
         </>
