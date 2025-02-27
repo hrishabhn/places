@@ -2,7 +2,6 @@
 
 import {revalidateNotion} from '../action'
 import {useHomeContext} from '../context'
-import {useAdminMode} from '../state'
 import './style.css'
 
 import {database_id} from '@/model/config'
@@ -26,9 +25,10 @@ export function HomeFilter() {
             initial={false}
             animate={{
                 paddingInline: isStuck ? 0 : 'var(--px)',
+                borderColor: isStuck ? 'var(--line)' : 'transparent',
             }}
             transition={transition}
-            className={`sticky top-0 z-10 w-full ${isStuck ? 'shadow-md' : ''}`}
+            className={`sticky top-0 z-10 w-full border-b ${isStuck ? 'shadow' : ''}`}
         >
             <motion.div
                 initial={false}
@@ -45,10 +45,12 @@ export function HomeFilter() {
 }
 
 function HomeFilterContent() {
-    const {adminMode, toggleAdminMode} = useAdminMode()
     const {
+        adminMode,
+        toggleAdminMode,
+
         top,
-        setTop,
+        toggleTop,
 
         allCity,
         allType,
@@ -73,7 +75,7 @@ function HomeFilterContent() {
 
     return (
         <>
-            <button onClick={() => setTop(!top)} className="active:opacity-60">
+            <button onClick={toggleTop} className="active:opacity-60">
                 <FilterItem active={top}>
                     <Star weight="fill" className="shrink-0" />
                     <p className="line-clamp-1">Top</p>

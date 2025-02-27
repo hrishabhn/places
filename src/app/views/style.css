@@ -3,6 +3,8 @@
 
     --layer-0: theme('colors.layer.0.DEFAULT');
     --layer-1: theme('colors.layer.1.DEFAULT');
+
+    --line: theme('colors.line.DEFAULT');
 }
 
 @screen sm {
@@ -15,5 +17,7 @@
     :root {
         --layer-0: theme('colors.layer.0.dark');
         --layer-1: theme('colors.layer.1.dark');
+
+        --line: theme('colors.line.dark');
     }
 }

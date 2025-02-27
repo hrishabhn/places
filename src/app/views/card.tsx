@@ -1,6 +1,6 @@
 'use client'
 
-import {useAdminMode} from '../state'
+import {useHomeContext} from '../context'
 
 import {type NotionPlace} from '@/model/types'
 import {Circle, ForkKnife, GoogleLogo, type Icon, MagnifyingGlass, MapPin, Pencil, Star} from '@phosphor-icons/react'
@@ -12,7 +12,7 @@ import {Button, Card, SimpleImage} from '@/components/ui'
 
 export function PlaceCard({place}: {place: NotionPlace}) {
     const info = [...place.type.map(({name}) => name), ...place.tags.map(({name}) => name)]
-    const {adminMode} = useAdminMode()
+    const {adminMode} = useHomeContext()
 
     return (
         <Card rounded="md" ring shadow="sm">

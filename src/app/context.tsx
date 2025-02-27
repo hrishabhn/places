@@ -13,11 +13,14 @@ type HomeContext = {
     allType: NotionSelect[]
     allTags: NotionSelect[]
 
+    adminMode: boolean
+    toggleAdminMode: () => void
+
     query: string
     setQuery: (query: string) => void
 
     top: boolean
-    setTop: (top: boolean) => void
+    toggleTop: () => void
 
     cityIsSelected: (city: NotionSelect) => boolean
     typeIsSelected: (type: NotionSelect) => boolean
@@ -53,6 +56,8 @@ export function HomeContextProvider({
     allTags: NotionSelect[]
     children?: React.ReactNode
 }) {
+    const [adminMode, setAdminMode] = useQueryState('admin', parseAsBoolean.withDefault(false))
+
     const [query, setQuery] = useQueryState('q', parseAsString.withDefault(''))
 
     const [top, setTop] = useQueryState('top', parseAsBoolean.withDefault(false))
@@ -101,11 +106,14 @@ export function HomeContextProvider({
                 allType,
                 allTags,
 
+                adminMode,
+                toggleAdminMode: () => setAdminMode(!adminMode),
+
                 query,
                 setQuery,
 
                 top,
-                setTop,
+                toggleTop: () => setTop(!top),
 
                 cityIsSelected,
                 typeIsSelected,
