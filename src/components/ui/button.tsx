@@ -46,9 +46,7 @@ export const IconButton = ({icon, weight = 'duotone', pending, size = 'md', ring
     return (
         <div>
             <Card theme={theme} ring={ring} rounded={rounded} active={active} aspect="square">
-                <div className={`flex items-center justify-center ${sizeClass}`}>
-                    {pending ? <Spinner weight={weight} className="animate-spin" /> : <Icon weight={weight} />}
-                </div>
+                <div className={`flex items-center justify-center ${sizeClass}`}>{pending ? <Spinner weight={weight} className="animate-spin" /> : <Icon weight={weight} />}</div>
             </Card>
         </div>
     )

@@ -2,10 +2,11 @@
 
 import {useHomeContext} from '../context'
 
-import {type NotionPlace} from '@/model/types'
 import {Circle, ForkKnife, GoogleLogo, type Icon, MagnifyingGlass, MapPin, Pencil, Star} from '@phosphor-icons/react'
 import Link from 'next/link'
 import {Fragment} from 'react'
+
+import {type NotionPlace} from '@/model/types'
 
 import {Heading} from '@/components/layout'
 import {Button, Card, SimpleImage} from '@/components/ui'

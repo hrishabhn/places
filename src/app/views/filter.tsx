@@ -4,9 +4,10 @@ import {revalidateNotion} from '../action'
 import {useHomeContext} from '../context'
 import './style.css'
 
-import {database_id} from '@/model/config'
 import {ArrowCounterClockwise, City, Database, DotsThreeVertical, ForkKnife, GithubLogo, type Icon, MapPin, Star, Tag, Triangle, User} from '@phosphor-icons/react'
 import {motion} from 'motion/react'
+
+import {database_id} from '@/model/config'
 
 import {useSticky} from '@/lib/hooks/is-stuck'
 import {notionColorToTheme} from '@/lib/notion/color'

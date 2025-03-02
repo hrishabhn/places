@@ -1,8 +1,9 @@
 'use client'
 
-import {type NotionPlace} from '@/model/types'
 import {parseAsArrayOf, parseAsBoolean, parseAsString, useQueryState} from 'nuqs'
 import {createContext, useContext} from 'react'
+
+import {type NotionPlace} from '@/model/types'
 
 import {kebabify} from '@/lib/kebab'
 import {type NotionSelect} from '@/lib/notion/types'
