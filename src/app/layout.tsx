@@ -25,7 +25,7 @@ export default function RootLayout({
         <html lang="en">
             <Providers>
                 <body className={`${karla.className} flex min-h-screen w-full flex-col bg-layer-0 text-black antialiased dark:bg-layer-0-dark dark:text-white`}>
-                    <div className={`${inter.className} bg-accent px-4 pt-6 text-white sm:px-10`}>
+                    <div className={`${inter.className} bg-accent px-4 pt-8 text-white sm:px-10`}>
                         <p className="text-2xl font-semibold">Places</p>
                         <p className="text-sm font-medium opacity-60">A list of the best places that I have encountered on my travels, curated by me.</p>
                     </div>
