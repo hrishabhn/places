@@ -2,7 +2,7 @@ import {z} from 'zod'
 
 import {
     NotionCheckboxSchema,
-    NotionCoverSchema,
+    NotionFileSchema,
     NotionMultiSelectSchema,
     NotionOptionalRichTextSchema,
     NotionSelectSchema,
@@ -14,18 +14,18 @@ export const NotionPlaceSchema = z
     .object({
         id: z.string().uuid(),
         url: z.string().url(),
-        cover: NotionCoverSchema,
         properties: z.object({
             name: NotionTitleSchema,
             top: NotionCheckboxSchema,
             city: NotionSingleSelectSchema,
             type: NotionMultiSelectSchema,
             tags: NotionMultiSelectSchema,
+            image: NotionFileSchema,
             description: NotionOptionalRichTextSchema,
             maps_id: NotionOptionalRichTextSchema,
         }),
     })
-    .transform(({id, url, cover, properties}) => ({id, url, cover, ...properties}))
+    .transform(({id, url, properties}) => ({id, url, ...properties}))
 
 export type NotionPlace = z.infer<typeof NotionPlaceSchema>
 

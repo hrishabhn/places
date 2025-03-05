@@ -35,7 +35,7 @@ export async function getAllPlace() {
         pages.push(...response.results)
     }
 
-    return await z.array(NotionPlaceSchema).parseAsync(pages)
+    return z.array(NotionPlaceSchema).parse(pages)
 }
 
 export async function getAllDropdown() {

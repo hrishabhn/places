@@ -17,9 +17,9 @@ export function PlaceCard({place}: {place: NotionPlace}) {
 
     return (
         <Card rounded="md" ring shadow="sm">
-            {place.cover ? (
+            {place.image ? (
                 <Card aspect="video">
-                    <SimpleImage url={place.cover} alt="maps" />
+                    <SimpleImage url={place.image} alt="maps" />
                 </Card>
             ) : (
                 <div className="flex aspect-video items-center justify-center bg-accent/20">
