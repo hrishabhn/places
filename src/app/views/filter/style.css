@@ -1,6 +1,8 @@
 :root {
     --px: theme('padding.4');
 
+    --accent: theme('colors.accent');
+
     --layer-0: theme('colors.layer.0.DEFAULT');
     --layer-1: theme('colors.layer.1.DEFAULT');
 

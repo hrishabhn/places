@@ -20,7 +20,7 @@ type FilterItemProps = {
 
 export function FilterItem({active = false, children}: FilterItemProps) {
     return (
-        <div className={`flex items-center gap-2 rounded-lg px-2 py-1 text-sm font-medium ${active ? 'bg-black/5 dark:bg-white/5' : 'hover:bg-black/5 dark:hover:bg-white/5'}`}>
+        <div className={`flex items-center gap-2 rounded-lg px-2 py-1 text-sm font-medium ${active ? 'bg-white text-accent' : 'bg-white/5 text-white hover:hover:bg-white/10'}`}>
             {children}
         </div>
     )
@@ -34,7 +34,7 @@ type FilterIconProps = {
 export function FilterIcon({active = false, icon}: FilterIconProps) {
     const Icon = icon
     return (
-        <div className={`rounded-lg p-1 ${active ? 'bg-black/5 dark:bg-white/5' : 'hover:bg-black/5 dark:hover:bg-white/5'}`}>
+        <div className={`rounded-lg p-1 ${active ? 'bg-white text-accent' : 'bg-white/5 text-white hover:hover:bg-white/10'}`}>
             <Icon weight="bold" size={18} />
         </div>
     )
