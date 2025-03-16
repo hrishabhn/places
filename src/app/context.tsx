@@ -20,6 +20,7 @@ type HomeContext = {
 
     query: string
     setQuery: (query: string) => void
+    debounceQuery: string
 
     top: boolean
     toggleTop: () => void
@@ -61,10 +62,10 @@ export function HomeContextProvider({
     const [adminMode, setAdminMode] = useQueryState('admin', parseAsBoolean.withDefault(false))
 
     const [query, setQuery] = useQueryState('q', parseAsString.withDefault(''))
-    const [debouncedQuery, setDebouncedQuery] = useDebounceValue<string>(query, 200)
+    const [debounceQuery, setDebounceQuery] = useDebounceValue<string>(query, 200)
     useEffect(() => {
-        setDebouncedQuery(query)
-    }, [query, setDebouncedQuery])
+        setDebounceQuery(query)
+    }, [query, setDebounceQuery])
 
     const [top, setTop] = useQueryState('top', parseAsBoolean.withDefault(false))
 
@@ -99,7 +100,7 @@ export function HomeContextProvider({
         .filter(place =>
             query
                 ? searchKeywords({
-                      query: debouncedQuery,
+                      query: debounceQuery,
                       keywords: [place.name, place.city.name, ...place.type.map(({name}) => name), ...place.tags.map(({name}) => name)],
                   })
                 : true
@@ -117,6 +118,7 @@ export function HomeContextProvider({
 
                 query,
                 setQuery,
+                debounceQuery,
 
                 top,
                 toggleTop: () => setTop(!top),

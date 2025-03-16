@@ -34,12 +34,12 @@ export function HomeInfo() {
 }
 
 function HomeInfoCity() {
-    const {allCity, query, setQuery, cityIsSelected, selectedCity, toggleSelectedCity} = useHomeContext()
+    const {allCity, setQuery, debounceQuery, cityIsSelected, selectedCity, toggleSelectedCity} = useHomeContext()
 
     const suggestedCity = allCity.filter(city => {
         if (cityIsSelected(city)) return false
-        if (query.length < 3) return false
-        return searchKeywords({query, keywords: [city.name]})
+        if (debounceQuery.length < 3) return false
+        return searchKeywords({query: debounceQuery, keywords: [city.name]})
     })
 
     return (
@@ -75,12 +75,12 @@ function HomeInfoCity() {
 }
 
 function HomeInfoType() {
-    const {allType, query, setQuery, typeIsSelected, selectedType, toggleSelectedType} = useHomeContext()
+    const {allType, setQuery, debounceQuery, typeIsSelected, selectedType, toggleSelectedType} = useHomeContext()
 
     const suggestedType = allType.filter(type => {
         if (typeIsSelected(type)) return false
-        if (query.length < 3) return false
-        return searchKeywords({query, keywords: [type.name]})
+        if (debounceQuery.length < 3) return false
+        return searchKeywords({query: debounceQuery, keywords: [type.name]})
     })
 
     return (
@@ -116,12 +116,12 @@ function HomeInfoType() {
 }
 
 function HomeInfoTag() {
-    const {allTags, query, setQuery, tagIsSelected, selectedTags, toggleSelectedTag} = useHomeContext()
+    const {allTags, setQuery, debounceQuery, tagIsSelected, selectedTags, toggleSelectedTag} = useHomeContext()
 
     const suggestedTags = allTags.filter(tag => {
         if (tagIsSelected(tag)) return false
-        if (query.length < 3) return false
-        return searchKeywords({query, keywords: [tag.name]})
+        if (debounceQuery.length < 3) return false
+        return searchKeywords({query: debounceQuery, keywords: [tag.name]})
     })
 
     return (
