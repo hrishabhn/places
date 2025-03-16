@@ -7,6 +7,8 @@ import './style.css'
 
 import {City, ForkKnife, MagnifyingGlass, Star, Tag, X} from '@phosphor-icons/react'
 import {motion} from 'motion/react'
+import {useRef} from 'react'
+import {useKey} from 'react-use'
 
 import {useSticky} from '@/lib/hooks/is-stuck'
 
@@ -103,11 +105,21 @@ function HomeFilterTag() {
 }
 
 function HomeFilterSearch() {
+    const ref = useRef<HTMLInputElement>(null)
+    useKey('/', e => {
+        if (document.activeElement !== ref.current) {
+            e.preventDefault()
+            ref.current?.focus()
+        }
+    })
+
     const {query, setQuery} = useHomeContext()
+
     return (
         <div className="flex w-full items-center gap-2 rounded-lg bg-white/5 px-2 text-base font-medium text-white sm:text-sm">
             <MagnifyingGlass weight="bold" className="shrink-0" />
             <input
+                ref={ref}
                 type="text"
                 value={query}
                 onChange={e => setQuery(e.target.value)}
