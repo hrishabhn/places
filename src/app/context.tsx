@@ -1,7 +1,8 @@
 'use client'
 
 import {parseAsArrayOf, parseAsBoolean, parseAsString, useQueryState} from 'nuqs'
-import {createContext, useContext} from 'react'
+import {createContext, useContext, useEffect} from 'react'
+import {useDebounceValue} from 'usehooks-ts'
 
 import {type NotionPlace} from '@/model/types'
 
@@ -60,6 +61,10 @@ export function HomeContextProvider({
     const [adminMode, setAdminMode] = useQueryState('admin', parseAsBoolean.withDefault(false))
 
     const [query, setQuery] = useQueryState('q', parseAsString.withDefault(''))
+    const [debouncedQuery, setDebouncedQuery] = useDebounceValue<string>(query, 200)
+    useEffect(() => {
+        setDebouncedQuery(query)
+    }, [query, setDebouncedQuery])
 
     const [top, setTop] = useQueryState('top', parseAsBoolean.withDefault(false))
 
@@ -94,7 +99,7 @@ export function HomeContextProvider({
         .filter(place =>
             query
                 ? searchKeywords({
-                      query,
+                      query: debouncedQuery,
                       keywords: [place.name, place.city.name, ...place.type.map(({name}) => name), ...place.tags.map(({name}) => name)],
                   })
                 : true
