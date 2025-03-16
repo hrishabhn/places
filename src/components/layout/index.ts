@@ -1,4 +1,4 @@
-export {inter, karla} from './font'
+export {inter, karla, robotoSlab} from './font'
 export {Navbar, NavbarItem} from './navbar'
 export {PageSection} from './page-section'
 export {PageHeader} from './page-header'

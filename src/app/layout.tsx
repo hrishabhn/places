@@ -4,7 +4,7 @@ import {Providers} from './providers'
 import type {Metadata, Viewport} from 'next'
 import colors from 'tailwindcss/colors'
 
-import {inter, karla} from '@/components/layout'
+import {karla, robotoSlab} from '@/components/layout'
 
 const title = 'Travel Guide'
 const description = 'A curated list of the best places that I have encountered on my travels.'
@@ -28,7 +28,7 @@ export default function RootLayout({
         <html lang="en">
             <Providers>
                 <body className={`${karla.className} flex min-h-screen w-full flex-col bg-layer-0 text-black antialiased dark:bg-layer-0-dark dark:text-white`}>
-                    <div className={`${inter.className} bg-accent px-4 pt-8 text-white sm:px-10`}>
+                    <div className={`${robotoSlab.className} bg-accent px-4 pt-8 text-white sm:px-10`}>
                         <p className="text-2xl font-semibold">{title}</p>
                         <p className="text-sm font-medium opacity-60">{description}</p>
                     </div>
