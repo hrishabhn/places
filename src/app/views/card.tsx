@@ -1,7 +1,7 @@
 'use client'
 
 import {useHomeContext} from '../context'
-import {PlaceIcon} from './icon'
+import {PlaceIcon} from './place-icon'
 
 import {Circle, GoogleLogo, type Icon, MagnifyingGlass, MapPin, Pencil, Star} from '@phosphor-icons/react'
 import Link from 'next/link'
