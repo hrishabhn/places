@@ -4,6 +4,9 @@
         "next/typescript",
         "plugin:tailwindcss/recommended"
     ],
+    "plugins": [
+        "react-compiler"
+    ],
     "parser": "@typescript-eslint/parser",
     "parserOptions": {
         "project": "./tsconfig.json"
@@ -26,6 +29,7 @@
                 "fixStyle": "inline-type-imports",
                 "prefer": "type-imports"
             }
-        ]
+        ],
+        "react-compiler/react-compiler": "error"
     }
 }
