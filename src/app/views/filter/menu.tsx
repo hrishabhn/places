@@ -14,14 +14,17 @@ export function HomeFilterMenu() {
 
     return (
         <Menu>
-            <MenuButton>
+            <MenuButton className="active:opacity-60">
                 <FilterIcon icon={DotsThreeVertical} />
             </MenuButton>
             <DropdownMenuItems anchor="bottom end">
+                <DropdownHeader text="Settings" />
                 <DropdownMenuItem action={{onClick: async () => await revalidateNotion()}} image={{icon: ArrowCounterClockwise}} title="Refresh Data" />
+                <DropdownMenuItem action={{onClick: toggleAdminMode}} image={{icon: User}} title="Admin Mode" active={adminMode} />
 
                 <DropdownDivider />
-                <DropdownMenuItem action={{onClick: toggleAdminMode}} image={{icon: User}} title="Admin Mode" active={adminMode} />
+
+                <DropdownHeader text="Resources" />
                 <DropdownMenuItem action={{href: `https://notion.so/${database_id}`, target: '_blank'}} image={{icon: Database}} title="Database" subtitle="Notion" />
                 <DropdownMenuItem
                     action={{href: 'https://developers.google.com/maps/documentation/places/web-service/place-id', target: '_blank'}}
@@ -29,10 +32,6 @@ export function HomeFilterMenu() {
                     title="Place ID"
                     subtitle="Google Maps"
                 />
-
-                <DropdownDivider />
-
-                <DropdownHeader text="Resources" />
                 <DropdownMenuItem action={{href: 'https://github.com/hrishabhn/places', target: '_blank'}} image={{icon: GithubLogo}} title="Source Code" subtitle="GitHub" />
                 <DropdownMenuItem action={{href: 'https://vercel.com/hrishabhns/places', target: '_blank'}} image={{icon: Triangle}} title="Preview" subtitle="Vercel" />
             </DropdownMenuItems>

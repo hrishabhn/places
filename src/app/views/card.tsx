@@ -1,12 +1,14 @@
 'use client'
 
 import {useHomeContext} from '../context'
+import {PlaceIcon} from './icon'
 
-import {Circle, ForkKnife, GoogleLogo, type Icon, MagnifyingGlass, MapPin, Pencil, Star} from '@phosphor-icons/react'
+import {Circle, GoogleLogo, type Icon, MagnifyingGlass, MapPin, Pencil, Star} from '@phosphor-icons/react'
 import Link from 'next/link'
 import {Fragment} from 'react'
 
 import {type NotionPlace} from '@/model/types'
+import {googleMapsUrl} from '@/model/util'
 
 import {Heading} from '@/components/layout'
 import {Button, Card, SimpleImage} from '@/components/ui'
@@ -22,9 +24,7 @@ export function PlaceCard({place}: {place: NotionPlace}) {
                     <SimpleImage url={place.image} alt="maps" />
                 </Card>
             ) : (
-                <div className="flex aspect-video items-center justify-center bg-accent/20">
-                    <ForkKnife size={24} weight="bold" />
-                </div>
+                <PlaceIcon placeType={place.type.at(0)?.name} />
             )}
 
             <div className="h-px w-full bg-line dark:bg-line-dark" />
@@ -54,7 +54,7 @@ export function PlaceCard({place}: {place: NotionPlace}) {
                     ))}
                 </div>
                 <div className="flex w-full flex-wrap gap-2 px-4 py-2">
-                    {place.maps_id && <ExternalLink url={`https://www.google.com/maps/place/?q=place_id:${place.maps_id}`} icon={MapPin} title="Open in Maps" />}
+                    <ExternalLink url={googleMapsUrl(place)} icon={MapPin} title="Open in Maps" />
                     <ExternalLink url={place.url} icon={Pencil} title="Edit" />
 
                     {adminMode && (

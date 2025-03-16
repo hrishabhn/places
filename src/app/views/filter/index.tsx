@@ -5,7 +5,7 @@ import {HomeFilterItem} from './item'
 import {HomeFilterMenu} from './menu'
 import './style.css'
 
-import {City, ForkKnife, MagnifyingGlass, Star, Tag} from '@phosphor-icons/react'
+import {City, ForkKnife, MagnifyingGlass, Star, Tag, X} from '@phosphor-icons/react'
 import {motion} from 'motion/react'
 
 import {useSticky} from '@/lib/hooks/is-stuck'
@@ -107,7 +107,16 @@ function HomeFilterSearch() {
     return (
         <div className="flex w-full items-center gap-2 rounded-lg bg-white/5 px-2 text-base font-medium text-white sm:text-sm">
             <MagnifyingGlass weight="bold" className="shrink-0" />
-            <input type="text" value={query} onChange={e => setQuery(e.target.value)} placeholder="Search" className="grow bg-transparent py-1 outline-none" />
+            <input
+                type="text"
+                value={query}
+                onChange={e => setQuery(e.target.value)}
+                placeholder="Search"
+                className="grow bg-transparent py-1 outline-none placeholder:text-white/50"
+            />
+            <button onClick={() => setQuery('')} className="active:opacity-60">
+                <X weight="bold" className="shrink-0" />
+            </button>
         </div>
     )
 }
