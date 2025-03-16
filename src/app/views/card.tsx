@@ -38,6 +38,7 @@ export function PlaceCard({place}: {place: NotionPlace}) {
                     {place.top && (
                         <>
                             <Star weight="fill" className="text-yellow-400" />
+                            <p>Top</p>
                             <Circle weight="fill" size={5} className="opacity-60" />
                         </>
                     )}

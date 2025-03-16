@@ -6,14 +6,17 @@ import colors from 'tailwindcss/colors'
 
 import {inter, karla} from '@/components/layout'
 
+const title = 'Travel Guide'
+const description = 'A curated list of the best places that I have encountered on my travels.'
+
 export const metadata: Metadata = {
-    title: 'Places | HN',
-    description: '🌏 Places around the world',
+    title,
+    description,
     robots: {index: false},
 }
 
 export const viewport: Viewport = {
-    themeColor: colors.red[900],
+    themeColor: colors.red[800],
 }
 
 export default function RootLayout({
@@ -26,8 +29,8 @@ export default function RootLayout({
             <Providers>
                 <body className={`${karla.className} flex min-h-screen w-full flex-col bg-layer-0 text-black antialiased dark:bg-layer-0-dark dark:text-white`}>
                     <div className={`${inter.className} bg-accent px-4 pt-8 text-white sm:px-10`}>
-                        <p className="text-2xl font-semibold">Places</p>
-                        <p className="text-sm font-medium opacity-60">A list of the best places that I have encountered on my travels, curated by me.</p>
+                        <p className="text-2xl font-semibold">{title}</p>
+                        <p className="text-sm font-medium opacity-60">{description}</p>
                     </div>
                     {children}
                 </body>
