@@ -11,7 +11,7 @@ import {type NotionPlace} from '@/model/types'
 import {googleMapsUrl} from '@/model/util'
 
 import {Heading, inter} from '@/components/layout'
-import {Button, Card, SimpleImage} from '@/components/ui'
+import {Badge, Card, SimpleImage} from '@/components/ui'
 
 export function PlaceCard({place}: {place: NotionPlace}) {
     const info = [...place.type.map(({name}) => name), ...place.tags.map(({name}) => name)]
@@ -80,10 +80,10 @@ function ExternalLink({url, icon, title}: {url: string; icon: Icon; title: strin
     const Icon = icon
     return (
         <Link href={url} target="_blank" className="active:opacity-60">
-            <Button size="xs" theme="layer-0" ring>
+            <Badge size="sm" rounded="xl">
                 <Icon weight="bold" />
                 <p>{title}</p>
-            </Button>
+            </Badge>
         </Link>
     )
 }
