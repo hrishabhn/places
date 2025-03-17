@@ -16,7 +16,10 @@ export const metadata: Metadata = {
 }
 
 export const viewport: Viewport = {
-    themeColor: colors.red[800],
+    themeColor: [
+        {media: '(prefers-color-scheme: light)', color: colors.red[800]},
+        {media: '(prefers-color-scheme: dark)', color: colors.red[700]},
+    ],
 }
 
 export default function RootLayout({
@@ -28,7 +31,7 @@ export default function RootLayout({
         <html lang="en">
             <Providers>
                 <body className={`${karla.className} flex min-h-screen w-full flex-col bg-layer-0 text-black antialiased dark:bg-layer-0-dark dark:text-white`}>
-                    <div className={`${robotoSlab.className} bg-accent px-4 pt-8 text-white sm:px-10`}>
+                    <div className={`${robotoSlab.className} bg-accent px-4 pt-8 text-white sm:px-10 dark:bg-accent-dark`}>
                         <p className="text-2xl font-semibold">{title}</p>
                         <p className="text-sm font-medium opacity-60">{description}</p>
                     </div>

@@ -53,7 +53,7 @@ export function TextInput({type = 'text', placeholder, name, required, debounce 
 export function TextInputContainer({icon, children}: {icon: Icon; children?: React.ReactNode}) {
     const Icon = icon
     return (
-        <div className="flex w-full items-center gap-2 rounded-lg bg-layer-1 px-3 text-sm font-medium ring-1 ring-line transition focus-within:ring-2 focus-within:ring-accent dark:bg-layer-1-dark dark:ring-line-dark">
+        <div className="flex w-full items-center gap-2 rounded-lg bg-layer-1 px-3 text-sm font-medium ring-1 ring-line transition focus-within:ring-2 focus-within:ring-accent dark:bg-layer-1-dark dark:ring-line-dark dark:focus-within:ring-accent-dark">
             <Icon weight="bold" className="text-base opacity-60" />
             {children}
         </div>

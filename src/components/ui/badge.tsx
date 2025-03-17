@@ -27,7 +27,9 @@ export const Badge = ({children, size = 'md', theme = 'accent', rounded = 'full'
         hover: tw`bg-black/5 hover:bg-black/10 dark:bg-white/5 dark:hover:bg-white/10`,
 
         // custom
-        accent: active ? tw`border-transparent bg-accent text-white` : tw`border-accent/80 bg-accent/10 text-accent dark:text-accent-dark`,
+        accent: active
+            ? tw`border-transparent bg-accent text-white dark:bg-accent-dark`
+            : tw`border-accent/80 bg-accent/10 text-accent dark:border-accent-dark/80 dark:bg-accent-dark/10 dark:text-accent-dark`,
         g: tw`bg-g-500/25`,
 
         // tailwind

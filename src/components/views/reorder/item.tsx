@@ -10,7 +10,7 @@ export function ReorderItem<T>({value, getProperties}: ReorderItemProps<T>) {
     return (
         <Reorder.Item
             value={value}
-            className="grid w-full cursor-grab grid-cols-[auto,auto,1fr] items-center gap-x-1.5 rounded-md bg-layer-1 px-1.5 ring-1 ring-line transition-shadow hover:ring-2 hover:ring-accent active:cursor-grabbing dark:bg-layer-1-dark dark:ring-line-dark"
+            className="grid w-full cursor-grab grid-cols-[auto,auto,1fr] items-center gap-x-1.5 rounded-md bg-layer-1 px-1.5 ring-1 ring-line transition-shadow hover:ring-2 hover:ring-accent active:cursor-grabbing dark:bg-layer-1-dark dark:ring-line-dark dark:hover:ring-accent-dark"
         >
             <div className="py-1.5">
                 <DotsSixVertical weight="bold" size={16} />

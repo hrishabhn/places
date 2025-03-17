@@ -13,7 +13,7 @@ export default {
             colors: {
                 accent: {
                     DEFAULT: colors.red[800],
-                    dark: colors.red[600],
+                    dark: colors.red[700],
                 },
                 g: colors.zinc,
                 line: {

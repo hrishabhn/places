@@ -21,7 +21,7 @@ function ToastIcon({theme}: {theme: ToastTheme}) {
         case 'error':
             return <WarningCircle weight="fill" size={20} className="text-red-500" />
         case 'loading':
-            return <Spinner weight="bold" size={20} className="animate-spin text-accent" />
+            return <Spinner weight="bold" size={20} className="animate-spin text-accent dark:text-accent-dark" />
         default:
             throw new Error('Invalid toast theme')
     }

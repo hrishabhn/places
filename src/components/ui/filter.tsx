@@ -20,7 +20,9 @@ type FilterItemProps = {
 
 export function FilterItem({active = false, children}: FilterItemProps) {
     return (
-        <div className={`flex items-center gap-2 rounded-lg px-2 py-1 text-sm font-medium ${active ? 'bg-white text-accent' : 'bg-white/5 text-white hover:hover:bg-white/10'}`}>
+        <div
+            className={`flex items-center gap-2 rounded-lg px-2 py-1 text-sm font-medium ${active ? 'bg-white text-accent dark:text-accent-dark' : 'bg-white/5 text-white hover:hover:bg-white/10'}`}
+        >
             {children}
         </div>
     )

@@ -27,7 +27,7 @@ export function HomeFilter() {
                 paddingInline: isStuck ? '1rem' : 'var(--px)',
             }}
             transition={transition}
-            className="sticky top-0 z-10 grid grid-cols-1 gap-2 bg-accent py-4 sm:grid-cols-[1fr,auto]"
+            className="sticky top-0 z-10 grid grid-cols-1 gap-2 bg-accent py-4 sm:grid-cols-[1fr,auto] dark:bg-accent-dark"
         >
             <div className="flex w-full items-center gap-2">
                 <HomeFilterTop />

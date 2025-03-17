@@ -15,9 +15,9 @@ export default function Home() {
         <Suspense
             fallback={
                 <>
-                    <div className="h-8 w-full bg-accent" />
-                    <div className="flex flex-col items-center justify-center gap-2 py-36 text-accent">
-                        <div className="animate-bounce rounded-full bg-accent p-2">
+                    <div className="h-8 w-full bg-accent dark:bg-accent-dark" />
+                    <div className="flex flex-col items-center justify-center gap-2 py-36 text-accent dark:text-accent-dark">
+                        <div className="animate-bounce rounded-full bg-accent p-2 dark:bg-accent-dark">
                             <ForkKnife weight="duotone" className="text-white" size={30} />
                         </div>
                         <p className="text-lg font-medium">Loading...</p>
