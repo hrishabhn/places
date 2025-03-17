@@ -10,7 +10,7 @@ import {Fragment} from 'react'
 import {type NotionPlace} from '@/model/types'
 import {googleMapsUrl} from '@/model/util'
 
-import {Heading, inter} from '@/components/layout'
+import {Heading, robotoSlab} from '@/components/layout'
 import {Badge, Card, SimpleImage} from '@/components/ui'
 
 export function PlaceCard({place}: {place: NotionPlace}) {
@@ -68,7 +68,7 @@ export function PlaceCard({place}: {place: NotionPlace}) {
                 {place.description && (
                     <>
                         <div className="my-1 h-px w-full bg-line dark:bg-line-dark" />
-                        <p className={`${inter.className} px-4 text-sm font-medium opacity-80`}>{place.description}</p>
+                        <p className={`${robotoSlab.className} px-4 text-sm font-semibold opacity-60`}>{place.description}</p>
                     </>
                 )}
             </div>
