@@ -4,6 +4,7 @@ import {
     NotionCheckboxSchema,
     NotionFileSchema,
     NotionMultiSelectSchema,
+    NotionOptionalNumberSchema,
     NotionOptionalRichTextSchema,
     NotionSelectSchema,
     NotionSingleSelectSchema,
@@ -23,6 +24,8 @@ export const NotionPlaceSchema = z
             image: NotionFileSchema,
             description: NotionOptionalRichTextSchema,
             maps_id: NotionOptionalRichTextSchema,
+            lat: NotionOptionalNumberSchema,
+            lon: NotionOptionalNumberSchema,
         }),
     })
     .transform(({id, url, properties}) => ({id, url, ...properties}))
