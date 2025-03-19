@@ -5,14 +5,14 @@ import {HomeFilterItem} from './item'
 import {HomeFilterMenu} from './menu'
 import './style.css'
 
-import {City, ForkKnife, MagnifyingGlass, Star, Tag, X} from '@phosphor-icons/react'
+import {City, ForkKnife, MagnifyingGlass, MapPinArea, Star, Tag, X} from '@phosphor-icons/react'
 import {motion} from 'motion/react'
 import {useRef} from 'react'
 import {useKey} from 'react-use'
 
 import {useSticky} from '@/lib/hooks/is-stuck'
 
-import {FilterItem} from '@/components/ui'
+import {FilterIcon, FilterItem} from '@/components/ui'
 
 export function HomeFilter() {
     const {isStuck, ref} = useSticky()
@@ -35,6 +35,7 @@ export function HomeFilter() {
                 <HomeFilterType />
                 <HomeFilterTag />
                 <div className="grow" />
+                <HomeFilterMap />
                 <HomeFilterMenu />
             </div>
 
@@ -101,6 +102,16 @@ function HomeFilterTag() {
             toggleSelectedItem={toggleSelectedTag}
             clearSelectedItem={clearSelectedTags}
         />
+    )
+}
+
+function HomeFilterMap() {
+    const {showMap, toggleShowMap} = useHomeContext()
+
+    return (
+        <button onClick={() => toggleShowMap()} className="active:opacity-60">
+            <FilterIcon icon={MapPinArea} active={showMap} />
+        </button>
     )
 }
 

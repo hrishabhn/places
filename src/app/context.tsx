@@ -41,6 +41,9 @@ type HomeContext = {
     clearSelectedType: () => void
     clearSelectedTags: () => void
 
+    showMap: boolean
+    toggleShowMap: () => void
+
     displayPlace: NotionPlace[]
 }
 
@@ -92,6 +95,9 @@ export function HomeContextProvider({
     const clearSelectedType = () => setSelectedTypeParam([])
     const clearSelectedTags = () => setSelectedTagsParam([])
 
+    const [showMap, setShowMap] = useQueryState('map', parseAsBoolean.withDefault(false))
+    const toggleShowMap = () => setShowMap(!showMap)
+
     const displayPlace = allPlace
         .filter(place => (top ? place.top : true))
         .filter(place => (selectedCity.length ? cityIsSelected(place.city) : true))
@@ -138,6 +144,9 @@ export function HomeContextProvider({
                 clearSelectedCity,
                 clearSelectedType,
                 clearSelectedTags,
+
+                showMap,
+                toggleShowMap,
 
                 displayPlace,
             }}
