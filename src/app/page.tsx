@@ -37,8 +37,8 @@ async function HomeContent() {
         <HomeContextProvider allPlace={allPlace} {...allDropdown}>
             <HomeFilter />
             <PageSection>
-                <HomeMap />
                 <HomeInfo />
+                <HomeMap />
                 <HomeStack />
             </PageSection>
         </HomeContextProvider>

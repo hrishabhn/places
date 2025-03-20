@@ -17,7 +17,7 @@ import {tw} from '@/lib/tailwind'
 type MapNotionPlace = NotionPlace & {lat: number; lon: number}
 const isMapNotionPlace = (place: NotionPlace): place is MapNotionPlace => place.lat !== null && place.lon !== null
 
-export function MapView({allPlace, onClose}: {allPlace: NotionPlace[]; onClose: () => void}) {
+export function MapView({allPlace}: {allPlace: NotionPlace[]}) {
     const isDark = useMediaQuery('(prefers-color-scheme: dark)')
     const {data: userCoordinates} = useQuery({
         queryKey: ['userCoordinates'],
@@ -30,34 +30,28 @@ export function MapView({allPlace, onClose}: {allPlace: NotionPlace[]; onClose: 
     const avgLon = displayPlace.map(({lon}) => lon).reduce((a, b) => a + b, 0) / displayPlace.length
 
     return (
-        <div className="fixed inset-0 z-10 flex size-full items-center justify-center bg-black/20">
-            <button onClick={onClose} className="absolute inset-0" />
+        <MapContainer
+            className="z-0 size-full"
+            zoomControl={false}
+            center={[avgLat, avgLon]}
+            minZoom={2}
+            bounds={displayPlace.map(({lat, lon}) => [lat, lon])}
+            boundsOptions={{padding: [50, 50]}}
+        >
+            <TileLayer url={`https://tiles.stadiamaps.com/tiles/alidade_smooth${isDark ? '_dark' : ''}/{z}/{x}/{y}{r}.png`} />
 
-            <div className="mx-3 aspect-square w-full max-w-screen-md overflow-hidden rounded-lg shadow-lg ring-line sm:aspect-video dark:ring-line-dark">
-                <MapContainer
-                    className="size-full"
-                    zoomControl={false}
-                    center={[avgLat, avgLon]}
-                    minZoom={2}
-                    bounds={displayPlace.map(({lat, lon}) => [lat, lon])}
-                    boundsOptions={{padding: [50, 50]}}
-                >
-                    <TileLayer url={`https://tiles.stadiamaps.com/tiles/alidade_smooth${isDark ? '_dark' : ''}/{z}/{x}/{y}{r}.png`} />
+            {displayPlace.map(place => (
+                <Marker key={place.id} icon={customIcon('accent')} position={[place.lat, place.lon]}>
+                    <Tooltip>{place.name}</Tooltip>
+                </Marker>
+            ))}
 
-                    {displayPlace.map(place => (
-                        <Marker key={place.id} icon={customIcon('accent')} position={[place.lat, place.lon]}>
-                            <Tooltip>{place.name}</Tooltip>
-                        </Marker>
-                    ))}
-
-                    {userCoordinates && (
-                        <Marker icon={customIcon('blue')} zIndexOffset={1} position={[userCoordinates.latitude, userCoordinates.longitude]}>
-                            <Tooltip>Your Location</Tooltip>
-                        </Marker>
-                    )}
-                </MapContainer>
-            </div>
-        </div>
+            {userCoordinates && (
+                <Marker icon={customIcon('blue')} zIndexOffset={1} position={[userCoordinates.latitude, userCoordinates.longitude]}>
+                    <Tooltip>Your Location</Tooltip>
+                </Marker>
+            )}
+        </MapContainer>
     )
 }
 
