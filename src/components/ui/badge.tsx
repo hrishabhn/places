@@ -8,15 +8,16 @@ type BadgeProps = {
     children?: React.ReactNode
     size?: BadgeSize
     theme?: CardTheme
+    border?: boolean
     rounded?: Rounded
 
     active?: boolean
 }
 
-export const Badge = ({children, size = 'md', theme = 'accent', rounded = 'full', active = false}: BadgeProps) => {
+export const Badge = ({children, size = 'md', theme = 'accent', border = true, rounded = 'full', active = false}: BadgeProps) => {
     const sizeClass = {
-        sm: tw`text-xs`,
-        md: tw`text-sm`,
+        sm: border ? tw`border-2 px-1.5 py-1 text-xs` : tw`border-0 px-2 py-1.5 text-xs`,
+        md: border ? tw`border-2 px-2 py-1 text-sm` : tw`border-0 px-2.5 py-1.5 text-sm`,
     }[size]
 
     const themeClass = {
@@ -54,5 +55,5 @@ export const Badge = ({children, size = 'md', theme = 'accent', rounded = 'full'
 
     const roundedClass = getRoundedClass(rounded)
 
-    return <div className={`flex shrink-0 items-center gap-1 text-nowrap rounded-full border-2 px-2 py-1 font-bold ${sizeClass} ${themeClass} ${roundedClass}`}>{children}</div>
+    return <div className={`flex shrink-0 items-center gap-1 text-nowrap rounded-full border-2 font-bold ${sizeClass} ${themeClass} ${roundedClass}`}>{children}</div>
 }
