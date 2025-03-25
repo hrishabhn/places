@@ -2,6 +2,8 @@
 
 import {useHomeContext} from '../context'
 import {PlaceCard} from './card'
+import {HomeConcierge} from './concierge'
+import {HomeTable} from './table'
 
 import {Card} from '@/components/ui'
 import {MapView} from '@/components/views/map'
@@ -28,7 +30,10 @@ export function HomeStack() {
                 </Card>
             )
 
+        case 'table':
+            return <HomeTable allPlace={displayPlace} />
+
         case 'concierge':
-            return 'Concierge'
+            return <HomeConcierge allPlace={displayPlace} />
     }
 }
