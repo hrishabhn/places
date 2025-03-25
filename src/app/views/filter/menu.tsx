@@ -2,6 +2,7 @@
 
 import {revalidateNotion} from '../../action'
 import {useHomeContext} from '../../context'
+import {HomeViewMenuItems} from './view'
 
 import {ArrowCounterClockwise, Database, DotsThreeVertical, GithubLogo, MapPin, Triangle, User} from '@phosphor-icons/react'
 
@@ -18,6 +19,10 @@ export function HomeFilterMenu() {
                 <FilterIcon icon={DotsThreeVertical} />
             </MenuButton>
             <DropdownMenuItems anchor="bottom end">
+                <HomeViewMenuItems />
+
+                <DropdownDivider />
+
                 <DropdownHeader text="Settings" />
                 <DropdownMenuItem action={{onClick: async () => await revalidateNotion()}} image={{icon: ArrowCounterClockwise}} title="Refresh Data" />
                 <DropdownMenuItem action={{onClick: toggleAdminMode}} image={{icon: User}} title="Admin Mode" active={adminMode} />

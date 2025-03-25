@@ -1,10 +1,11 @@
 'use client'
 
-import {parseAsArrayOf, parseAsBoolean, parseAsString, useQueryState} from 'nuqs'
+import {parseAsArrayOf, parseAsBoolean, parseAsString, parseAsStringLiteral, useQueryState} from 'nuqs'
 import {createContext, useContext, useEffect} from 'react'
 import {useDebounceValue} from 'usehooks-ts'
 
 import {type NotionPlace} from '@/model/types'
+import {type View, allView} from '@/model/view'
 
 import {kebabify} from '@/lib/kebab'
 import {type NotionSelect} from '@/lib/notion/types'
@@ -41,8 +42,8 @@ type HomeContext = {
     clearSelectedType: () => void
     clearSelectedTags: () => void
 
-    showMap: boolean
-    toggleShowMap: () => void
+    selectedView: View
+    setSelectedView: (view: View) => void
 
     displayPlace: NotionPlace[]
 }
@@ -95,8 +96,7 @@ export function HomeContextProvider({
     const clearSelectedType = () => setSelectedTypeParam([])
     const clearSelectedTags = () => setSelectedTagsParam([])
 
-    const [showMap, setShowMap] = useQueryState('map', parseAsBoolean.withDefault(false))
-    const toggleShowMap = () => setShowMap(!showMap)
+    const [selectedView, setSelectedView] = useQueryState('view', parseAsStringLiteral(allView).withDefault('list'))
 
     const displayPlace = allPlace
         .filter(place => (top ? place.top : true))
@@ -145,8 +145,8 @@ export function HomeContextProvider({
                 clearSelectedType,
                 clearSelectedTags,
 
-                showMap,
-                toggleShowMap,
+                selectedView,
+                setSelectedView,
 
                 displayPlace,
             }}

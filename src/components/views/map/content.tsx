@@ -17,7 +17,7 @@ import {tw} from '@/lib/tailwind'
 type MapNotionPlace = NotionPlace & {lat: number; lon: number}
 const isMapNotionPlace = (place: NotionPlace): place is MapNotionPlace => place.lat !== null && place.lon !== null
 
-export function MapView({allPlace}: {allPlace: NotionPlace[]}) {
+export function MapViewContent({allPlace}: {allPlace: NotionPlace[]}) {
     const isDark = useMediaQuery('(prefers-color-scheme: dark)')
     const {data: userCoordinates} = useQuery({
         queryKey: ['userCoordinates'],

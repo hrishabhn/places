@@ -1,7 +1,6 @@
 import {HomeContextProvider} from './context'
 import {HomeFilter} from './views/filter'
 import {HomeInfo} from './views/info'
-import {HomeMap} from './views/map'
 import {HomeStack} from './views/stack'
 
 import {ForkKnife} from '@phosphor-icons/react/dist/ssr'
@@ -38,7 +37,6 @@ async function HomeContent() {
             <HomeFilter />
             <PageSection>
                 <HomeInfo />
-                <HomeMap />
                 <HomeStack />
             </PageSection>
         </HomeContextProvider>

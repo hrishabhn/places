@@ -4,18 +4,21 @@ import {useHomeContext} from '../../context'
 import {HomeFilterItem} from './item'
 import {HomeFilterMenu} from './menu'
 import './style.css'
+import {HomeViewMenu} from './view'
 
-import {City, ForkKnife, MagnifyingGlass, MapPinArea, Star, Tag, X} from '@phosphor-icons/react'
+import {City, ForkKnife, MagnifyingGlass, Star, Tag, X} from '@phosphor-icons/react'
 import {motion} from 'motion/react'
 import {useRef} from 'react'
 import {useKey} from 'react-use'
 
+import {useBreakpoint} from '@/lib/hooks'
 import {useSticky} from '@/lib/hooks/is-stuck'
 
-import {FilterIcon, FilterItem} from '@/components/ui'
+import {FilterItem} from '@/components/ui'
 
 export function HomeFilter() {
     const {isStuck, ref} = useSticky()
+    const md = useBreakpoint('md')
 
     const transition = {duration: 0.1}
 
@@ -27,7 +30,7 @@ export function HomeFilter() {
                 paddingInline: isStuck ? '1rem' : 'var(--px)',
             }}
             transition={transition}
-            className="sticky top-0 z-10 grid grid-cols-1 gap-2 bg-accent py-4 sm:grid-cols-[1fr,auto] dark:bg-accent-dark"
+            className="sticky top-0 z-10 grid grid-cols-1 gap-2 bg-accent py-4 md:grid-cols-[1fr,auto] dark:bg-accent-dark"
         >
             <div className="flex w-full items-center gap-2">
                 <HomeFilterTop />
@@ -35,7 +38,7 @@ export function HomeFilter() {
                 <HomeFilterType />
                 <HomeFilterTag />
                 <div className="grow" />
-                <HomeFilterMap />
+                {md && <HomeViewMenu />}
                 <HomeFilterMenu />
             </div>
 
@@ -105,16 +108,6 @@ function HomeFilterTag() {
     )
 }
 
-function HomeFilterMap() {
-    const {showMap, toggleShowMap} = useHomeContext()
-
-    return (
-        <button onClick={() => toggleShowMap()} className="active:opacity-60">
-            <FilterIcon icon={MapPinArea} active={showMap} />
-        </button>
-    )
-}
-
 function HomeFilterSearch() {
     const ref = useRef<HTMLInputElement>(null)
     useKey('/', e => {
@@ -127,7 +120,7 @@ function HomeFilterSearch() {
     const {query, setQuery} = useHomeContext()
 
     return (
-        <div className="flex w-full items-center gap-2 rounded-lg bg-white/5 px-2 text-base font-medium text-white sm:text-sm">
+        <div className="flex flex-1 items-center gap-2 rounded-lg bg-white/5 px-2 text-base font-medium text-white sm:text-sm">
             <MagnifyingGlass weight="bold" className="shrink-0" />
             <input
                 ref={ref}
