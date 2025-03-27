@@ -16,8 +16,6 @@ This Travel Guide app provides a way to browse and filter travel destinations wi
 
 - Node.js
 - NPM
-- React
-- Next.js
 
 ## Usage
 
@@ -39,10 +37,10 @@ npm run dev
 
 All application code is located in the `src` folder
 
-- [`app`](app): Contains the main application code
-- [`model`](model): Contains the models for interacting with external APIs
-- [`lib`](lib): Contains utility functions and helpers
-- [`components`](components): Contains reusable components for the application
+- [`app`](app): Main application code
+- [`model`](model): Models for interacting with external APIs
+- [`lib`](lib): Utility functions and helpers
+- [`components`](components): Reusable components for the application
 
 ## Data
 
