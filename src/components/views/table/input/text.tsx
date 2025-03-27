@@ -14,7 +14,7 @@ type TableTextInputProps = {
 export function TableTextInput({debounce = false, size, defaultValue, value, setValue}: TableTextInputProps) {
     const onChange: ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement> | undefined = (() => {
         if (setValue === undefined) return undefined
-        const eventHandler: ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement> = e => setValue(e.target.value.trim())
+        const eventHandler: ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement> = e => setValue(e.target.value)
         return debounce ? inputDebounce(eventHandler) : eventHandler
     })()
 

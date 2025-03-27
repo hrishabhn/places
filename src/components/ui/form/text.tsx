@@ -20,7 +20,7 @@ type TextInputProps = {
 export function TextInput({type = 'text', placeholder, name, required, debounce = false, defaultValue, value, setValue}: TextInputProps) {
     const onChange: ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement> | undefined = (() => {
         if (setValue === undefined) return undefined
-        const eventHandler: ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement> = e => setValue(e.target.value.trim())
+        const eventHandler: ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement> = e => setValue(e.target.value)
         return debounce ? inputDebounce(eventHandler) : eventHandler
     })()
 

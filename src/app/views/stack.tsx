@@ -34,6 +34,6 @@ export function HomeStack() {
             return <HomeTable allPlace={displayPlace} />
 
         case 'concierge':
-            return <HomeConcierge allPlace={displayPlace} />
+            return <HomeConcierge />
     }
 }
