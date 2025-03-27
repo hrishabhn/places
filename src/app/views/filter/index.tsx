@@ -11,13 +11,12 @@ import {motion} from 'motion/react'
 import {useRef} from 'react'
 import {useKey} from 'react-use'
 
-import {useBreakpoint} from '@/lib/hooks'
-import {useSticky} from '@/lib/hooks/is-stuck'
+import {useBreakpoint, useIsStuck} from '@/lib/hooks'
 
 import {FilterItem} from '@/components/ui'
 
 export function HomeFilter() {
-    const {isStuck, ref} = useSticky()
+    const {isStuck, ref} = useIsStuck()
     const md = useBreakpoint('md')
 
     const transition = {duration: 0.1}

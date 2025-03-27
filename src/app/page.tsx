@@ -8,8 +8,6 @@ import {Suspense} from 'react'
 
 import {getAllDropdown, getAllPlace} from '@/model/client'
 
-import {PageSection} from '@/components/layout'
-
 export default function Home() {
     return (
         <Suspense
@@ -35,10 +33,10 @@ async function HomeContent() {
     return (
         <HomeContextProvider allPlace={allPlace} {...allDropdown}>
             <HomeFilter />
-            <PageSection>
+            <div className="w-full px-4 sm:px-10">
                 <HomeInfo />
                 <HomeStack />
-            </PageSection>
+            </div>
         </HomeContextProvider>
     )
 }

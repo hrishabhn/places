@@ -1,6 +1,5 @@
 'use client'
 
-import {useQuery} from '@tanstack/react-query'
 import {DivIcon} from 'leaflet'
 import 'leaflet-defaulticon-compatibility'
 import 'leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.css'
@@ -10,7 +9,7 @@ import {useMediaQuery} from 'usehooks-ts'
 
 import {type NotionPlace} from '@/model/types'
 
-import {getCoordinates} from '@/lib/coordinates'
+import {useCoordinates} from '@/lib/hooks'
 import {tw} from '@/lib/tailwind'
 
 // type and assertion
@@ -19,11 +18,7 @@ const isMapNotionPlace = (place: NotionPlace): place is MapNotionPlace => place.
 
 export function MapViewContent({allPlace}: {allPlace: NotionPlace[]}) {
     const isDark = useMediaQuery('(prefers-color-scheme: dark)')
-    const {data: userCoordinates} = useQuery({
-        queryKey: ['userCoordinates'],
-        queryFn: async () => getCoordinates(),
-    })
-
+    const {data: userCoordinates} = useCoordinates()
     const displayPlace: MapNotionPlace[] = allPlace.filter(isMapNotionPlace)
 
     const avgLat = displayPlace.map(({lat}) => lat).reduce((a, b) => a + b, 0) / displayPlace.length

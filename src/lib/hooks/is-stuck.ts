@@ -1,6 +1,6 @@
 import {useIntersectionObserver} from 'usehooks-ts'
 
-export function useSticky() {
+export function useIsStuck() {
     const {isIntersecting, ref} = useIntersectionObserver({
         threshold: 1,
         rootMargin: '-1px 0px 0px 0px',
