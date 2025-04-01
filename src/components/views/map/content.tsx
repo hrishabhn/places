@@ -30,7 +30,7 @@ export function MapViewContent({allPlace}: {allPlace: NotionPlace[]}) {
             zoomControl={false}
             center={[avgLat, avgLon]}
             minZoom={2}
-            bounds={displayPlace.map(({lat, lon}) => [lat, lon])}
+            bounds={displayPlace.length > 0 ? displayPlace.map(({lat, lon}) => [lat, lon]) : undefined}
             boundsOptions={{padding: [50, 50]}}
         >
             <TileLayer url={`https://tiles.stadiamaps.com/tiles/alidade_smooth${isDark ? '_dark' : ''}/{z}/{x}/{y}{r}.png`} />
