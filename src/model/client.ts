@@ -48,13 +48,14 @@ export async function getAllDropdown() {
 }
 
 export async function getCityImage(name: string) {
-    'use cache'
-    cacheTag('notion', 'city', name)
-    cacheLife('hours')
-
     const {results} = await notion.databases.query({
         database_id: citiesPageId,
-        filter: {property: 'name', title: {equals: name}},
+        filter: {
+            and: [
+                {property: 'name', title: {equals: name}},
+                {property: 'image', files: {is_not_empty: true}},
+            ],
+        },
     })
 
     if (results.length !== 1) return null

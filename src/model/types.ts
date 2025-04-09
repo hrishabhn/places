@@ -44,7 +44,7 @@ export const AllDropdownSchema = z
 
 export const NotionCitySchema = z.object({
     id: z.string().uuid(),
-    name: z.string(),
+    url: z.string().url(),
     properties: z.object({
         name: NotionTitleSchema,
         image: NotionFileSchema,

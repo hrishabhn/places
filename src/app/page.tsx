@@ -1,4 +1,5 @@
 import {HomeContextProvider} from './context'
+import {HomeCityImage} from './views/city-image'
 import {HomeFilter} from './views/filter'
 import {HomeInfo} from './views/info'
 import {HomeStack} from './views/stack'
@@ -34,6 +35,7 @@ async function HomeContent() {
     return (
         <HomeContextProvider mainPageId={mainPageId} allPlace={allPlace} {...allDropdown}>
             <HomeFilter />
+            <HomeCityImage />
             <div className="w-full px-4 sm:px-10">
                 <HomeInfo />
                 <HomeStack />
