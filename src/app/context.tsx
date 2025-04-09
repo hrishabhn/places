@@ -12,6 +12,8 @@ import {type NotionSelect} from '@/lib/notion/types'
 import {searchKeywords} from '@/lib/search'
 
 type HomeContext = {
+    mainPageId: string
+
     allCity: NotionSelect[]
     allType: NotionSelect[]
     allTags: NotionSelect[]
@@ -51,12 +53,14 @@ type HomeContext = {
 const HomeContext = createContext<HomeContext | null>(null)
 
 export function HomeContextProvider({
+    mainPageId,
     allPlace,
     allCity,
     allType,
     allTags,
     children,
 }: {
+    mainPageId: string
     allPlace: NotionPlace[]
     allCity: NotionSelect[]
     allType: NotionSelect[]
@@ -115,6 +119,8 @@ export function HomeContextProvider({
     return (
         <HomeContext.Provider
             value={{
+                mainPageId,
+
                 allCity,
                 allType,
                 allTags,

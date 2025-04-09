@@ -7,6 +7,7 @@ import {ForkKnife} from '@phosphor-icons/react/dist/ssr'
 import {Suspense} from 'react'
 
 import {getAllDropdown, getAllPlace} from '@/model/client'
+import {mainPageId} from '@/model/config'
 
 export default function Home() {
     return (
@@ -31,7 +32,7 @@ export default function Home() {
 async function HomeContent() {
     const [allPlace, allDropdown] = await Promise.all([getAllPlace(), getAllDropdown()])
     return (
-        <HomeContextProvider allPlace={allPlace} {...allDropdown}>
+        <HomeContextProvider mainPageId={mainPageId} allPlace={allPlace} {...allDropdown}>
             <HomeFilter />
             <div className="w-full px-4 sm:px-10">
                 <HomeInfo />

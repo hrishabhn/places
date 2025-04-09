@@ -6,12 +6,10 @@ import {HomeViewMenuItems} from './view'
 
 import {ArrowCounterClockwise, Database, DotsThreeVertical, GithubLogo, MapPin, Triangle, User} from '@phosphor-icons/react'
 
-import {database_id} from '@/model/config'
-
 import {DropdownDivider, DropdownHeader, DropdownMenuItem, DropdownMenuItems, FilterIcon, Menu, MenuButton} from '@/components/ui'
 
 export function HomeFilterMenu() {
-    const {adminMode, toggleAdminMode} = useHomeContext()
+    const {mainPageId, adminMode, toggleAdminMode} = useHomeContext()
 
     return (
         <Menu>
@@ -30,7 +28,7 @@ export function HomeFilterMenu() {
                 <DropdownDivider />
 
                 <DropdownHeader text="Resources" />
-                <DropdownMenuItem action={{href: `https://notion.so/${database_id}`, target: '_blank'}} image={{icon: Database}} title="Database" subtitle="Notion" />
+                <DropdownMenuItem action={{href: `https://notion.so/${mainPageId}`, target: '_blank'}} image={{icon: Database}} title="Database" subtitle="Notion" />
                 <DropdownMenuItem
                     action={{href: 'https://developers.google.com/maps/documentation/places/web-service/place-id', target: '_blank'}}
                     image={{icon: MapPin}}

@@ -77,3 +77,12 @@ export const NotionCoverSchema = z
                 return value.file.url
         }
     })
+
+const SingleArray = <T extends z.ZodTypeAny>(schema: T) => z.array(schema).length(1).transform(value => value[0])
+const OptionalSingleArray = <T extends z.ZodTypeAny>(schema: T) => z.array(schema).max(1).transform(value => value.at(0) || null)
+
+export const NotionSingleRelationSchema = z.object({relation: SingleArray(z.object({id: z.string().uuid()}))}).transform(value => value.relation.id)
+export const NotionOptionalSingleRelationSchema = z.object({relation: OptionalSingleArray(z.object({id: z.string().uuid()}))}).transform(value => value.relation?.id || null)
+
+export const NotionSingleRollupSchema = <T extends z.ZodTypeAny>(schema: T) => z.object({rollup: z.object({type: z.literal('array'), array: SingleArray(schema)})}).transform(value => value.rollup!.array!)
+export const NotionOptionalSingleRollupSchema = <T extends z.ZodTypeAny>(schema: T) => z.object({rollup: z.object({type: z.literal('array'), array: OptionalSingleArray(schema)})}).transform(value => value.rollup?.array || null)

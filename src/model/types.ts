@@ -41,3 +41,14 @@ export const AllDropdownSchema = z
         tags: z.object({multi_select: NotionSelectOptionsSchema}),
     })
     .transform(({city, type, tags}) => ({allCity: city.select.options, allType: type.multi_select.options, allTags: tags.multi_select.options}))
+
+export const NotionCitySchema = z.object({
+    id: z.string().uuid(),
+    name: z.string(),
+    properties: z.object({
+        name: NotionTitleSchema,
+        image: NotionFileSchema,
+    }),
+})
+
+export type NotionCity = z.infer<typeof NotionCitySchema>

@@ -31,7 +31,7 @@ export const Badge = ({children, size = 'md', theme = 'accent', border = true, r
         accent: active
             ? tw`border-transparent bg-accent text-white dark:bg-accent-dark`
             : tw`border-accent/80 bg-accent/10 text-accent dark:border-accent-dark/80 dark:bg-accent-dark/10 dark:text-accent-dark`,
-        g: tw`bg-g-500/25`,
+        g: tw`border-g-500/80 bg-g-500/25`,
 
         // tailwind
         red: active ? tw`border-transparent bg-red-500 text-white` : tw`border-red-500/80 bg-red-500/10 text-red-500`,
