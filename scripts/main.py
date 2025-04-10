@@ -11,7 +11,7 @@ load_dotenv('.env.local')
 notion = Client(auth=os.getenv('NOTION_API_KEY'))
 
 response = notion.databases.query(
-    database_id=os.getenv('NOTION_DATABASE_ID'),
+    database_id=os.getenv('PLACES_PAGE_ID'),
     sorts=[{"property": "sort_name", "direction": "ascending"}],
     filter={"and": [
         # {"property": "public", "checkbox": {"equals": True}},
