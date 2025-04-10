@@ -1,5 +1,5 @@
 import {NextResponse} from 'next/server'
 
-import {getAllPlace} from '@/model/client'
+import {NotionClient} from '@/model/client'
 
-export const GET = async () => NextResponse.json(await getAllPlace())
+export const GET = async () => NextResponse.json(await NotionClient.getAllPlace())

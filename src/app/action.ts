@@ -7,7 +7,7 @@ import {type ChatCompletionMessageParam} from 'openai/resources'
 import {z} from 'zod'
 
 import {GetRecsFormSchema, type Rec, RecSchema, ValidateKeyFormSchema} from '@/model/ai'
-import {getAllPlace} from '@/model/client'
+import {NotionClient} from '@/model/client'
 
 export const revalidateNotion = async () => revalidateTag('notion')
 
@@ -80,7 +80,7 @@ export const getRecs = async (currentState: Rec[], formData: FormData): Promise<
 
 const getTaste = async ({apiKey, model, top}: {apiKey: string; model: string; top: boolean}): Promise<string> => {
     // get data
-    const allPlace = (await getAllPlace()).filter(place => (top ? place.top : true))
+    const allPlace = (await NotionClient.getAllPlace()).filter(place => (top ? place.top : true))
 
     // init client
     const openai = new OpenAI({apiKey})

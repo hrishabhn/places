@@ -7,7 +7,7 @@ import {HomeStack} from './views/stack'
 import {ForkKnife} from '@phosphor-icons/react/dist/ssr'
 import {Suspense} from 'react'
 
-import {getAllDropdown, getAllPlace} from '@/model/client'
+import {NotionClient} from '@/model/client'
 import {mainPageId} from '@/model/config'
 
 export default function Home() {
@@ -31,7 +31,7 @@ export default function Home() {
 }
 
 async function HomeContent() {
-    const [allPlace, allDropdown] = await Promise.all([getAllPlace(), getAllDropdown()])
+    const [allPlace, allDropdown] = await Promise.all([NotionClient.getAllPlace(), NotionClient.getAllDropdown()])
     return (
         <HomeContextProvider mainPageId={mainPageId} allPlace={allPlace} {...allDropdown}>
             <HomeFilter />
