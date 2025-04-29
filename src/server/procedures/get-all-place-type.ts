@@ -1,11 +1,18 @@
 import {publicProcedure} from '../trpc'
+import {type PlaceType, PlaceTypeSchema} from '../types'
 
 import {z} from 'zod'
 
 import {sql} from '@/model/neon'
 
-const GetAllPlaceTypeResponseSchema = z.array(z.object({place_type: z.string()}).transform(({place_type}) => place_type))
-
 export const GetAllPlaceType = publicProcedure.query(
-    async (): Promise<string[]> => GetAllPlaceTypeResponseSchema.parse(await sql`SELECT DISTINCT UNNEST(type) as place_type FROM place ORDER BY place_type`)
+    async (): Promise<PlaceType[]> =>
+        z.array(PlaceTypeSchema).parse(
+            await sql`
+            SELECT UNNEST(type) as type_name, COUNT(*) as place_count
+            FROM place
+            GROUP BY type_name
+            ORDER BY place_count DESC, type_name
+            `
+        )
 )

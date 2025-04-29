@@ -120,19 +120,21 @@ export default function PlacesPage() {
                         icon={ForkKnife}
                         placeholder="Type"
                         allItem={allPlaceType}
-                        onSelect={placeType => selectedPlaceType.toggle(placeType)}
-                        isActive={placeType => selectedPlaceType.value.includes(placeType)}
-                        toId={placeType => placeType}
-                        toTitle={placeType => placeType}
+                        onSelect={placeType => selectedPlaceType.toggle(placeType.type_name)}
+                        isActive={placeType => selectedPlaceType.value.includes(placeType.type_name)}
+                        toId={placeType => placeType.type_name}
+                        toTitle={placeType => placeType.type_name}
+                        toSubtitle={placeType => `${placeType.place_count} places`}
                     />
                     <HomeInfoItem
                         icon={Tag}
                         placeholder="Tag"
                         allItem={allPlaceTag}
-                        onSelect={placeTag => selectedPlaceTag.toggle(placeTag)}
-                        isActive={placeTag => selectedPlaceTag.value.includes(placeTag)}
-                        toId={placeTag => placeTag}
-                        toTitle={placeTag => placeTag}
+                        onSelect={placeTag => selectedPlaceTag.toggle(placeTag.tag_name)}
+                        isActive={placeTag => selectedPlaceTag.value.includes(placeTag.tag_name)}
+                        toId={placeTag => placeTag.tag_name}
+                        toTitle={placeTag => placeTag.tag_name}
+                        toSubtitle={placeTag => `${placeTag.place_count} places`}
                     />
 
                     <div className="grow" />

@@ -22,6 +22,20 @@ export const CitySchema = z.object({
 
 export type City = z.infer<typeof CitySchema>
 
+export const PlaceTypeSchema = z.object({
+    type_name: z.string(),
+    place_count: z.coerce.number(),
+})
+
+export type PlaceType = z.infer<typeof PlaceTypeSchema>
+
+export const PlaceTagSchema = z.object({
+    tag_name: z.string(),
+    place_count: z.coerce.number(),
+})
+
+export type PlaceTag = z.infer<typeof PlaceTagSchema>
+
 export const PlaceSchema = z.object({
     id: z.string().uuid(),
     name: z.string(),
