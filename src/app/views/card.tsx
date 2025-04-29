@@ -54,7 +54,7 @@ export function PlaceCard({place}: {place: NotionPlace}) {
                     ))}
                 </div>
                 <div className="flex w-full flex-wrap gap-2 px-4 py-2">
-                    <ExternalLink url={googleMapsUrl(place)} icon={MapPin} title="Open in Maps" />
+                    <ExternalLink url={googleMapsUrl({name: place.name, city_name: place.city.name, maps_id: place.maps_id})} icon={MapPin} title="Open in Maps" />
                     <ExternalLink url={place.url} icon={Pencil} title="Edit" />
 
                     {adminMode && (

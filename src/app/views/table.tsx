@@ -98,7 +98,7 @@ export function HomeTable({allPlace}: {allPlace: NotionPlace[]}) {
                             </TD>
 
                             <TD>
-                                <ExternalLink url={googleMapsUrl(place)} icon={MapPin} title="Maps" />
+                                <ExternalLink url={googleMapsUrl({name: place.name, city_name: place.city.name, maps_id: place.maps_id})} icon={MapPin} title="Maps" />
                                 <ExternalLink url={place.url} icon={Pencil} title="Edit" />
 
                                 {adminMode && (
