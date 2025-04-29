@@ -22,8 +22,8 @@ export const GetAllPlace = publicProcedure.input(GetAllPlaceInputSchema).query(
         input: {
             filter: {top, countrySlug, citySlug, placeType, placeTag},
         },
-    }): Promise<Place[]> => {
-        return z.array(PlaceSchema).parse(
+    }): Promise<Place[]> =>
+        z.array(PlaceSchema).parse(
             await sql`
             SELECT
                 place.id,
@@ -54,5 +54,4 @@ export const GetAllPlace = publicProcedure.input(GetAllPlaceInputSchema).query(
             ORDER BY place.name
             `
         )
-    }
 )

@@ -1,7 +1,7 @@
 'use client'
 
 import {City, Flag, ForkKnife, Star, Tag, X} from '@phosphor-icons/react'
-import {useQuery} from '@tanstack/react-query'
+import {useQuery, useSuspenseQuery} from '@tanstack/react-query'
 import {parseAsBoolean, useQueryState} from 'nuqs'
 
 import {CityImage} from '@/app/views/city/image'
@@ -26,10 +26,10 @@ export default function PlacesPage() {
     const selectedPlaceTag = useArrayState('tag')
 
     const trpc = useTRPC()
-    const {status: allCountryStatus, data: allCountry} = useQuery(trpc.GetAllCountry.queryOptions({sort: 'place_count'}))
-    const {status: allCityStatus, data: allCity} = useQuery(trpc.GetAllCity.queryOptions({sort: 'place_count'}))
-    const {status: allPlaceTypeStatus, data: allPlaceType} = useQuery(trpc.GetAllPlaceType.queryOptions())
-    const {status: allPlaceTagStatus, data: allPlaceTag} = useQuery(trpc.GetAllPlaceTag.queryOptions())
+    const {data: allCountry} = useSuspenseQuery(trpc.GetAllCountry.queryOptions({sort: 'place_count'}))
+    const {data: allCity} = useSuspenseQuery(trpc.GetAllCity.queryOptions({sort: 'place_count'}))
+    const {data: allPlaceType} = useSuspenseQuery(trpc.GetAllPlaceType.queryOptions())
+    const {data: allPlaceTag} = useSuspenseQuery(trpc.GetAllPlaceTag.queryOptions())
     const {status: allPlaceStatus, data: allPlace} = useQuery(
         trpc.GetAllPlace.queryOptions({
             filter: {
@@ -42,9 +42,7 @@ export default function PlacesPage() {
         })
     )
 
-    if (allCountryStatus === 'pending' || allCityStatus === 'pending' || allPlaceTypeStatus === 'pending' || allPlaceTagStatus === 'pending') return <Loading />
-    if (allCountryStatus === 'error' || allCityStatus === 'error' || allPlaceTypeStatus === 'error' || allPlaceTagStatus === 'error' || allPlaceStatus === 'error')
-        return <Callout theme="error" message="Error loading data" />
+    if (allPlaceStatus === 'error') return <Callout theme="error" message="Error loading data" />
 
     // single city for image
     const singleCity = (() => {

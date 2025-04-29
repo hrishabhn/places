@@ -1,7 +1,7 @@
 'use client'
 
 import {Flag, X} from '@phosphor-icons/react'
-import {useQuery} from '@tanstack/react-query'
+import {useQuery, useSuspenseQuery} from '@tanstack/react-query'
 import Link from 'next/link'
 
 import {CityCard} from '@/app/views/city/card'
@@ -21,11 +21,12 @@ export default function CitiesPage() {
     const selectedCountrySlug = useArrayState('country')
 
     const trpc = useTRPC()
-    const {status: allCountryStatus, data: allCountry} = useQuery(trpc.GetAllCountry.queryOptions({sort: 'city_count'}))
-    const {status: allCityStatus, data: allCity} = useQuery(trpc.GetAllCity.queryOptions({sort: 'place_count', filter: {countrySlug: selectedCountrySlug.value}}))
+    const {data: allCountry} = useSuspenseQuery(trpc.GetAllCountry.queryOptions({sort: 'city_count'}))
+    const {status: allCityStatus, data: allCity} = useQuery(
+        trpc.GetAllCity.queryOptions({sort: 'place_count', filter: {countrySlug: selectedCountrySlug.value}}, {throwOnError: true})
+    )
 
-    if (allCountryStatus === 'pending') return <Loading />
-    if (allCountryStatus === 'error' || allCityStatus === 'error') return <Callout theme="error" message="Error loading data" />
+    if (allCityStatus === 'error') return <Callout theme="error" message="Error loading data" />
 
     return (
         <Section>
