@@ -21,7 +21,7 @@ export const GetAllCountry = publicProcedure.input(GetAllCountryInputSchema).que
             SELECT
                 country.slug,
                 country.name,
-                country.flag,
+                country.code,
                 (SELECT COUNT(*) FROM city WHERE city.country_slug = country.slug) as city_count,
                 (SELECT COUNT(*) FROM place JOIN city ON place.city_slug = city.slug WHERE city.country_slug = country.slug) as place_count
             FROM country

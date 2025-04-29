@@ -33,7 +33,7 @@ export const GetAllPlace = publicProcedure.input(GetAllPlaceInputSchema).query(
                 city.name as city_name,
                 city.country_slug,
                 country.name as country_name,
-                country.flag as country_flag,
+                country.code as country_code,
                 place.type,
                 place.tags,
                 place.image,

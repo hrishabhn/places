@@ -6,6 +6,6 @@ export function googleMapsUrl({name, city_name, maps_id}: {name: string; city_na
     return url.toString()
 }
 
-export function notionUrl(id: string): string {
-    return `https://www.notion.so/${id.replaceAll('-', '')}`
-}
+export const notionUrl = (id: string): string => `https://www.notion.so/${id.replaceAll('-', '')}`
+
+export const countryFlag = (country_code: string): string => `https://hatscripts.github.io/circle-flags/flags/${country_code.toLowerCase()}.svg`

@@ -33,13 +33,13 @@ export const GetAllCity = publicProcedure.input(GetAllCityInputSchema).query(
                 city.name,
                 city.country_slug,
                 country.name as country_name,
-                country.flag as country_flag,
+                country.code as country_code,
                 city.image,
                 (SELECT COUNT(*) FROM place WHERE place.city_slug = city.slug) as place_count
             FROM city
             JOIN country ON city.country_slug = country.slug
             ${countrySlug.length > 0 ? sql`WHERE city.country_slug IN ('${sql.unsafe(countrySlug.join("', '"))}')` : sql``}
-            GROUP BY city.slug, country_name, country_flag
+            GROUP BY city.slug, country_name, country_code
             ORDER BY ${orderBy}
             `
         )

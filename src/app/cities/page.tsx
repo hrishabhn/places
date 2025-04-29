@@ -6,6 +6,8 @@ import Link from 'next/link'
 
 import {CityCard} from '@/app/views/city/card'
 
+import {countryFlag} from '@/model/util'
+
 import {useArrayState} from '@/lib/hooks/array-state'
 import {useTRPC} from '@/lib/trpc'
 
@@ -43,7 +45,8 @@ export default function CitiesPage() {
                     onSelect={country => selectedCountrySlug.toggle(country.slug)}
                     isActive={country => selectedCountrySlug.value.includes(country.slug)}
                     toId={country => country.slug}
-                    toTitle={country => [country.flag, country.name].join(' ')}
+                    toImage={country => ({imageURL: countryFlag(country.slug)})}
+                    toTitle={country => country.name}
                     toSubtitle={country => `${country.city_count} cities`}
                 />
 

@@ -3,7 +3,7 @@ import {z} from 'zod'
 export const CountrySchema = z.object({
     slug: z.string(),
     name: z.string(),
-    flag: z.string(),
+    code: z.string(),
     city_count: z.coerce.number(),
     place_count: z.coerce.number(),
 })
@@ -15,7 +15,7 @@ export const CitySchema = z.object({
     name: z.string(),
     country_slug: z.string(),
     country_name: z.string(),
-    country_flag: z.string(),
+    country_code: z.string(),
     image: z.string().nullable(),
     place_count: z.coerce.number(),
 })
@@ -30,7 +30,7 @@ export const PlaceSchema = z.object({
     city_name: z.string(),
     country_slug: z.string(),
     country_name: z.string(),
-    country_flag: z.string(),
+    country_code: z.string(),
     type: z.array(z.string()),
     tags: z.array(z.string()),
     image: z.string().nullable(),

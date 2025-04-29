@@ -2,7 +2,7 @@
 
 import {type Icon} from '@phosphor-icons/react'
 
-import {Badge, DropdownMenuItem, DropdownMenuItems, Menu, MenuButton} from '@/components/ui'
+import {Badge, DropdownMenuItem, DropdownMenuItems, type LabelImageType, Menu, MenuButton} from '@/components/ui'
 
 export function HomeInfoTray({children}: {children?: React.ReactNode}) {
     return <div className="flex flex-wrap items-center gap-2 py-4">{children}</div>
@@ -17,11 +17,12 @@ type HomeInfoItemProps<T> = {
 
     isActive: (item: T) => boolean
     toId: (item: T) => string
+    toImage?: (item: T) => LabelImageType
     toTitle: (item: T) => string
     toSubtitle?: (item: T) => string
 }
 
-export function HomeInfoItem<T>({icon, placeholder, allItem, onSelect, isActive, toId, toTitle, toSubtitle}: HomeInfoItemProps<T>) {
+export function HomeInfoItem<T>({icon, placeholder, allItem, onSelect, isActive, toId, toImage, toTitle, toSubtitle}: HomeInfoItemProps<T>) {
     const Icon = icon
     return (
         <Menu>
@@ -36,6 +37,7 @@ export function HomeInfoItem<T>({icon, placeholder, allItem, onSelect, isActive,
                     <DropdownMenuItem
                         key={toId(item)}
                         action={{onClick: () => onSelect(item)}}
+                        image={toImage ? toImage(item) : undefined}
                         title={toTitle(item)}
                         subtitle={toSubtitle ? toSubtitle(item) : undefined}
                         active={isActive(item)}
