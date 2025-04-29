@@ -4,27 +4,17 @@ import {HomeFilter} from './views/filter'
 import {HomeInfo} from './views/info'
 import {HomeStack} from './views/stack'
 
-import {ForkKnife} from '@phosphor-icons/react/dist/ssr'
 import {Suspense} from 'react'
 
 import {NotionClient} from '@/model/client'
 import {mainPageId} from '@/model/config'
 
+import {Loading} from '@/components/views/loading'
+import {Section} from '@/components/views/section'
+
 export default function Home() {
     return (
-        <Suspense
-            fallback={
-                <>
-                    <div className="h-8 w-full bg-accent dark:bg-accent-dark" />
-                    <div className="flex flex-col items-center justify-center gap-2 py-36 text-accent dark:text-accent-dark">
-                        <div className="animate-bounce rounded-full bg-accent p-2 dark:bg-accent-dark">
-                            <ForkKnife weight="duotone" className="text-white" size={30} />
-                        </div>
-                        <p className="text-lg font-medium">Loading...</p>
-                    </div>
-                </>
-            }
-        >
+        <Suspense fallback={<Loading />}>
             <HomeContent />
         </Suspense>
     )
@@ -36,10 +26,10 @@ async function HomeContent() {
         <HomeContextProvider mainPageId={mainPageId} allPlace={allPlace} {...allDropdown}>
             <HomeFilter />
             <HomeCityImage />
-            <div className="w-full px-4 sm:px-10">
+            <Section>
                 <HomeInfo />
                 <HomeStack />
-            </div>
+            </Section>
         </HomeContextProvider>
     )
 }

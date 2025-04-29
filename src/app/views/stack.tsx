@@ -7,6 +7,7 @@ import {HomeStats} from './stats'
 import {HomeTable} from './table'
 
 import {Card} from '@/components/ui'
+import {GridStack} from '@/components/views/grid'
 import {MapView} from '@/components/views/map'
 
 export function HomeStack() {
@@ -15,11 +16,11 @@ export function HomeStack() {
     switch (selectedView) {
         case 'list':
             return (
-                <div className="grid grid-cols-[repeat(auto-fill,minmax(320px,1fr))] gap-4 pb-4">
+                <GridStack>
                     {displayPlace.map(place => (
                         <PlaceCard key={place.id} place={place} />
                     ))}
-                </div>
+                </GridStack>
             )
 
         case 'map':

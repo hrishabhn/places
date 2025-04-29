@@ -23,7 +23,7 @@ const config = {
         '^server-only$',
         '^[./]',
         '<THIRD_PARTY_MODULES>',
-        '^@/app/(/.*)?$',
+        '^@/app(/.*)?$',
         '^@/server(/.*)?$',
         '^@/model(/.*)?$',
         '^@/lib(/.*)?$',
