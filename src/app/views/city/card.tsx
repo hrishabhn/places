@@ -17,7 +17,7 @@ export function CityCard({city}: {city: City}) {
                 {
                     type: 'primary',
                     icon: (
-                        <div className="size-[1.2em]">
+                        <div className="size-[1em]">
                             <SimpleImage url={countryFlag(city.country_code)} />
                         </div>
                     ),

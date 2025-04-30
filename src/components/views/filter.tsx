@@ -8,5 +8,5 @@ export function FilterBar({children}: {children?: React.ReactNode}) {
 }
 
 export function InfoBar({children}: {children?: React.ReactNode}) {
-    return <div className="flex items-center py-4">{children}</div>
+    return <div className="flex items-center gap-2 py-4">{children}</div>
 }

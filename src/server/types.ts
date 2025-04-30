@@ -55,3 +55,12 @@ export const PlaceSchema = z.object({
 })
 
 export type Place = z.infer<typeof PlaceSchema>
+
+export const SearchResultSchema = z.object({
+    name: z.string(),
+    id: z.string(),
+    type: z.enum(['place', 'country', 'city', 'place_type', 'place_tag']),
+    score: z.coerce.number(),
+})
+
+export type SearchResult = z.infer<typeof SearchResultSchema>

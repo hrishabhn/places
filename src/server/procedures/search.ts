@@ -1,4 +1,5 @@
 import {publicProcedure} from '../trpc'
+import {type SearchResult, SearchResultSchema} from '../types'
 
 import {z} from 'zod'
 
@@ -7,14 +8,6 @@ import {sql} from '@/model/neon'
 const SearchInputSchema = z.object({
     query: z.string(),
 })
-
-const SearchResultSchema = z.object({
-    name: z.string(),
-    id: z.string(),
-    type: z.enum(['place', 'country', 'city', 'place_type', 'place_tag']),
-    score: z.coerce.number(),
-})
-type SearchResult = z.infer<typeof SearchResultSchema>
 
 export const Search = publicProcedure.input(SearchInputSchema).query(async ({input: {query}}): Promise<SearchResult[]> => {
     if (!query) return []
