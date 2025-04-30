@@ -1,8 +1,9 @@
 'use client'
 
 import {City, Flag, ForkKnife, Star, Tag, X} from '@phosphor-icons/react'
-import {useQuery, useSuspenseQuery} from '@tanstack/react-query'
+import {useSuspenseQuery} from '@tanstack/react-query'
 import {parseAsBoolean, useQueryState} from 'nuqs'
+import {Suspense} from 'react'
 
 import {CityImage} from '@/app/views/city/image'
 import {PlaceCard} from '@/app/views/place/card'
@@ -12,7 +13,8 @@ import {countryFlag} from '@/model/util'
 import {useArrayState} from '@/lib/hooks/array-state'
 import {useTRPC} from '@/lib/trpc'
 
-import {Badge, Callout} from '@/components/ui'
+import {Heading} from '@/components/layout'
+import {Badge} from '@/components/ui'
 import {GridStack} from '@/components/views/grid'
 import {HomeInfoItem, HomeInfoTray} from '@/components/views/info'
 import {Loading} from '@/components/views/loading'
@@ -30,19 +32,6 @@ export default function PlacesPage() {
     const {data: allCity} = useSuspenseQuery(trpc.GetAllCity.queryOptions({sort: 'place_count'}))
     const {data: allPlaceType} = useSuspenseQuery(trpc.GetAllPlaceType.queryOptions())
     const {data: allPlaceTag} = useSuspenseQuery(trpc.GetAllPlaceTag.queryOptions())
-    const {status: allPlaceStatus, data: allPlace} = useQuery(
-        trpc.GetAllPlace.queryOptions({
-            filter: {
-                top,
-                countrySlug: selectedCountrySlug.value,
-                citySlug: selectedCitySlug.value,
-                placeType: selectedPlaceType.value,
-                placeTag: selectedPlaceTag.value,
-            },
-        })
-    )
-
-    if (allPlaceStatus === 'error') return <Callout theme="error" message="Error loading data" />
 
     // single city for image
     const singleCity = (() => {
@@ -53,106 +42,141 @@ export default function PlacesPage() {
     return (
         <>
             {singleCity && <CityImage city={singleCity} />}
-            <Section>
-                <HomeInfoTray>
-                    {selectedCountrySlug.value.map(countrySlug => (
-                        <button key={countrySlug} className="active:opacity-60" onClick={() => selectedCountrySlug.remove(countrySlug)}>
-                            <Badge active>
-                                <X weight="bold" />
-                                <p>{allCountry.find(country => country.slug === countrySlug)?.name || countrySlug}</p>
-                            </Badge>
-                        </button>
-                    ))}
-                    {selectedCitySlug.value.map(citySlug => (
-                        <button key={citySlug} className="active:opacity-60" onClick={() => selectedCitySlug.remove(citySlug)}>
-                            <Badge active>
-                                <X weight="bold" />
-                                <p>{allCity.find(city => city.slug === citySlug)?.name || citySlug}</p>
-                            </Badge>
-                        </button>
-                    ))}
-                    {selectedPlaceType.value.map(placeType => (
-                        <button key={placeType} className="active:opacity-60" onClick={() => selectedPlaceType.remove(placeType)}>
-                            <Badge active>
-                                <X weight="bold" />
-                                <p>{placeType}</p>
-                            </Badge>
-                        </button>
-                    ))}
-                    {selectedPlaceTag.value.map(placeTag => (
-                        <button key={placeTag} className="active:opacity-60" onClick={() => selectedPlaceTag.remove(placeTag)}>
-                            <Badge active>
-                                <X weight="bold" />
-                                <p>{placeTag}</p>
-                            </Badge>
-                        </button>
-                    ))}
 
-                    <button className="active:opacity-60" onClick={() => setTop(!top)}>
-                        <Badge active={top}>
-                            <Star weight="fill" />
-                            <p>Top</p>
+            <HomeInfoTray>
+                {selectedCountrySlug.value.map(countrySlug => (
+                    <button key={countrySlug} className="active:opacity-60" onClick={() => selectedCountrySlug.remove(countrySlug)}>
+                        <Badge active>
+                            <X weight="bold" />
+                            <p>{allCountry.find(country => country.slug === countrySlug)?.name || countrySlug}</p>
                         </Badge>
                     </button>
-                    <HomeInfoItem
-                        icon={Flag}
-                        placeholder="Country"
-                        allItem={allCountry}
-                        onSelect={country => selectedCountrySlug.toggle(country.slug)}
-                        isActive={country => selectedCountrySlug.value.includes(country.slug)}
-                        toId={country => country.slug}
-                        toImage={country => ({imageURL: countryFlag(country.slug)})}
-                        toTitle={country => country.name}
-                        toSubtitle={country => `${country.place_count} places`}
-                    />
-                    <HomeInfoItem
-                        icon={City}
-                        placeholder="City"
-                        allItem={allCity}
-                        onSelect={city => selectedCitySlug.toggle(city.slug)}
-                        isActive={city => selectedCitySlug.value.includes(city.slug)}
-                        toId={city => city.slug}
-                        toImage={country => ({imageURL: countryFlag(country.slug)})}
-                        toTitle={city => city.name}
-                        toSubtitle={city => `${city.place_count} places`}
-                    />
-                    <HomeInfoItem
-                        icon={ForkKnife}
-                        placeholder="Type"
-                        allItem={allPlaceType}
-                        onSelect={placeType => selectedPlaceType.toggle(placeType.type_name)}
-                        isActive={placeType => selectedPlaceType.value.includes(placeType.type_name)}
-                        toId={placeType => placeType.type_name}
-                        toTitle={placeType => placeType.type_name}
-                        toSubtitle={placeType => `${placeType.place_count} places`}
-                    />
-                    <HomeInfoItem
-                        icon={Tag}
-                        placeholder="Tag"
-                        allItem={allPlaceTag}
-                        onSelect={placeTag => selectedPlaceTag.toggle(placeTag.tag_name)}
-                        isActive={placeTag => selectedPlaceTag.value.includes(placeTag.tag_name)}
-                        toId={placeTag => placeTag.tag_name}
-                        toTitle={placeTag => placeTag.tag_name}
-                        toSubtitle={placeTag => `${placeTag.place_count} places`}
-                    />
+                ))}
+                {selectedCitySlug.value.map(citySlug => (
+                    <button key={citySlug} className="active:opacity-60" onClick={() => selectedCitySlug.remove(citySlug)}>
+                        <Badge active>
+                            <X weight="bold" />
+                            <p>{allCity.find(city => city.slug === citySlug)?.name || citySlug}</p>
+                        </Badge>
+                    </button>
+                ))}
+                {selectedPlaceType.value.map(placeType => (
+                    <button key={placeType} className="active:opacity-60" onClick={() => selectedPlaceType.remove(placeType)}>
+                        <Badge active>
+                            <X weight="bold" />
+                            <p>{placeType}</p>
+                        </Badge>
+                    </button>
+                ))}
+                {selectedPlaceTag.value.map(placeTag => (
+                    <button key={placeTag} className="active:opacity-60" onClick={() => selectedPlaceTag.remove(placeTag)}>
+                        <Badge active>
+                            <X weight="bold" />
+                            <p>{placeTag}</p>
+                        </Badge>
+                    </button>
+                ))}
 
-                    <div className="grow" />
-                    {allPlaceStatus === 'success' && <Badge active>{allPlace.length} places</Badge>}
-                </HomeInfoTray>
+                <button className="active:opacity-60" onClick={() => setTop(!top)}>
+                    <Badge active={top}>
+                        <Star weight="fill" />
+                        <p>Top</p>
+                    </Badge>
+                </button>
+                <HomeInfoItem
+                    icon={Flag}
+                    placeholder="Country"
+                    allItem={allCountry}
+                    onSelect={country => selectedCountrySlug.toggle(country.slug)}
+                    isActive={country => selectedCountrySlug.value.includes(country.slug)}
+                    toId={country => country.slug}
+                    toImage={country => ({imageURL: countryFlag(country.slug)})}
+                    toTitle={country => country.name}
+                    toSubtitle={country => `${country.place_count} places`}
+                />
+                <HomeInfoItem
+                    icon={City}
+                    placeholder="City"
+                    allItem={allCity}
+                    onSelect={city => selectedCitySlug.toggle(city.slug)}
+                    isActive={city => selectedCitySlug.value.includes(city.slug)}
+                    toId={city => city.slug}
+                    toImage={country => ({imageURL: countryFlag(country.slug)})}
+                    toTitle={city => city.name}
+                    toSubtitle={city => `${city.place_count} places`}
+                />
+                <HomeInfoItem
+                    icon={ForkKnife}
+                    placeholder="Type"
+                    allItem={allPlaceType}
+                    onSelect={placeType => selectedPlaceType.toggle(placeType.type_name)}
+                    isActive={placeType => selectedPlaceType.value.includes(placeType.type_name)}
+                    toId={placeType => placeType.type_name}
+                    toTitle={placeType => placeType.type_name}
+                    toSubtitle={placeType => `${placeType.place_count} places`}
+                />
+                <HomeInfoItem
+                    icon={Tag}
+                    placeholder="Tag"
+                    allItem={allPlaceTag}
+                    onSelect={placeTag => selectedPlaceTag.toggle(placeTag.tag_name)}
+                    isActive={placeTag => selectedPlaceTag.value.includes(placeTag.tag_name)}
+                    toId={placeTag => placeTag.tag_name}
+                    toTitle={placeTag => placeTag.tag_name}
+                    toSubtitle={placeTag => `${placeTag.place_count} places`}
+                />
+            </HomeInfoTray>
 
-                {allPlaceStatus === 'pending' ? (
-                    <Loading />
-                ) : (
-                    <GridStack>
-                        {allPlace.map(place => (
-                            <PlaceCard key={place.id} place={place} />
-                        ))}
-                    </GridStack>
-                )}
+            <Section>
+                <Suspense fallback={<Loading />}>
+                    <PlacesStack
+                        filter={{
+                            top,
+                            countrySlug: selectedCountrySlug.value,
+                            citySlug: selectedCitySlug.value,
+                            placeType: selectedPlaceType.value,
+                            placeTag: selectedPlaceTag.value,
+                        }}
+                    />
+                </Suspense>
             </Section>
         </>
     )
 }
 
-// type PlacesInfoTrayProps = {
+type PlacesStackProps = {
+    filter: {
+        top: boolean
+        countrySlug: string[]
+        citySlug: string[]
+        placeType: string[]
+        placeTag: string[]
+    }
+}
+
+function PlacesStack({filter}: PlacesStackProps) {
+    const trpc = useTRPC()
+    const {data: allPlace} = useSuspenseQuery(trpc.GetAllPlace.queryOptions({filter}))
+    if (allPlace.length === 0)
+        return (
+            <div className="my-3">
+                <Heading size="h3" withoutPadding>
+                    No results
+                </Heading>
+                <Heading size="h5" withoutPadding>
+                    Try adjusting the filters
+                </Heading>
+            </div>
+        )
+
+    return (
+        <>
+            <p className="my-3">{allPlace.length} places</p>
+            <GridStack>
+                {allPlace.map(place => (
+                    <PlaceCard key={place.id} place={place} />
+                ))}
+            </GridStack>
+        </>
+    )
+}

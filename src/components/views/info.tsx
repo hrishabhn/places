@@ -5,7 +5,7 @@ import {type Icon} from '@phosphor-icons/react'
 import {Badge, DropdownMenuItem, DropdownMenuItems, type LabelImageType, Menu, MenuButton} from '@/components/ui'
 
 export function HomeInfoTray({children}: {children?: React.ReactNode}) {
-    return <div className="flex flex-wrap items-center gap-2 py-4">{children}</div>
+    return <div className="flex w-full flex-wrap items-center gap-2 border-b border-b-line bg-layer-1 p-4 sm:px-10 dark:border-b-line-dark dark:bg-layer-1-dark">{children}</div>
 }
 
 type HomeInfoItemProps<T> = {

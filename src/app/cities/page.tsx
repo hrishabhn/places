@@ -1,8 +1,9 @@
 'use client'
 
 import {Flag, X} from '@phosphor-icons/react'
-import {useQuery, useSuspenseQuery} from '@tanstack/react-query'
+import {useSuspenseQuery} from '@tanstack/react-query'
 import Link from 'next/link'
+import {Suspense} from 'react'
 
 import {CityCard} from '@/app/views/city/card'
 
@@ -11,7 +12,8 @@ import {countryFlag} from '@/model/util'
 import {useArrayState} from '@/lib/hooks/array-state'
 import {useTRPC} from '@/lib/trpc'
 
-import {Badge, Callout} from '@/components/ui'
+import {Heading} from '@/components/layout'
+import {Badge} from '@/components/ui'
 import {GridStack} from '@/components/views/grid'
 import {HomeInfoItem, HomeInfoTray} from '@/components/views/info'
 import {Loading} from '@/components/views/loading'
@@ -22,14 +24,9 @@ export default function CitiesPage() {
 
     const trpc = useTRPC()
     const {data: allCountry} = useSuspenseQuery(trpc.GetAllCountry.queryOptions({sort: 'city_count'}))
-    const {status: allCityStatus, data: allCity} = useQuery(
-        trpc.GetAllCity.queryOptions({sort: 'place_count', filter: {countrySlug: selectedCountrySlug.value}}, {throwOnError: true})
-    )
-
-    if (allCityStatus === 'error') return <Callout theme="error" message="Error loading data" />
 
     return (
-        <Section>
+        <>
             <HomeInfoTray>
                 {selectedCountrySlug.value.map(countrySlug => (
                     <button key={countrySlug} className="active:opacity-60" onClick={() => selectedCountrySlug.remove(countrySlug)}>
@@ -50,22 +47,49 @@ export default function CitiesPage() {
                     toTitle={country => country.name}
                     toSubtitle={country => `${country.city_count} cities`}
                 />
-
-                <div className="grow" />
-                {allCityStatus === 'success' && <Badge active>{allCity.length} cities</Badge>}
             </HomeInfoTray>
 
-            {allCityStatus === 'pending' ? (
-                <Loading />
-            ) : (
-                <GridStack>
-                    {allCity.map(city => (
-                        <Link key={city.slug} href={`/cities/${city.slug}`} className="active:opacity-60">
-                            <CityCard city={city} />
-                        </Link>
-                    ))}
-                </GridStack>
-            )}
-        </Section>
+            <Section>
+                <Suspense fallback={<Loading />}>
+                    <CitiesStack filter={{countrySlug: selectedCountrySlug.value}} />
+                </Suspense>
+            </Section>
+        </>
+    )
+}
+
+type CitiesStackProps = {
+    filter: {
+        countrySlug: string[]
+    }
+}
+
+function CitiesStack({filter}: CitiesStackProps) {
+    const trpc = useTRPC()
+    const {data: allCity} = useSuspenseQuery(trpc.GetAllCity.queryOptions({sort: 'place_count', filter}))
+
+    if (allCity.length === 0)
+        return (
+            <div className="my-3">
+                <Heading size="h3" withoutPadding>
+                    No results
+                </Heading>
+                <Heading size="h5" withoutPadding>
+                    Try adjusting the filters
+                </Heading>
+            </div>
+        )
+
+    return (
+        <>
+            <p className="my-3">{allCity.length} cities</p>
+            <GridStack>
+                {allCity.map(city => (
+                    <Link key={city.slug} href={`/cities/${city.slug}`} className="active:opacity-60">
+                        <CityCard city={city} />
+                    </Link>
+                ))}
+            </GridStack>
+        </>
     )
 }
