@@ -1,6 +1,6 @@
 'use client'
 
-import {Check, City, Flag, ForkKnife, MagnifyingGlass, MapPin, MapTrifold, QuestionMark, Star, Tag, X} from '@phosphor-icons/react'
+import {Check, City, Flag, ForkKnife, List, MagnifyingGlass, MapPin, MapTrifold, QuestionMark, Star, Table, Tag, X} from '@phosphor-icons/react'
 import {useQuery, useSuspenseQuery} from '@tanstack/react-query'
 import {parseAsBoolean, parseAsString, useQueryState} from 'nuqs'
 import {Suspense, useEffect, useRef} from 'react'
@@ -8,6 +8,7 @@ import {useClickAway, useKey} from 'react-use'
 
 import {CityImage} from '@/app/views/city/image'
 import {PlaceCard} from '@/app/views/place/card'
+import {PlaceTable} from '@/app/views/place/table'
 
 import {type Place} from '@/server/types'
 
@@ -162,36 +163,14 @@ type PlacesStackProps = {
 }
 
 function PlacesStack({filter}: PlacesStackProps) {
+    // query
     const trpc = useTRPC()
     const {data: allPlace} = useSuspenseQuery(trpc.GetAllPlace.queryOptions({filter}))
 
-    return (
-        <>
-            <PlacesInfo allPlace={allPlace} />
-            {allPlace.length === 0 ? (
-                <div className="py-3">
-                    <Heading size="h3" withoutPadding>
-                        No results
-                    </Heading>
-                    <Heading size="h5" withoutPadding>
-                        Try adjusting the filters
-                    </Heading>
-                </div>
-            ) : (
-                <GridStack>
-                    {allPlace.map(place => (
-                        <PlaceCard key={place.id} place={place} />
-                    ))}
-                </GridStack>
-            )}
-        </>
-    )
-}
-
-function PlacesInfo({allPlace}: {allPlace: Place[]}) {
     // state
     const [showSearch, setShowSearch] = useQueryState('search', parseAsBoolean.withDefault(false))
     const [showMap, setShowMap] = useQueryState('map', parseAsBoolean.withDefault(false))
+    const [tableView, setTableView] = useQueryState('table', parseAsBoolean.withDefault(false))
 
     // effect
     useKey('/', e => {
@@ -204,16 +183,38 @@ function PlacesInfo({allPlace}: {allPlace: Place[]}) {
             <InfoBar>
                 <p>{allPlace.length} places</p>
                 <div className="grow" />
-                <button className="active:opacity-60" onClick={() => setShowSearch(!showSearch)}>
+                <button onClick={() => setShowSearch(!showSearch)} className="active:opacity-60">
                     <IconButton theme="hover" icon={MagnifyingGlass} active={showSearch} />
                 </button>
-                <button className="active:opacity-60" onClick={() => setShowMap(!showMap)}>
+                <button onClick={() => setShowMap(!showMap)} className="active:opacity-60">
                     <IconButton theme="hover" icon={MapTrifold} active={showMap} />
+                </button>
+                <button onClick={() => setTableView(!tableView)} className="active:opacity-60">
+                    <IconButton theme="hover" icon={tableView ? Table : List} />
                 </button>
             </InfoBar>
 
             <PlacesSearch show={showSearch} onHide={() => setShowSearch(false)} />
             <PlacesMap allPlace={allPlace} show={showMap} />
+
+            {allPlace.length === 0 ? (
+                <div className="py-3">
+                    <Heading size="h3" withoutPadding>
+                        No results
+                    </Heading>
+                    <Heading size="h5" withoutPadding>
+                        Try adjusting the filters
+                    </Heading>
+                </div>
+            ) : tableView ? (
+                <PlaceTable allPlace={allPlace} />
+            ) : (
+                <GridStack>
+                    {allPlace.map(place => (
+                        <PlaceCard key={place.id} place={place} />
+                    ))}
+                </GridStack>
+            )}
         </>
     )
 }
