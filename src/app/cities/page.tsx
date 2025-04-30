@@ -2,7 +2,6 @@
 
 import {Flag, X} from '@phosphor-icons/react'
 import {useSuspenseQuery} from '@tanstack/react-query'
-import Link from 'next/link'
 import {Suspense} from 'react'
 
 import {CityCard} from '@/app/views/city/card'
@@ -103,9 +102,7 @@ function CitiesStack({filter}: CitiesStackProps) {
             </InfoBar>
             <GridStack>
                 {allCity.map(city => (
-                    <Link key={city.slug} href={`/places?city=${city.slug}`} className="active:opacity-60">
-                        <CityCard city={city} />
-                    </Link>
+                    <CityCard key={city.slug} city={city} />
                 ))}
             </GridStack>
         </>

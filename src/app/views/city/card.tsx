@@ -1,4 +1,4 @@
-import {City as CityIcon} from '@phosphor-icons/react'
+import {City as CityIcon, MapPin} from '@phosphor-icons/react'
 
 import {type City} from '@/server/types'
 
@@ -24,6 +24,13 @@ export function CityCard({city}: {city: City}) {
                     text: city.country_name,
                 },
                 `${city.place_count} places`,
+            ]}
+            links={[
+                {
+                    url: `/places?city=${city.slug}`,
+                    icon: MapPin,
+                    title: 'View Places',
+                },
             ]}
         />
     )

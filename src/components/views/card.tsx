@@ -12,7 +12,7 @@ type SimpleCardProps = {
     fallbackIcon: Icon
     title: string
     tags?: (TagProps | string)[]
-    links?: ExternalLinkProps[]
+    links?: CardLinkProps[]
     description?: string | null
 }
 
@@ -50,7 +50,7 @@ export function SimpleCard({image, fallbackIcon, title, tags = [], links = [], d
                 {links.length > 0 && (
                     <div className="flex w-full flex-wrap gap-2 px-4 py-2">
                         {links.map((link, i) => (
-                            <ExternalLink key={i} {...link} />
+                            <CardLink key={i} {...link} />
                         ))}
                     </div>
                 )}
@@ -87,16 +87,16 @@ function Tag(props: TagProps) {
     )
 }
 
-type ExternalLinkProps = {
+type CardLinkProps = {
     url: string
     icon: Icon
     title: string
 }
 
-function ExternalLink({url, icon, title}: ExternalLinkProps) {
+function CardLink({url, icon, title}: CardLinkProps) {
     const Icon = icon
     return (
-        <Link href={url} target="_blank" className="active:opacity-60">
+        <Link href={url} target={url.startsWith('http') ? '_blank' : undefined} className="active:opacity-60">
             <Badge size="sm" rounded="xl">
                 <Icon weight="bold" />
                 <p>{title}</p>
