@@ -1,0 +1,20 @@
+:root {
+    --px: theme('padding.4');
+
+    --accent: theme('colors.accent.DEFAULT');
+    --accent-secondary: theme('colors.accent.secondary.DEFAULT');
+}
+
+@screen sm {
+    :root {
+        --px: theme('padding.10');
+    }
+}
+
+/* dark */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --accent: theme('colors.accent.dark');
+        --accent-secondary: theme('colors.accent.secondary.dark');
+    }
+}

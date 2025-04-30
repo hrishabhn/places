@@ -1,6 +1,6 @@
 'use client'
 
-import {City, Flag, ForkKnife, Star, Tag, X} from '@phosphor-icons/react'
+import {City, Flag, ForkKnife, MapTrifold, Star, Tag, X} from '@phosphor-icons/react'
 import {useSuspenseQuery} from '@tanstack/react-query'
 import {parseAsBoolean, useQueryState} from 'nuqs'
 import {Suspense} from 'react'
@@ -8,25 +8,31 @@ import {Suspense} from 'react'
 import {CityImage} from '@/app/views/city/image'
 import {PlaceCard} from '@/app/views/place/card'
 
+import {type Place} from '@/server/types'
+
 import {countryFlag} from '@/model/util'
 
 import {useArrayState} from '@/lib/hooks/array-state'
 import {useTRPC} from '@/lib/trpc'
 
 import {Heading} from '@/components/layout'
-import {Badge} from '@/components/ui'
+import {Badge, IconButton} from '@/components/ui'
+import {type ActiveFilter, FilterBar, InfoBar} from '@/components/views/filter'
 import {GridStack} from '@/components/views/grid'
-import {HomeInfoItem, HomeInfoTray} from '@/components/views/info'
 import {Loading} from '@/components/views/loading'
+import {MapView} from '@/components/views/map'
+import {MenuBarItem, MenuBarSelect, MenuBarTray} from '@/components/views/menu-bar'
 import {Section} from '@/components/views/section'
 
 export default function PlacesPage() {
+    // state
     const [top, setTop] = useQueryState('top', parseAsBoolean.withDefault(false))
     const selectedCountrySlug = useArrayState('country')
     const selectedCitySlug = useArrayState('city')
     const selectedPlaceType = useArrayState('type')
     const selectedPlaceTag = useArrayState('tag')
 
+    // query
     const trpc = useTRPC()
     const {data: allCountry} = useSuspenseQuery(trpc.GetAllCountry.queryOptions({sort: 'place_count'}))
     const {data: allCity} = useSuspenseQuery(trpc.GetAllCity.queryOptions({sort: 'place_count'}))
@@ -39,51 +45,38 @@ export default function PlacesPage() {
         if (selectedCitySlug.value.length === 1) return allCity.find(city => city.slug === selectedCitySlug.value[0])
     })()
 
+    // active filter
+    const activeFilter: ActiveFilter[] = [
+        ...selectedCountrySlug.value.map(countrySlug => ({
+            title: allCountry.find(country => country.slug === countrySlug)?.name || countrySlug,
+            onRemove: () => selectedCountrySlug.remove(countrySlug),
+        })),
+        ...selectedCitySlug.value.map(citySlug => ({
+            title: allCity.find(city => city.slug === citySlug)?.name || citySlug,
+            onRemove: () => selectedCitySlug.remove(citySlug),
+        })),
+        ...selectedPlaceType.value.map(placeType => ({
+            title: placeType,
+            onRemove: () => selectedPlaceType.remove(placeType),
+        })),
+        ...selectedPlaceTag.value.map(placeTag => ({
+            title: placeTag,
+            onRemove: () => selectedPlaceTag.remove(placeTag),
+        })),
+    ]
+
     return (
         <>
             {singleCity && <CityImage city={singleCity} />}
 
-            <HomeInfoTray>
-                {selectedCountrySlug.value.map(countrySlug => (
-                    <button key={countrySlug} className="active:opacity-60" onClick={() => selectedCountrySlug.remove(countrySlug)}>
-                        <Badge active>
-                            <X weight="bold" />
-                            <p>{allCountry.find(country => country.slug === countrySlug)?.name || countrySlug}</p>
-                        </Badge>
-                    </button>
-                ))}
-                {selectedCitySlug.value.map(citySlug => (
-                    <button key={citySlug} className="active:opacity-60" onClick={() => selectedCitySlug.remove(citySlug)}>
-                        <Badge active>
-                            <X weight="bold" />
-                            <p>{allCity.find(city => city.slug === citySlug)?.name || citySlug}</p>
-                        </Badge>
-                    </button>
-                ))}
-                {selectedPlaceType.value.map(placeType => (
-                    <button key={placeType} className="active:opacity-60" onClick={() => selectedPlaceType.remove(placeType)}>
-                        <Badge active>
-                            <X weight="bold" />
-                            <p>{placeType}</p>
-                        </Badge>
-                    </button>
-                ))}
-                {selectedPlaceTag.value.map(placeTag => (
-                    <button key={placeTag} className="active:opacity-60" onClick={() => selectedPlaceTag.remove(placeTag)}>
-                        <Badge active>
-                            <X weight="bold" />
-                            <p>{placeTag}</p>
-                        </Badge>
-                    </button>
-                ))}
-
+            <MenuBarTray>
                 <button className="active:opacity-60" onClick={() => setTop(!top)}>
-                    <Badge active={top}>
+                    <MenuBarItem active={top}>
                         <Star weight="fill" />
                         <p>Top</p>
-                    </Badge>
+                    </MenuBarItem>
                 </button>
-                <HomeInfoItem
+                <MenuBarSelect
                     icon={Flag}
                     placeholder="Country"
                     allItem={allCountry}
@@ -94,7 +87,7 @@ export default function PlacesPage() {
                     toTitle={country => country.name}
                     toSubtitle={country => `${country.place_count} places`}
                 />
-                <HomeInfoItem
+                <MenuBarSelect
                     icon={City}
                     placeholder="City"
                     allItem={allCity}
@@ -105,7 +98,7 @@ export default function PlacesPage() {
                     toTitle={city => city.name}
                     toSubtitle={city => `${city.place_count} places`}
                 />
-                <HomeInfoItem
+                <MenuBarSelect
                     icon={ForkKnife}
                     placeholder="Type"
                     allItem={allPlaceType}
@@ -115,7 +108,7 @@ export default function PlacesPage() {
                     toTitle={placeType => placeType.type_name}
                     toSubtitle={placeType => `${placeType.place_count} places`}
                 />
-                <HomeInfoItem
+                <MenuBarSelect
                     icon={Tag}
                     placeholder="Tag"
                     allItem={allPlaceTag}
@@ -125,7 +118,20 @@ export default function PlacesPage() {
                     toTitle={placeTag => placeTag.tag_name}
                     toSubtitle={placeTag => `${placeTag.place_count} places`}
                 />
-            </HomeInfoTray>
+            </MenuBarTray>
+
+            {activeFilter.length > 0 && (
+                <FilterBar>
+                    {activeFilter.map(filter => (
+                        <button key={filter.title} className="active:opacity-60" onClick={() => filter.onRemove()}>
+                            <Badge>
+                                <X weight="bold" />
+                                <p>{filter.title}</p>
+                            </Badge>
+                        </button>
+                    ))}
+                </FilterBar>
+            )}
 
             <Section>
                 <Suspense fallback={<Loading />}>
@@ -157,6 +163,7 @@ type PlacesStackProps = {
 function PlacesStack({filter}: PlacesStackProps) {
     const trpc = useTRPC()
     const {data: allPlace} = useSuspenseQuery(trpc.GetAllPlace.queryOptions({filter}))
+
     if (allPlace.length === 0)
         return (
             <div className="py-3">
@@ -171,12 +178,34 @@ function PlacesStack({filter}: PlacesStackProps) {
 
     return (
         <>
-            <p className="py-3">{allPlace.length} places</p>
+            <PlacesInfo allPlace={allPlace} />
             <GridStack>
                 {allPlace.map(place => (
                     <PlaceCard key={place.id} place={place} />
                 ))}
             </GridStack>
+        </>
+    )
+}
+
+function PlacesInfo({allPlace}: {allPlace: Place[]}) {
+    const [showMap, setShowMap] = useQueryState('map', parseAsBoolean.withDefault(false))
+
+    return (
+        <>
+            <InfoBar>
+                <p>{allPlace.length} places</p>
+                <div className="grow" />
+                <button className="active:opacity-60" onClick={() => setShowMap(!showMap)}>
+                    <IconButton theme="hover" icon={MapTrifold} active={showMap} />
+                </button>
+            </InfoBar>
+
+            {showMap && (
+                <div className="mb-4 aspect-square max-h-96 w-full overflow-hidden rounded-md ring-1 ring-line sm:aspect-video dark:ring-line-dark">
+                    <MapView allPlace={allPlace} />
+                </div>
+            )}
         </>
     )
 }

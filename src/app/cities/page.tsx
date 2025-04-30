@@ -14,29 +14,32 @@ import {useTRPC} from '@/lib/trpc'
 
 import {Heading} from '@/components/layout'
 import {Badge} from '@/components/ui'
+import {type ActiveFilter, FilterBar, InfoBar} from '@/components/views/filter'
 import {GridStack} from '@/components/views/grid'
-import {HomeInfoItem, HomeInfoTray} from '@/components/views/info'
 import {Loading} from '@/components/views/loading'
+import {MenuBarSelect, MenuBarTray} from '@/components/views/menu-bar'
 import {Section} from '@/components/views/section'
 
 export default function CitiesPage() {
+    // state
     const selectedCountrySlug = useArrayState('country')
 
+    // query
     const trpc = useTRPC()
     const {data: allCountry} = useSuspenseQuery(trpc.GetAllCountry.queryOptions({sort: 'city_count'}))
 
+    // active filter
+    const activeFilter: ActiveFilter[] = [
+        ...selectedCountrySlug.value.map(countrySlug => ({
+            title: allCountry.find(country => country.slug === countrySlug)?.name || countrySlug,
+            onRemove: () => selectedCountrySlug.remove(countrySlug),
+        })),
+    ]
+
     return (
         <>
-            <HomeInfoTray>
-                {selectedCountrySlug.value.map(countrySlug => (
-                    <button key={countrySlug} className="active:opacity-60" onClick={() => selectedCountrySlug.remove(countrySlug)}>
-                        <Badge active>
-                            <X weight="bold" />
-                            <p>{allCountry.find(country => country.slug === countrySlug)?.name || countrySlug}</p>
-                        </Badge>
-                    </button>
-                ))}
-                <HomeInfoItem
+            <MenuBarTray>
+                <MenuBarSelect
                     icon={Flag}
                     placeholder="Country"
                     allItem={allCountry}
@@ -47,7 +50,20 @@ export default function CitiesPage() {
                     toTitle={country => country.name}
                     toSubtitle={country => `${country.city_count} cities`}
                 />
-            </HomeInfoTray>
+            </MenuBarTray>
+
+            {activeFilter.length > 0 && (
+                <FilterBar>
+                    {activeFilter.map(filter => (
+                        <button key={filter.title} className="active:opacity-60" onClick={() => filter.onRemove()}>
+                            <Badge>
+                                <X weight="bold" />
+                                <p>{filter.title}</p>
+                            </Badge>
+                        </button>
+                    ))}
+                </FilterBar>
+            )}
 
             <Section>
                 <Suspense fallback={<Loading />}>
@@ -82,7 +98,9 @@ function CitiesStack({filter}: CitiesStackProps) {
 
     return (
         <>
-            <p className="py-3">{allCity.length} cities</p>
+            <InfoBar>
+                <p>{allCity.length} cities</p>
+            </InfoBar>
             <GridStack>
                 {allCity.map(city => (
                     <Link key={city.slug} href={`/places?city=${city.slug}`} className="active:opacity-60">

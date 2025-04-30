@@ -4,14 +4,12 @@ import {Providers} from './providers'
 import type {Metadata, Viewport} from 'next'
 import colors from 'tailwindcss/colors'
 
-import {karla, robotoSlab} from '@/components/layout'
-
-const title = 'Travel Guide'
-const description = 'A curated list of the best places that I have encountered on my travels.'
+import {karla} from '@/components/layout'
+import {Navbar} from '@/components/views/navbar'
 
 export const metadata: Metadata = {
-    title,
-    description,
+    title: 'Travel Guide',
+    description: 'A curated list of the best places that I have encountered on my travels.',
     robots: {index: false},
 }
 
@@ -31,10 +29,7 @@ export default function RootLayout({
         <html lang="en">
             <Providers>
                 <body className={`${karla.className} flex min-h-screen w-full flex-col bg-layer-0 text-black antialiased dark:bg-layer-0-dark dark:text-white`}>
-                    <div className={`${robotoSlab.className} bg-accent px-4 pt-8 text-white sm:px-10 dark:bg-accent-dark`}>
-                        <p className="text-2xl font-semibold">{title}</p>
-                        <p className="text-sm font-medium opacity-60">{description}</p>
-                    </div>
+                    <Navbar />
                     {children}
                 </body>
             </Providers>

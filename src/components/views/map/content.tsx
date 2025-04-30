@@ -7,19 +7,23 @@ import 'leaflet/dist/leaflet.css'
 import {MapContainer, Marker, TileLayer, Tooltip} from 'react-leaflet'
 import {useMediaQuery} from 'usehooks-ts'
 
-import {type NotionPlace} from '@/model/types'
-
 import {useCoordinates} from '@/lib/hooks'
 import {tw} from '@/lib/tailwind'
 
 // type and assertion
-type MapNotionPlace = NotionPlace & {lat: number; lon: number}
-const isMapNotionPlace = (place: NotionPlace): place is MapNotionPlace => place.lat !== null && place.lon !== null
+type MapPin = {
+    id: string
+    name: string
+    lat: number | null
+    lon: number | null
+}
+type ValidMapPin = MapPin & {lat: number; lon: number}
+const isValidMapPin = (place: MapPin): place is ValidMapPin => place.lat !== null && place.lon !== null
 
-export function MapViewContent({allPlace}: {allPlace: NotionPlace[]}) {
+export function MapViewContent({allPlace}: {allPlace: MapPin[]}) {
     const isDark = useMediaQuery('(prefers-color-scheme: dark)')
     const {data: userCoordinates} = useCoordinates()
-    const displayPlace: MapNotionPlace[] = allPlace.filter(isMapNotionPlace)
+    const displayPlace: ValidMapPin[] = allPlace.filter(isValidMapPin)
 
     const avgLat = displayPlace.map(({lat}) => lat).reduce((a, b) => a + b, 0) / displayPlace.length
     const avgLon = displayPlace.map(({lon}) => lon).reduce((a, b) => a + b, 0) / displayPlace.length
