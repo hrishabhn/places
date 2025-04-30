@@ -8,7 +8,7 @@ import {CityCard} from '@/app/views/city/card'
 
 import {countryFlag} from '@/model/util'
 
-import {useArrayState} from '@/lib/hooks/array-state'
+import {useArrayState} from '@/lib/hooks/nuqs'
 import {useTRPC} from '@/lib/trpc'
 
 import {Heading} from '@/components/layout'

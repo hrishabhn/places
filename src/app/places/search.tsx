@@ -6,7 +6,7 @@ import {parseAsString, useQueryState} from 'nuqs'
 import {useEffect, useRef} from 'react'
 import {useClickAway, useKey} from 'react-use'
 
-import {useArrayState} from '@/lib/hooks/array-state'
+import {useArrayState} from '@/lib/hooks/nuqs'
 import {useTRPC} from '@/lib/trpc'
 
 import {Heading, inter} from '@/components/layout'

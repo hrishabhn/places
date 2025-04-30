@@ -6,7 +6,6 @@ import {PlacesStats} from './stats'
 
 import {ChartLineUp, City, Flag, ForkKnife, List, MagnifyingGlass, MapTrifold, Star, Table, Tag, X} from '@phosphor-icons/react'
 import {useSuspenseQuery} from '@tanstack/react-query'
-import {parseAsBoolean, useQueryState} from 'nuqs'
 import {Suspense} from 'react'
 import {useKey} from 'react-use'
 
@@ -16,7 +15,7 @@ import {PlaceTable} from '@/app/views/place/table'
 
 import {countryFlag} from '@/model/util'
 
-import {useArrayState} from '@/lib/hooks/array-state'
+import {useArrayState, useBooleanState} from '@/lib/hooks/nuqs'
 import {useTRPC} from '@/lib/trpc'
 
 import {Heading} from '@/components/layout'
@@ -29,7 +28,7 @@ import {Section} from '@/components/views/section'
 
 export default function PlacesPage() {
     // state
-    const [top, setTop] = useQueryState('top', parseAsBoolean.withDefault(false))
+    const top = useBooleanState('top')
     const selectedCountrySlug = useArrayState('country')
     const selectedCitySlug = useArrayState('city')
     const selectedPlaceType = useArrayState('type')
@@ -73,8 +72,8 @@ export default function PlacesPage() {
             {singleCity && <CityImage city={singleCity} />}
 
             <MenuBarTray>
-                <button className="active:opacity-60" onClick={() => setTop(!top)}>
-                    <MenuBarItem active={top}>
+                <button className="active:opacity-60" onClick={() => top.toggle()}>
+                    <MenuBarItem active={top.value}>
                         <Star weight="fill" />
                         <p>Top</p>
                     </MenuBarItem>
@@ -140,7 +139,7 @@ export default function PlacesPage() {
                 <Suspense fallback={<Loading />}>
                     <PlacesStack
                         filter={{
-                            top,
+                            top: top.value,
                             countrySlug: selectedCountrySlug.value,
                             citySlug: selectedCitySlug.value,
                             placeType: selectedPlaceType.value,
@@ -169,15 +168,15 @@ function PlacesStack({filter}: PlacesStackProps) {
     const {data: allPlace} = useSuspenseQuery(trpc.GetAllPlace.queryOptions({filter}))
 
     // state
-    const [showSearch, setShowSearch] = useQueryState('search', parseAsBoolean.withDefault(false))
-    const [showMap, setShowMap] = useQueryState('map', parseAsBoolean.withDefault(false))
-    const [showStats, setShowStats] = useQueryState('stats', parseAsBoolean.withDefault(false))
-    const [tableView, setTableView] = useQueryState('table', parseAsBoolean.withDefault(false))
+    const showSearch = useBooleanState('search')
+    const showMap = useBooleanState('map')
+    const showStats = useBooleanState('stats')
+    const tableView = useBooleanState('table')
 
     // effect
     useKey('/', e => {
         e.preventDefault()
-        setShowSearch(true)
+        showSearch.setTrue()
     })
 
     return (
@@ -185,23 +184,23 @@ function PlacesStack({filter}: PlacesStackProps) {
             <InfoBar>
                 <p>{allPlace.length} places</p>
                 <div className="grow" />
-                <button onClick={() => setShowSearch(!showSearch)} className="active:opacity-60">
-                    <IconButton theme="hover" icon={MagnifyingGlass} active={showSearch} />
+                <button onClick={() => showSearch.toggle()} className="active:opacity-60">
+                    <IconButton theme="hover" icon={MagnifyingGlass} active={showSearch.value} />
                 </button>
-                <button onClick={() => setShowMap(!showMap)} className="active:opacity-60">
-                    <IconButton theme="hover" icon={MapTrifold} active={showMap} />
+                <button onClick={() => showMap.toggle()} className="active:opacity-60">
+                    <IconButton theme="hover" icon={MapTrifold} active={showMap.value} />
                 </button>
-                <button onClick={() => setShowStats(!showStats)} className="active:opacity-60">
-                    <IconButton theme="hover" icon={ChartLineUp} active={showStats} />
+                <button onClick={() => showStats.toggle()} className="active:opacity-60">
+                    <IconButton theme="hover" icon={ChartLineUp} active={showStats.value} />
                 </button>
-                <button onClick={() => setTableView(!tableView)} className="active:opacity-60">
-                    <IconButton theme="hover" icon={tableView ? Table : List} />
+                <button onClick={() => tableView.toggle()} className="active:opacity-60">
+                    <IconButton theme="hover" icon={tableView ? Table : List} active={tableView.value} />
                 </button>
             </InfoBar>
 
-            <PlacesSearch show={showSearch} onHide={() => setShowSearch(false)} />
-            {showMap && <PlacesMap allPlace={allPlace} />}
-            {showStats && <PlacesStats allPlace={allPlace} />}
+            <PlacesSearch show={showSearch.value} onHide={() => showSearch.setFalse()} />
+            {showMap.value && <PlacesMap allPlace={allPlace} />}
+            {showStats.value && <PlacesStats allPlace={allPlace} />}
 
             {allPlace.length === 0 ? (
                 <div className="py-3">
@@ -212,7 +211,7 @@ function PlacesStack({filter}: PlacesStackProps) {
                         Try adjusting the filters
                     </Heading>
                 </div>
-            ) : tableView ? (
+            ) : tableView.value ? (
                 <PlaceTable allPlace={allPlace} />
             ) : (
                 <GridStack>
