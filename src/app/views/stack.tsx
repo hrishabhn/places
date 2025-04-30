@@ -1,8 +1,8 @@
 'use client'
 
+import ConciergePage from '../concierge/page'
 import {useHomeContext} from '../context'
 import {PlaceCard} from './card'
-import {HomeConcierge} from './concierge'
 import {HomeStats} from './stats'
 import {HomeTable} from './table'
 
@@ -39,6 +39,6 @@ export function HomeStack() {
             return <HomeStats allPlace={displayPlace} />
 
         case 'concierge':
-            return <HomeConcierge />
+            return <ConciergePage />
     }
 }

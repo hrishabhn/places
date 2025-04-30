@@ -1,10 +1,11 @@
 'use client'
 
-import {revalidateNotion} from '../../action'
 import {useHomeContext} from '../../context'
 import {HomeViewMenuItems} from './view'
 
 import {ArrowCounterClockwise, Database, DotsThreeVertical, GithubLogo, MapPin, Triangle, User} from '@phosphor-icons/react'
+
+import {revalidateNotion} from '@/app/revalidate'
 
 import {DropdownDivider, DropdownHeader, DropdownMenuItem, DropdownMenuItems, FilterIcon, Menu, MenuButton} from '@/components/ui'
 

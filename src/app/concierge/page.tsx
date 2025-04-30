@@ -1,5 +1,6 @@
 'use client'
 
+import {getRecs, validateKey} from './action'
 import {TextInput} from './input'
 import {Website} from './website'
 
@@ -7,15 +8,14 @@ import {CheckCircle, Circle, City, ForkKnife, Info, Key, MapPin, Sparkle, Spinne
 import {Fragment, useActionState, useState} from 'react'
 import {useLocalStorage} from 'usehooks-ts'
 
-import {getRecs, validateKey} from '@/app/action'
-
 import {type Dataset, type Model, allDataset, allModel, datasetName, modelName} from '@/model/ai'
 
 import {Heading} from '@/components/layout'
 import {Button, ButtonTray, Card} from '@/components/ui'
 import {DataListItem} from '@/components/views/data-list'
+import {Section} from '@/components/views/section'
 
-export function HomeConcierge() {
+export default function ConciergePage() {
     // form state
     const [valid, validAction, validPending] = useActionState(validateKey, null)
     const [recs, recsAction, recsPending] = useActionState(getRecs, [])
@@ -26,7 +26,7 @@ export function HomeConcierge() {
     const [model, setModel] = useState<Model>('gpt-4o-mini-search-preview')
 
     return (
-        <>
+        <Section>
             <Heading size="h1">AI Concierge</Heading>
             <p>Use the curated list of places to get your next recommendation.</p>
 
@@ -184,6 +184,6 @@ export function HomeConcierge() {
                     )}
                 </>
             )}
-        </>
+        </Section>
     )
 }
