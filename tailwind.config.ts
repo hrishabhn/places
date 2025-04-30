@@ -14,6 +14,10 @@ export default {
                 accent: {
                     DEFAULT: colors.red[800],
                     dark: colors.red[700],
+                    secondary: {
+                        DEFAULT: colors.red[900],
+                        dark: colors.red[800],
+                    },
                 },
                 g: colors.zinc,
                 line: {
