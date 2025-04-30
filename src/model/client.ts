@@ -1,13 +1,13 @@
 import 'server-only'
 
-import {citiesPageId, placesPageId} from './config'
+import {notionApiKey as auth, citiesPageId, placesPageId} from './config'
 import {AllDropdownSchema, NotionCitySchema, NotionPlaceSchema} from './types'
 
 import {Client} from '@notionhq/client'
 import {unstable_cacheLife as cacheLife, unstable_cacheTag as cacheTag} from 'next/cache'
 import {z} from 'zod'
 
-const notion = new Client({auth: process.env.NOTION_API_KEY})
+const notion = new Client({auth})
 
 export class NotionClient {
     static getAllPlace = async () => {
