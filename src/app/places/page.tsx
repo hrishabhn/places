@@ -232,17 +232,17 @@ function PlacesSearch({show, onHide}: {show: boolean; onHide: () => void}) {
     const [query, setQuery] = useQueryState('q', parseAsString.withDefault(''))
 
     // effect
+    useEffect(() => {
+        if (show) inputRef.current?.focus()
+    }, [show])
     useClickAway(dialogRef, onHide)
     useKey('Escape', e => {
-        e.preventDefault()
         if (show) {
+            e.preventDefault()
             if (query) setQuery('')
             else onHide()
         }
     })
-    useEffect(() => {
-        if (show) inputRef.current?.focus()
-    }, [show])
 
     // query
     const trpc = useTRPC()
