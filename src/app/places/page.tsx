@@ -159,7 +159,7 @@ function PlacesStack({filter}: PlacesStackProps) {
     const {data: allPlace} = useSuspenseQuery(trpc.GetAllPlace.queryOptions({filter}))
     if (allPlace.length === 0)
         return (
-            <div className="my-3">
+            <div className="py-3">
                 <Heading size="h3" withoutPadding>
                     No results
                 </Heading>
@@ -171,7 +171,7 @@ function PlacesStack({filter}: PlacesStackProps) {
 
     return (
         <>
-            <p className="my-3">{allPlace.length} places</p>
+            <p className="py-3">{allPlace.length} places</p>
             <GridStack>
                 {allPlace.map(place => (
                     <PlaceCard key={place.id} place={place} />

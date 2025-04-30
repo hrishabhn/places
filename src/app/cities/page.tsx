@@ -70,7 +70,7 @@ function CitiesStack({filter}: CitiesStackProps) {
 
     if (allCity.length === 0)
         return (
-            <div className="my-3">
+            <div className="py-3">
                 <Heading size="h3" withoutPadding>
                     No results
                 </Heading>
@@ -82,10 +82,10 @@ function CitiesStack({filter}: CitiesStackProps) {
 
     return (
         <>
-            <p className="my-3">{allCity.length} cities</p>
+            <p className="py-3">{allCity.length} cities</p>
             <GridStack>
                 {allCity.map(city => (
-                    <Link key={city.slug} href={`/cities/${city.slug}`} className="active:opacity-60">
+                    <Link key={city.slug} href={`/places?city=${city.slug}`} className="active:opacity-60">
                         <CityCard city={city} />
                     </Link>
                 ))}
