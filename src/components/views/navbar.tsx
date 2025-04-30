@@ -16,7 +16,7 @@ export function Navbar() {
 
 function NavbarDesktop() {
     return (
-        <div className="flex w-full items-center gap-10 bg-accent px-10 py-6 text-white dark:bg-accent-dark">
+        <div className="flex w-full items-center gap-10 bg-accent px-10 py-4 text-white dark:bg-accent-dark">
             <NavbarTitle />
 
             <div className="grow" />

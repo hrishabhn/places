@@ -18,10 +18,9 @@ export function MenuBarTray({children}: {children?: React.ReactNode}) {
             initial={false}
             animate={{
                 paddingInline: isStuck ? '1rem' : 'var(--px)',
-                backgroundColor: isStuck ? 'var(--accent)' : 'var(--accent-secondary)',
             }}
             transition={{duration: 0.1}}
-            className="sticky top-0 z-10 flex flex-wrap items-center gap-2 py-3"
+            className="sticky top-0 z-10 flex items-center gap-2 overflow-x-scroll border-t border-t-white/10 bg-accent py-3 dark:bg-accent-dark"
         >
             {children}
         </motion.div>
