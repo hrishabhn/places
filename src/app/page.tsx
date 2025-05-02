@@ -4,9 +4,8 @@ import {CityCard} from './views/city/card'
 import {PlaceCard} from './views/place/card'
 
 import {ArrowCircleRight} from '@phosphor-icons/react'
-import {useSuspenseQuery} from '@tanstack/react-query'
+import {useQuery} from '@tanstack/react-query'
 import Link from 'next/link'
-import {Suspense} from 'react'
 
 import {useTRPC} from '@/lib/trpc'
 
@@ -17,18 +16,13 @@ import {ScrollStack} from '@/components/views/scroll'
 import {Section} from '@/components/views/section'
 
 export default function Home() {
-    return (
-        <Suspense fallback={<Loading />}>
-            <HomeContent />
-        </Suspense>
-    )
-}
-
-function HomeContent() {
     const trpc = useTRPC()
-    const {data: allCity} = useSuspenseQuery(trpc.GetAllCity.queryOptions({sort: 'place_count', limit: 5}))
-    const {data: allPlaceNew} = useSuspenseQuery(trpc.GetAllPlace.queryOptions({sort: 'created', limit: 5}))
-    const {data: allPlaceRandom} = useSuspenseQuery(trpc.GetAllPlace.queryOptions({sort: 'random', limit: 5}, {staleTime: 0}))
+    const {status: allCityStatus, data: allCity} = useQuery(trpc.GetAllCity.queryOptions({sort: 'place_count', limit: 5}))
+    const {status: allPlaceNewStatus, data: allPlaceNew} = useQuery(trpc.GetAllPlace.queryOptions({sort: 'created', limit: 5}))
+    const {status: allPlaceRandomStatus, data: allPlaceRandom} = useQuery(trpc.GetAllPlace.queryOptions({sort: 'random', limit: 5}, {staleTime: 0}))
+
+    if (allCityStatus === 'pending' || allPlaceNewStatus === 'pending' || allPlaceRandomStatus === 'pending') return <Loading />
+    if (allCityStatus === 'error' || allPlaceNewStatus === 'error' || allPlaceRandomStatus === 'error') throw new Error('Failed to load data')
 
     return (
         <>
