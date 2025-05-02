@@ -7,6 +7,8 @@ import {useEffect, useRef} from 'react'
 import {useClickAway} from 'react-use'
 import {useDebounceValue} from 'usehooks-ts'
 
+import {type SearchResult} from '@/server/types'
+
 import {useArrayState} from '@/lib/hooks/nuqs'
 import {useTRPC} from '@/lib/trpc'
 
@@ -17,6 +19,16 @@ export function PlacesSearch({show, onHide}: {show: boolean; onHide: () => void}
     const selectedCitySlug = useArrayState('city')
     const selectedPlaceType = useArrayState('type')
     const selectedPlaceTag = useArrayState('tag')
+
+    function getResultAction(result: SearchResult): () => void {
+        return {
+            place: () => {},
+            country: () => selectedCountrySlug.toggle(result.id),
+            city: () => selectedCitySlug.toggle(result.id),
+            place_type: () => selectedPlaceType.toggle(result.id),
+            place_tag: () => selectedPlaceTag.toggle(result.id),
+        }[result.type]
+    }
 
     // ref
     const dialogRef = useRef<HTMLDialogElement>(null)
@@ -63,6 +75,17 @@ export function PlacesSearch({show, onHide}: {show: boolean; onHide: () => void}
                                     if (query) setQuery('')
                                     else onHide()
                                 }
+                            } else if (e.key === 'Enter') {
+                                if (show) {
+                                    e.preventDefault()
+                                    setQuery('')
+                                    onHide()
+                                    const result = data?.at(0)
+                                    if (result) {
+                                        const action = getResultAction(result)
+                                        action()
+                                    }
+                                }
                             }
                         }}
                     />
@@ -84,13 +107,7 @@ export function PlacesSearch({show, onHide}: {show: boolean; onHide: () => void}
                             ) : data?.length ? (
                                 <>
                                     {data.map((result, i) => {
-                                        const action = {
-                                            place: () => {},
-                                            country: () => selectedCountrySlug.toggle(result.id),
-                                            city: () => selectedCitySlug.toggle(result.id),
-                                            place_type: () => selectedPlaceType.toggle(result.id),
-                                            place_tag: () => selectedPlaceTag.toggle(result.id),
-                                        }[result.type]
+                                        const action = getResultAction(result)
 
                                         const active = {
                                             place: false,
