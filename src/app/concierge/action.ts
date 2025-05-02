@@ -6,7 +6,6 @@ import {type ChatCompletionMessageParam} from 'openai/resources'
 import {z} from 'zod'
 
 import {GetRecsFormSchema, type Rec, RecSchema, ValidateKeyFormSchema} from '@/model/ai'
-import {NotionClient} from '@/model/client'
 
 type ValidKey = boolean | null
 
@@ -49,12 +48,14 @@ export const getRecs = async (currentState: Rec[], formData: FormData): Promise<
         },
     ]
 
+    // @TODO: migrate to SQL
     // taste message
-    if (dataset !== 'none')
-        messages.push({
-            role: 'system',
-            content: await getTaste({apiKey, model, top: dataset === 'top'}),
-        })
+    if (dataset !== 'none') {
+        // messages.push({
+        //     role: 'system',
+        //     content: await getTaste({apiKey, model, top: dataset === 'top'}),
+        // })
+    }
 
     // user message
     messages.push({
@@ -75,36 +76,36 @@ export const getRecs = async (currentState: Rec[], formData: FormData): Promise<
     return recs
 }
 
-const getTaste = async ({apiKey, model, top}: {apiKey: string; model: string; top: boolean}): Promise<string> => {
-    // get data
-    const allPlace = (await NotionClient.getAllPlace()).filter(place => (top ? place.top : true))
+// const getTaste = async ({apiKey, model, top}: {apiKey: string; model: string; top: boolean}): Promise<string> => {
+//     // get data
+//     const allPlace = (await NotionClient.getAllPlace()).filter(place => (top ? place.top : true))
 
-    // init client
-    const openai = new OpenAI({apiKey})
+//     // init client
+//     const openai = new OpenAI({apiKey})
 
-    // get completion
-    const completion = await openai.chat.completions.create({
-        model,
-        messages: [
-            // system message
-            {
-                role: 'system',
-                content: [
-                    'You are a travel guide concierge.',
-                    'Your task is to convert a database of user places into a brief description of the taste of the user.',
-                    'Do not include any specific details about the places, such as names or locations.',
-                    'Instead, focus on the overall experience and atmosphere of the places.',
-                    'Provide a decsription in the third person.',
-                ].join(' '),
-            },
+//     // get completion
+//     const completion = await openai.chat.completions.create({
+//         model,
+//         messages: [
+//             // system message
+//             {
+//                 role: 'system',
+//                 content: [
+//                     'You are a travel guide concierge.',
+//                     'Your task is to convert a database of user places into a brief description of the taste of the user.',
+//                     'Do not include any specific details about the places, such as names or locations.',
+//                     'Instead, focus on the overall experience and atmosphere of the places.',
+//                     'Provide a decsription in the third person.',
+//                 ].join(' '),
+//             },
 
-            // user message
-            {role: 'user', content: `Database: ${allPlace}`},
-        ],
-    })
+//             // user message
+//             {role: 'user', content: `Database: ${allPlace}`},
+//         ],
+//     })
 
-    const taste = completion.choices[0].message.content
-    if (!taste) throw new Error('Failed to get taste')
-    console.log('Taste', taste)
-    return taste
-}
+//     const taste = completion.choices[0].message.content
+//     if (!taste) throw new Error('Failed to get taste')
+//     console.log('Taste', taste)
+//     return taste
+// }

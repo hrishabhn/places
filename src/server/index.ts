@@ -4,11 +4,7 @@ import {GetAllPlace} from './procedures/get-all-place'
 import {GetAllPlaceTag} from './procedures/get-all-place-tag'
 import {GetAllPlaceType} from './procedures/get-all-place-type'
 import {Search} from './procedures/search'
-import {publicProcedure, router} from './trpc'
-
-import {z} from 'zod'
-
-import {NotionClient} from '@/model/client'
+import {router} from './trpc'
 
 export const appRouter = router({
     GetAllCountry,
@@ -20,8 +16,6 @@ export const appRouter = router({
     GetAllPlace,
 
     Search,
-
-    getCityImage: publicProcedure.input(z.string()).query(async ({input: name}) => await NotionClient.getCityImage(name)),
 })
 
 export type AppRouter = typeof appRouter

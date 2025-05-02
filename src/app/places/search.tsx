@@ -5,6 +5,7 @@ import {useQuery} from '@tanstack/react-query'
 import {parseAsString, useQueryState} from 'nuqs'
 import {useEffect, useRef} from 'react'
 import {useClickAway, useKey} from 'react-use'
+import {useDebounceValue} from 'usehooks-ts'
 
 import {useArrayState} from '@/lib/hooks/nuqs'
 import {useTRPC} from '@/lib/trpc'
@@ -23,6 +24,10 @@ export function PlacesSearch({show, onHide}: {show: boolean; onHide: () => void}
 
     // state
     const [query, setQuery] = useQueryState('q', parseAsString.withDefault(''))
+    const [debounceQuery, setDebounceQuery] = useDebounceValue<string>(query, 200)
+    useEffect(() => {
+        setDebounceQuery(query)
+    }, [query, setDebounceQuery])
 
     // effect
     useEffect(() => {
@@ -39,7 +44,7 @@ export function PlacesSearch({show, onHide}: {show: boolean; onHide: () => void}
 
     // query
     const trpc = useTRPC()
-    const {status, data} = useQuery(trpc.Search.queryOptions({query}))
+    const {status, data} = useQuery(trpc.Search.queryOptions({query: debounceQuery}))
 
     return (
         <dialog
