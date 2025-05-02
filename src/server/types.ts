@@ -52,6 +52,8 @@ export const PlaceSchema = z.object({
     maps_id: z.string().nullable(),
     lat: z.coerce.number().nullable(),
     lon: z.coerce.number().nullable(),
+    created: z.date(),
+    modified: z.date(),
 })
 
 export type Place = z.infer<typeof PlaceSchema>

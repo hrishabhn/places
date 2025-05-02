@@ -6,6 +6,7 @@ import {PersistQueryClientProvider} from '@tanstack/react-query-persist-client'
 import {createTRPCClient, httpBatchLink} from '@trpc/client'
 import {NuqsAdapter} from 'nuqs/adapters/next/app'
 import {useState} from 'react'
+import superjson from 'superjson'
 
 import {type AppRouter} from '@/server'
 
@@ -43,7 +44,16 @@ function getUrl() {
 
 export function Providers({children}: {children: React.ReactNode}) {
     const queryClient = getQueryClient()
-    const [trpcClient] = useState(() => createTRPCClient<AppRouter>({links: [httpBatchLink({url: getUrl()})]}))
+    const [trpcClient] = useState(() =>
+        createTRPCClient<AppRouter>({
+            links: [
+                httpBatchLink({
+                    url: getUrl(),
+                    transformer: superjson,
+                }),
+            ],
+        })
+    )
 
     /* eslint-disable react-compiler/react-compiler */
     // return <>{children}</>
