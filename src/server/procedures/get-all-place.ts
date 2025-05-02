@@ -15,12 +15,14 @@ const GetAllPlaceInputSchema = z.object({
             placeTag: z.array(z.string()).default([]),
         })
         .default({}),
+    limit: z.number().optional(),
 })
 
 export const GetAllPlace = publicProcedure.input(GetAllPlaceInputSchema).query(
     async ({
         input: {
             filter: {top, countrySlug, citySlug, placeType, placeTag},
+            limit,
         },
     }): Promise<Place[]> =>
         z.array(PlaceSchema).parse(
@@ -40,7 +42,9 @@ export const GetAllPlace = publicProcedure.input(GetAllPlaceInputSchema).query(
                 place.description,
                 place.maps_id,
                 place.lat,
-                place.lon
+                place.lon,
+                place.created,
+                place.modified
             FROM place
             JOIN city ON place.city_slug = city.slug
             JOIN country ON city.country_slug = country.slug
@@ -52,6 +56,7 @@ export const GetAllPlace = publicProcedure.input(GetAllPlaceInputSchema).query(
                 ${placeTag.length > 0 ? sql`place.tags && ARRAY['${sql.unsafe(placeTag.join("', '"))}'] AND` : sql``}
                 TRUE
             ORDER BY place.name
+            ${limit ? sql`LIMIT ${limit}` : sql``}
             `
         )
 )

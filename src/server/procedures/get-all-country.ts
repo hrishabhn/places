@@ -7,9 +7,10 @@ import {sql} from '@/model/neon'
 
 const GetAllCountryInputSchema = z.object({
     sort: z.enum(['name', 'city_count', 'place_count']),
+    limit: z.number().optional(),
 })
 
-export const GetAllCountry = publicProcedure.input(GetAllCountryInputSchema).query(async ({input: {sort}}): Promise<Country[]> => {
+export const GetAllCountry = publicProcedure.input(GetAllCountryInputSchema).query(async ({input: {sort, limit}}): Promise<Country[]> => {
     const orderBy = {
         name: sql`name`,
         city_count: sql`city_count DESC, name`,
@@ -26,6 +27,7 @@ export const GetAllCountry = publicProcedure.input(GetAllCountryInputSchema).que
                 (SELECT COUNT(*) FROM place JOIN city ON place.city_slug = city.slug WHERE city.country_slug = country.slug) as place_count
             FROM country
             ORDER BY ${orderBy}
+            ${limit ? sql`LIMIT ${limit}` : sql``}
             `
     )
 })

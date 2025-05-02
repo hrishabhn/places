@@ -6,19 +6,21 @@ import {z} from 'zod'
 import {sql} from '@/model/neon'
 
 const GetAllCityInputSchema = z.object({
-    sort: z.enum(['name', 'place_count']),
     filter: z
         .object({
             countrySlug: z.array(z.string()).default([]),
         })
         .default({}),
+    sort: z.enum(['name', 'place_count']),
+    limit: z.number().optional(),
 })
 
 export const GetAllCity = publicProcedure.input(GetAllCityInputSchema).query(
     async ({
         input: {
-            sort,
             filter: {countrySlug},
+            sort,
+            limit,
         },
     }): Promise<City[]> => {
         const orderBy = {
@@ -41,6 +43,7 @@ export const GetAllCity = publicProcedure.input(GetAllCityInputSchema).query(
             ${countrySlug.length > 0 ? sql`WHERE city.country_slug IN ('${sql.unsafe(countrySlug.join("', '"))}')` : sql``}
             GROUP BY city.slug, country_name, country_code
             ORDER BY ${orderBy}
+            ${limit ? sql`LIMIT ${limit}` : sql``}
             `
         )
     }
