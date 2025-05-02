@@ -15,7 +15,7 @@ const GetAllPlaceOptionsSchema = z.object({
             placeTag: z.array(z.string()).default([]),
         })
         .default({}),
-    sort: z.enum(['name', 'created', 'modified', 'random']).default('name'),
+    sort: z.enum(['name', 'created', 'modified', 'random']),
     limit: z.number().optional(),
 })
 
