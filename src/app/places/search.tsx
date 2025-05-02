@@ -3,9 +3,8 @@
 import {Check, City, Flag, ForkKnife, MagnifyingGlass, MapPin, QuestionMark, Tag, X} from '@phosphor-icons/react'
 import {useQuery} from '@tanstack/react-query'
 import {parseAsString, useQueryState} from 'nuqs'
-import {useEffect, useRef} from 'react'
+import {useEffect, useRef, useState} from 'react'
 import {useClickAway} from 'react-use'
-import {useDebounceValue} from 'usehooks-ts'
 
 import {type SearchResult} from '@/server/types'
 
@@ -36,10 +35,10 @@ export function PlacesSearch({show, onHide}: {show: boolean; onHide: () => void}
 
     // state
     const [query, setQuery] = useQueryState('q', parseAsString.withDefault(''))
-    const [debounceQuery, setDebounceQuery] = useDebounceValue<string>(query, 200)
+    const [focusIndex, setFocusIndex] = useState<number>(0)
     useEffect(() => {
-        setDebounceQuery(query)
-    }, [query, setDebounceQuery])
+        setFocusIndex(0)
+    }, [query])
 
     // effect
     useEffect(() => {
@@ -49,7 +48,7 @@ export function PlacesSearch({show, onHide}: {show: boolean; onHide: () => void}
 
     // query
     const trpc = useTRPC()
-    const {status, data} = useQuery(trpc.Search.queryOptions({query: debounceQuery}))
+    const {status, data} = useQuery(trpc.Search.queryOptions({query}))
 
     return (
         <dialog
@@ -69,22 +68,26 @@ export function PlacesSearch({show, onHide}: {show: boolean; onHide: () => void}
                         value={query}
                         onChange={e => setQuery(e.target.value)}
                         onKeyDown={e => {
-                            if (e.key === 'Escape') {
-                                if (show) {
+                            if (show) {
+                                if (e.key === 'Escape') {
                                     e.preventDefault()
                                     if (query) setQuery('')
                                     else onHide()
-                                }
-                            } else if (e.key === 'Enter') {
-                                if (show) {
-                                    e.preventDefault()
-                                    setQuery('')
-                                    onHide()
-                                    const result = data?.at(0)
+                                } else if (e.key === 'Enter') {
+                                    const result = data?.at(focusIndex)
                                     if (result) {
+                                        e.preventDefault()
+                                        setQuery('')
+                                        onHide()
                                         const action = getResultAction(result)
                                         action()
                                     }
+                                } else if (e.key === 'ArrowDown') {
+                                    e.preventDefault()
+                                    if (data) setFocusIndex(Math.min(focusIndex + 1, data.length - 1))
+                                } else if (e.key === 'ArrowUp') {
+                                    e.preventDefault()
+                                    if (data) setFocusIndex(Math.max(focusIndex - 1, 0))
                                 }
                             }
                         }}
@@ -141,7 +144,8 @@ export function PlacesSearch({show, onHide}: {show: boolean; onHide: () => void}
                                                     onHide()
                                                     action()
                                                 }}
-                                                className={`flex w-full items-center gap-2 rounded-md px-1.5 py-2 active:bg-black/10 dark:active:bg-white/10 ${active ? 'bg-black/5 dark:bg-white/5' : 'hover:bg-black/5 dark:hover:bg-white/5'}`}
+                                                onMouseEnter={() => setFocusIndex(i)}
+                                                className={`flex w-full items-center gap-2 rounded-md px-1.5 py-2 active:bg-black/10 dark:active:bg-white/10 ${focusIndex === i ? 'bg-black/5 dark:bg-white/5' : ''}`}
                                             >
                                                 <Icon weight="duotone" />
                                                 <p className="line-clamp-1">{result.name}</p>
