@@ -8,6 +8,7 @@ import {sql} from '@/model/neon'
 const GetAllPlaceOptionsSchema = z.object({
     filter: z
         .object({
+            id: z.string().uuid().optional().catch(undefined),
             top: z.boolean().default(false),
             countrySlug: z.array(z.string()).default([]),
             citySlug: z.array(z.string()).default([]),
@@ -24,7 +25,7 @@ export type GetAllPlaceOptions = z.input<typeof GetAllPlaceOptionsSchema>
 export const GetAllPlace = publicProcedure.input(GetAllPlaceOptionsSchema).query(
     async ({
         input: {
-            filter: {top, countrySlug, citySlug, placeType, placeTag},
+            filter: {id, top, countrySlug, citySlug, placeType, placeTag},
             sort,
             limit,
         },
@@ -60,6 +61,7 @@ export const GetAllPlace = publicProcedure.input(GetAllPlaceOptionsSchema).query
             JOIN city ON place.city_slug = city.slug
             JOIN country ON city.country_slug = country.slug
             WHERE
+                ${id ? sql`place.id = ${id} AND` : sql``}
                 ${top ? sql`place.top = TRUE AND` : sql``}
                 ${countrySlug.length > 0 ? sql`city.country_slug IN ('${sql.unsafe(countrySlug.join("', '"))}') AND` : sql``}
                 ${citySlug.length > 0 ? sql`place.city_slug IN ('${sql.unsafe(citySlug.join("', '"))}') AND` : sql``}

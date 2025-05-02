@@ -1,6 +1,6 @@
 'use client'
 
-import {City, ForkKnife, type Icon, Image as ImageIcon, Link as LinkIcon, MapPin, Pencil, Star, Tag, TextT} from '@phosphor-icons/react'
+import {City, ForkKnife, Image as ImageIcon, Link as LinkIcon, MapPin, Pencil, Star, Tag, TextT} from '@phosphor-icons/react'
 import Link from 'next/link'
 
 import {type Place} from '@/server/types'
@@ -59,7 +59,7 @@ export function PlaceTable({allPlace}: {allPlace: Place[]}) {
                             <TD>{place.top && <Star weight="fill" className="text-yellow-400" />}</TD>
 
                             <TD>
-                                <Badge size="sm" theme="g" border={false} rounded="xl">
+                                <Badge size="sm" theme="g" border={false}>
                                     {place.city_name}
                                 </Badge>
                             </TD>
@@ -74,7 +74,7 @@ export function PlaceTable({allPlace}: {allPlace: Place[]}) {
 
                             <TD>
                                 {place.type.map(p => (
-                                    <Badge key={p} size="sm" theme="g" border={false} rounded="xl">
+                                    <Badge key={p} size="sm" theme="g" border={false}>
                                         {p}
                                     </Badge>
                                 ))}
@@ -82,7 +82,7 @@ export function PlaceTable({allPlace}: {allPlace: Place[]}) {
 
                             <TD>
                                 {place.tags.map(t => (
-                                    <Badge key={t} size="sm" theme="g" border={false} rounded="xl">
+                                    <Badge key={t} size="sm" theme="g" border={false}>
                                         {t}
                                     </Badge>
                                 ))}
@@ -93,8 +93,18 @@ export function PlaceTable({allPlace}: {allPlace: Place[]}) {
                             </TD>
 
                             <TD>
-                                <ExternalLink url={googleMapsUrl({name: place.name, city_name: place.city_name, maps_id: place.maps_id})} icon={MapPin} title="Maps" />
-                                <ExternalLink url={notionUrl(place.id)} icon={Pencil} title="Edit" />
+                                <Link href={googleMapsUrl({name: place.name, city_name: place.city_name, maps_id: place.maps_id})} target="_blank" className="active:opacity-60">
+                                    <Badge size="sm">
+                                        <MapPin weight="bold" />
+                                        <p>Open in Maps</p>
+                                    </Badge>
+                                </Link>
+                                <Link href={notionUrl(place.id)} target="_blank" className="active:opacity-60">
+                                    <Badge size="sm">
+                                        <Pencil weight="bold" />
+                                        <p>Edit</p>
+                                    </Badge>
+                                </Link>
                             </TD>
                         </tr>
                     ))}
@@ -118,18 +128,5 @@ function TD({children}: {children?: React.ReactNode}) {
         <td className="border border-transparent border-b-line border-r-line px-2 py-1.5 last:border-r-transparent dark:border-b-line-dark dark:border-r-line-dark">
             <div className="flex items-center gap-1.5">{children}</div>
         </td>
-    )
-}
-
-// cell views
-function ExternalLink({url, icon, title}: {url: string; icon: Icon; title: string}) {
-    const Icon = icon
-    return (
-        <Link href={url} target="_blank" className="active:opacity-60">
-            <Badge size="sm" theme="g" border={false} rounded="xl">
-                <Icon weight="bold" />
-                <p>{title}</p>
-            </Badge>
-        </Link>
     )
 }

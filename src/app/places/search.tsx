@@ -1,6 +1,6 @@
 'use client'
 
-import {Check, City, Flag, ForkKnife, MagnifyingGlass, MapPin, QuestionMark, Tag, X} from '@phosphor-icons/react'
+import {CheckCircle, City, Flag, ForkKnife, MagnifyingGlass, MapPin, QuestionMark, Tag, X} from '@phosphor-icons/react'
 import {useQuery} from '@tanstack/react-query'
 import {parseAsString, useQueryState} from 'nuqs'
 import {useEffect, useRef, useState} from 'react'
@@ -8,12 +8,13 @@ import {useClickAway} from 'react-use'
 
 import {type SearchResult} from '@/server/types'
 
-import {useArrayState} from '@/lib/hooks/nuqs'
+import {useArrayState, useStringState} from '@/lib/hooks/nuqs'
 import {useTRPC} from '@/lib/trpc'
 
 import {Heading, inter} from '@/components/layout'
 
 export function PlacesSearch({show, onHide}: {show: boolean; onHide: () => void}) {
+    const selectedPlaceId = useStringState('id')
     const selectedCountrySlug = useArrayState('country')
     const selectedCitySlug = useArrayState('city')
     const selectedPlaceType = useArrayState('type')
@@ -21,7 +22,7 @@ export function PlacesSearch({show, onHide}: {show: boolean; onHide: () => void}
 
     function getResultAction(result: SearchResult): () => void {
         return {
-            place: () => {},
+            place: () => selectedPlaceId.set(result.id),
             country: () => selectedCountrySlug.toggle(result.id),
             city: () => selectedCitySlug.toggle(result.id),
             place_type: () => selectedPlaceType.toggle(result.id),
@@ -151,7 +152,7 @@ export function PlacesSearch({show, onHide}: {show: boolean; onHide: () => void}
                                                 <p className="line-clamp-1">{result.name}</p>
                                                 <div className="grow" />
                                                 <p className="line-clamp-1 text-xs opacity-50">{subtitle}</p>
-                                                {active && <Check weight="bold" className="opacity-50" />}
+                                                {active && <CheckCircle weight="duotone" className="text-accent" />}
                                             </button>
                                         )
                                     })}

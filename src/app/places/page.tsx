@@ -17,7 +17,7 @@ import {type GetAllPlaceOptions} from '@/server/procedures/get-all-place'
 
 import {countryFlag} from '@/model/util'
 
-import {useArrayState, useBooleanState} from '@/lib/hooks/nuqs'
+import {useArrayState, useBooleanState, useStringState} from '@/lib/hooks/nuqs'
 import {useTRPC} from '@/lib/trpc'
 
 import {Heading} from '@/components/layout'
@@ -30,6 +30,7 @@ import {Section} from '@/components/views/section'
 
 export default function PlacesPage() {
     // state
+    const selectedPlaceId = useStringState('id')
     const top = useBooleanState('top')
     const selectedCountrySlug = useArrayState('country')
     const selectedCitySlug = useArrayState('city')
@@ -51,6 +52,14 @@ export default function PlacesPage() {
 
     // active filter
     const activeFilter: ActiveFilter[] = [
+        ...(selectedPlaceId.value
+            ? [
+                  {
+                      title: 'Selected Place',
+                      onRemove: () => selectedPlaceId.set(null),
+                  },
+              ]
+            : []),
         ...selectedCountrySlug.value.map(countrySlug => ({
             title: allCountry.find(country => country.slug === countrySlug)?.name || countrySlug,
             onRemove: () => selectedCountrySlug.remove(countrySlug),
@@ -142,6 +151,7 @@ export default function PlacesPage() {
                     <PlacesStack
                         options={{
                             filter: {
+                                id: selectedPlaceId.value,
                                 top: top.value,
                                 countrySlug: selectedCountrySlug.value,
                                 citySlug: selectedCitySlug.value,
