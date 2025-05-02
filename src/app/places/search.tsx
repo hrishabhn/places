@@ -4,7 +4,7 @@ import {Check, City, Flag, ForkKnife, MagnifyingGlass, MapPin, QuestionMark, Tag
 import {useQuery} from '@tanstack/react-query'
 import {parseAsString, useQueryState} from 'nuqs'
 import {useEffect, useRef} from 'react'
-import {useClickAway, useKey} from 'react-use'
+import {useClickAway} from 'react-use'
 import {useDebounceValue} from 'usehooks-ts'
 
 import {useArrayState} from '@/lib/hooks/nuqs'
@@ -34,13 +34,6 @@ export function PlacesSearch({show, onHide}: {show: boolean; onHide: () => void}
         if (show) inputRef.current?.focus()
     }, [show])
     useClickAway(dialogRef, onHide)
-    useKey('Escape', e => {
-        if (show) {
-            e.preventDefault()
-            if (query) setQuery('')
-            else onHide()
-        }
-    })
 
     // query
     const trpc = useTRPC()
@@ -63,6 +56,15 @@ export function PlacesSearch({show, onHide}: {show: boolean; onHide: () => void}
                         className="w-full bg-transparent outline-none"
                         value={query}
                         onChange={e => setQuery(e.target.value)}
+                        onKeyDown={e => {
+                            if (e.key === 'Escape') {
+                                if (show) {
+                                    e.preventDefault()
+                                    if (query) setQuery('')
+                                    else onHide()
+                                }
+                            }
+                        }}
                     />
                     <button
                         onClick={() => {
