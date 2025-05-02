@@ -15,6 +15,7 @@ const GetAllPlaceOptionsSchema = z.object({
             placeTag: z.array(z.string()).default([]),
         })
         .default({}),
+    sort: z.enum(['name', 'created', 'modified', 'random']).default('name'),
     limit: z.number().optional(),
 })
 
@@ -24,10 +25,18 @@ export const GetAllPlace = publicProcedure.input(GetAllPlaceOptionsSchema).query
     async ({
         input: {
             filter: {top, countrySlug, citySlug, placeType, placeTag},
+            sort,
             limit,
         },
-    }): Promise<Place[]> =>
-        z.array(PlaceSchema).parse(
+    }): Promise<Place[]> => {
+        const orderBy = {
+            name: sql`place.name`,
+            created: sql`place.created DESC`,
+            modified: sql`place.modified DESC`,
+            random: sql`random()`,
+        }[sort]
+
+        return z.array(PlaceSchema).parse(
             await sql`
             SELECT
                 place.id,
@@ -57,8 +66,9 @@ export const GetAllPlace = publicProcedure.input(GetAllPlaceOptionsSchema).query
                 ${placeType.length > 0 ? sql`place.type && ARRAY['${sql.unsafe(placeType.join("', '"))}'] AND` : sql``}
                 ${placeTag.length > 0 ? sql`place.tags && ARRAY['${sql.unsafe(placeTag.join("', '"))}'] AND` : sql``}
                 TRUE
-            ORDER BY place.name
+            ORDER BY ${orderBy}
             ${limit ? sql`LIMIT ${limit}` : sql``}
             `
         )
+    }
 )

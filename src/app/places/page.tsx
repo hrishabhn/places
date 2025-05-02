@@ -148,6 +148,7 @@ export default function PlacesPage() {
                                 placeType: selectedPlaceType.value,
                                 placeTag: selectedPlaceTag.value,
                             },
+                            sort: 'name',
                         }}
                     />
                 </Suspense>
