@@ -13,6 +13,8 @@ import {CityImage} from '@/app/views/city/image'
 import {PlaceCard} from '@/app/views/place/card'
 import {PlaceTable} from '@/app/views/place/table'
 
+import {type GetAllPlaceOptions} from '@/server/procedures/get-all-place'
+
 import {countryFlag} from '@/model/util'
 
 import {useArrayState, useBooleanState} from '@/lib/hooks/nuqs'
@@ -138,12 +140,14 @@ export default function PlacesPage() {
             <Section>
                 <Suspense fallback={<Loading />}>
                     <PlacesStack
-                        filter={{
-                            top: top.value,
-                            countrySlug: selectedCountrySlug.value,
-                            citySlug: selectedCitySlug.value,
-                            placeType: selectedPlaceType.value,
-                            placeTag: selectedPlaceTag.value,
+                        options={{
+                            filter: {
+                                top: top.value,
+                                countrySlug: selectedCountrySlug.value,
+                                citySlug: selectedCitySlug.value,
+                                placeType: selectedPlaceType.value,
+                                placeTag: selectedPlaceTag.value,
+                            },
                         }}
                     />
                 </Suspense>
@@ -152,20 +156,10 @@ export default function PlacesPage() {
     )
 }
 
-type PlacesStackProps = {
-    filter: {
-        top: boolean
-        countrySlug: string[]
-        citySlug: string[]
-        placeType: string[]
-        placeTag: string[]
-    }
-}
-
-function PlacesStack({filter}: PlacesStackProps) {
+function PlacesStack({options}: {options: GetAllPlaceOptions}) {
     // query
     const trpc = useTRPC()
-    const {data: allPlace} = useSuspenseQuery(trpc.GetAllPlace.queryOptions({filter}))
+    const {data: allPlace} = useSuspenseQuery(trpc.GetAllPlace.queryOptions(options))
 
     // state
     const showSearch = useBooleanState('search')

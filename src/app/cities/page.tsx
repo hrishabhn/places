@@ -6,6 +6,8 @@ import {Suspense} from 'react'
 
 import {CityCard} from '@/app/views/city/card'
 
+import {type GetAllCityOptions} from '@/server/procedures/get-all-city'
+
 import {countryFlag} from '@/model/util'
 
 import {useArrayState} from '@/lib/hooks/nuqs'
@@ -66,22 +68,21 @@ export default function CitiesPage() {
 
             <Section>
                 <Suspense fallback={<Loading />}>
-                    <CitiesStack filter={{countrySlug: selectedCountrySlug.value}} />
+                    <CitiesStack
+                        options={{
+                            filter: {countrySlug: selectedCountrySlug.value},
+                            sort: 'place_count',
+                        }}
+                    />
                 </Suspense>
             </Section>
         </>
     )
 }
 
-type CitiesStackProps = {
-    filter: {
-        countrySlug: string[]
-    }
-}
-
-function CitiesStack({filter}: CitiesStackProps) {
+function CitiesStack({options}: {options: GetAllCityOptions}) {
     const trpc = useTRPC()
-    const {data: allCity} = useSuspenseQuery(trpc.GetAllCity.queryOptions({sort: 'place_count', filter}))
+    const {data: allCity} = useSuspenseQuery(trpc.GetAllCity.queryOptions(options))
 
     if (allCity.length === 0)
         return (

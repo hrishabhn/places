@@ -19,7 +19,7 @@ type SimpleCardProps = {
 export function SimpleCard({image, fallbackIcon, title, tags = [], links = [], description}: SimpleCardProps) {
     const Icon = fallbackIcon
     return (
-        <Card rounded="md" ring shadow="sm">
+        <Card rounded="md" ring>
             {image ? (
                 <Card aspect="video">
                     <SimpleImage url={image} alt="maps" />

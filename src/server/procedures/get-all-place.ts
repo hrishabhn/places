@@ -5,7 +5,7 @@ import {z} from 'zod'
 
 import {sql} from '@/model/neon'
 
-const GetAllPlaceInputSchema = z.object({
+const GetAllPlaceOptionsSchema = z.object({
     filter: z
         .object({
             top: z.boolean().default(false),
@@ -18,7 +18,9 @@ const GetAllPlaceInputSchema = z.object({
     limit: z.number().optional(),
 })
 
-export const GetAllPlace = publicProcedure.input(GetAllPlaceInputSchema).query(
+export type GetAllPlaceOptions = z.input<typeof GetAllPlaceOptionsSchema>
+
+export const GetAllPlace = publicProcedure.input(GetAllPlaceOptionsSchema).query(
     async ({
         input: {
             filter: {top, countrySlug, citySlug, placeType, placeTag},

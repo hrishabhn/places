@@ -5,12 +5,14 @@ import {z} from 'zod'
 
 import {sql} from '@/model/neon'
 
-const GetAllCountryInputSchema = z.object({
+const GetAllCountryOptionsSchema = z.object({
     sort: z.enum(['name', 'city_count', 'place_count']),
     limit: z.number().optional(),
 })
 
-export const GetAllCountry = publicProcedure.input(GetAllCountryInputSchema).query(async ({input: {sort, limit}}): Promise<Country[]> => {
+export type GetAllCountryOptions = z.input<typeof GetAllCountryOptionsSchema>
+
+export const GetAllCountry = publicProcedure.input(GetAllCountryOptionsSchema).query(async ({input: {sort, limit}}): Promise<Country[]> => {
     const orderBy = {
         name: sql`name`,
         city_count: sql`city_count DESC, name`,
