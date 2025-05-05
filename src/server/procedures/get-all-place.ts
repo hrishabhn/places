@@ -16,7 +16,7 @@ const GetAllPlaceOptionsSchema = z.object({
             placeTag: z.array(z.string()).default([]),
         })
         .default({}),
-    sort: z.enum(['name', 'created', 'modified', 'random']),
+    sort: z.enum(['name', 'country', 'city', 'created', 'modified', 'random']),
     limit: z.number().optional(),
 })
 
@@ -32,6 +32,8 @@ export const GetAllPlace = publicProcedure.input(GetAllPlaceOptionsSchema).query
     }): Promise<Place[]> => {
         const orderBy = {
             name: sql`place.name`,
+            country: sql`country.name, place.name`,
+            city: sql`city.name, country.name, place.name`,
             created: sql`place.created DESC`,
             modified: sql`place.modified DESC`,
             random: sql`random()`,

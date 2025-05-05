@@ -58,7 +58,7 @@ export function PlacesSearch({show, onHide}: {show: boolean; onHide: () => void}
             className={`${inter.className} fixed top-0 z-10 size-full flex-col bg-transparent text-inherit sm:top-48 sm:max-h-96 sm:w-[512px] sm:max-w-full`}
         >
             <div className="grid size-full grid-flow-row grid-rows-[auto,1fr] border-black/10 bg-layer-1/80 font-medium text-inherit shadow-lg backdrop-blur-lg sm:rounded-xl sm:border sm:text-sm dark:border-white/10 dark:bg-layer-1-dark/80">
-                <div className="flex items-center gap-2 border-b border-black/10 p-1.5 px-3 py-2 dark:border-white/10">
+                <div className="flex items-center gap-2 border-b border-black/10 p-3 text-base dark:border-white/10">
                     <MagnifyingGlass weight="bold" />
                     <input
                         ref={inputRef}

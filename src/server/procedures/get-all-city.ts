@@ -11,7 +11,7 @@ const GetAllCityOptionsSchema = z.object({
             countrySlug: z.array(z.string()).default([]),
         })
         .default({}),
-    sort: z.enum(['name', 'place_count']),
+    sort: z.enum(['place_count', 'country', 'name']),
     limit: z.number().optional(),
 })
 
@@ -26,8 +26,9 @@ export const GetAllCity = publicProcedure.input(GetAllCityOptionsSchema).query(
         },
     }): Promise<City[]> => {
         const orderBy = {
-            name: sql`city.name`,
             place_count: sql`place_count DESC, city.name`,
+            country: sql`country.name, city.name`,
+            name: sql`city.name`,
         }[sort]
 
         return z.array(CitySchema).parse(

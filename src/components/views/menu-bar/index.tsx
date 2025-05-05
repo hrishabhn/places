@@ -2,7 +2,7 @@
 
 import './style.css'
 
-import {type Icon} from '@phosphor-icons/react'
+import {ArrowsDownUp, type Icon} from '@phosphor-icons/react'
 import {motion} from 'motion/react'
 
 import {useIsStuck} from '@/lib/hooks'
@@ -71,6 +71,33 @@ export function MenuBarSelect<T>({icon, placeholder, allItem, onSelect, isActive
                         subtitle={toSubtitle ? toSubtitle(item) : undefined}
                         active={isActive(item)}
                     />
+                ))}
+            </DropdownMenuItems>
+        </Menu>
+    )
+}
+
+type MenuBarSortProps<AllOption extends readonly string[], Option = AllOption[number]> = {
+    selectedSort: Option
+    allSort: AllOption
+    onSelect: (option: Option) => void
+
+    toIcon: (option: Option) => Icon
+    toTitle: (option: Option) => string
+}
+
+export function MenuBarSort<T extends readonly string[]>({selectedSort, allSort, onSelect, toIcon, toTitle}: MenuBarSortProps<T>) {
+    return (
+        <Menu>
+            <MenuButton className="active:opacity-60">
+                <FilterItem>
+                    <ArrowsDownUp weight="bold" className="shrink-0" />
+                    <p>{toTitle(selectedSort)}</p>
+                </FilterItem>
+            </MenuButton>
+            <DropdownMenuItems anchor="bottom end">
+                {allSort.map(sort => (
+                    <DropdownMenuItem key={sort} action={{onClick: () => onSelect(sort)}} image={{icon: toIcon(sort)}} title={toTitle(sort)} active={sort === selectedSort} />
                 ))}
             </DropdownMenuItems>
         </Menu>

@@ -4,8 +4,9 @@ import {PlacesMap} from './map'
 import {PlacesSearch} from './search'
 import {PlacesStats} from './stats'
 
-import {ChartLineUp, City, Flag, ForkKnife, List, MagnifyingGlass, MapTrifold, Star, Table, Tag, X} from '@phosphor-icons/react'
+import {ChartLineUp, City, Flag, ForkKnife, List, MagnifyingGlass, MapTrifold, Star, Table, Tag, TextT, X} from '@phosphor-icons/react'
 import {useSuspenseQuery} from '@tanstack/react-query'
+import {parseAsStringLiteral, useQueryState} from 'nuqs'
 import {Suspense} from 'react'
 import {useKey} from 'react-use'
 
@@ -25,8 +26,10 @@ import {Badge, IconButton} from '@/components/ui'
 import {type ActiveFilter, FilterBar, InfoBar} from '@/components/views/filter'
 import {GridStack} from '@/components/views/grid'
 import {Loading} from '@/components/views/loading'
-import {MenuBarItem, MenuBarSelect, MenuBarTray} from '@/components/views/menu-bar'
+import {MenuBarItem, MenuBarSelect, MenuBarSort, MenuBarTray} from '@/components/views/menu-bar'
 import {Section} from '@/components/views/section'
+
+const allSort = ['name', 'country', 'city'] as const
 
 export default function PlacesPage() {
     // state
@@ -36,6 +39,8 @@ export default function PlacesPage() {
     const selectedCitySlug = useArrayState('city')
     const selectedPlaceType = useArrayState('type')
     const selectedPlaceTag = useArrayState('tag')
+
+    const [selectedSort, setSelectedSort] = useQueryState('sort', parseAsStringLiteral(allSort).withDefault('name'))
 
     // query
     const trpc = useTRPC()
@@ -131,6 +136,28 @@ export default function PlacesPage() {
                     toTitle={placeTag => placeTag.tag_name}
                     toSubtitle={placeTag => `${placeTag.place_count} places`}
                 />
+
+                <div className="grow" />
+
+                <MenuBarSort
+                    selectedSort={selectedSort}
+                    allSort={allSort}
+                    onSelect={option => setSelectedSort(option)}
+                    toIcon={option =>
+                        ({
+                            name: TextT,
+                            country: Flag,
+                            city: City,
+                        })[option]
+                    }
+                    toTitle={option =>
+                        ({
+                            name: 'Name',
+                            country: 'Country',
+                            city: 'City',
+                        })[option]
+                    }
+                />
             </MenuBarTray>
 
             {activeFilter.length > 0 && (
@@ -158,7 +185,7 @@ export default function PlacesPage() {
                                 placeType: selectedPlaceType.value,
                                 placeTag: selectedPlaceTag.value,
                             },
-                            sort: 'name',
+                            sort: selectedSort,
                         }}
                     />
                 </Suspense>

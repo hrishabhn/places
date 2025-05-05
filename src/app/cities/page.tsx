@@ -1,7 +1,8 @@
 'use client'
 
-import {Flag, X} from '@phosphor-icons/react'
+import {Flag, MapPin, TextT, X} from '@phosphor-icons/react'
 import {useSuspenseQuery} from '@tanstack/react-query'
+import {parseAsStringLiteral, useQueryState} from 'nuqs'
 import {Suspense} from 'react'
 
 import {CityCard} from '@/app/views/city/card'
@@ -18,12 +19,16 @@ import {Badge} from '@/components/ui'
 import {type ActiveFilter, FilterBar, InfoBar} from '@/components/views/filter'
 import {GridStack} from '@/components/views/grid'
 import {Loading} from '@/components/views/loading'
-import {MenuBarSelect, MenuBarTray} from '@/components/views/menu-bar'
+import {MenuBarSelect, MenuBarSort, MenuBarTray} from '@/components/views/menu-bar'
 import {Section} from '@/components/views/section'
+
+const allSort = ['place_count', 'country', 'name'] as const
 
 export default function CitiesPage() {
     // state
     const selectedCountrySlug = useArrayState('country')
+
+    const [selectedSort, setSelectedSort] = useQueryState('sort', parseAsStringLiteral(allSort).withDefault('name'))
 
     // query
     const trpc = useTRPC()
@@ -51,6 +56,28 @@ export default function CitiesPage() {
                     toTitle={country => country.name}
                     toSubtitle={country => `${country.city_count} cities`}
                 />
+
+                <div className="grow" />
+
+                <MenuBarSort
+                    selectedSort={selectedSort}
+                    allSort={allSort}
+                    onSelect={option => setSelectedSort(option)}
+                    toIcon={option =>
+                        ({
+                            place_count: MapPin,
+                            country: Flag,
+                            name: TextT,
+                        })[option]
+                    }
+                    toTitle={option =>
+                        ({
+                            place_count: 'Place Count',
+                            country: 'Country',
+                            name: 'Name',
+                        })[option]
+                    }
+                />
             </MenuBarTray>
 
             {activeFilter.length > 0 && (
@@ -71,7 +98,7 @@ export default function CitiesPage() {
                     <CitiesStack
                         options={{
                             filter: {countrySlug: selectedCountrySlug.value},
-                            sort: 'place_count',
+                            sort: selectedSort,
                         }}
                     />
                 </Suspense>
