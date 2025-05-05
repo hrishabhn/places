@@ -6,8 +6,9 @@ import {MapPin, Pencil, Star} from '@phosphor-icons/react'
 
 import {type Place} from '@/server/types'
 
-import {googleMapsUrl, notionUrl} from '@/model/util'
+import {countryFlag, googleMapsUrl, notionUrl} from '@/model/util'
 
+import {SimpleImage} from '@/components/ui'
 import {SimpleCard} from '@/components/views/card'
 
 export function PlaceCard({place}: {place: Place}) {
@@ -27,8 +28,12 @@ export function PlaceCard({place}: {place: Place}) {
                       ]
                     : []),
                 {
-                    type: 'primary' as const,
-                    icon: <MapPin weight="bold" className="opacity-60" />,
+                    type: 'primary',
+                    icon: (
+                        <div className="size-[1em]">
+                            <SimpleImage url={countryFlag(place.country_code)} />
+                        </div>
+                    ),
                     text: place.city_name,
                 },
                 ...place.type,
