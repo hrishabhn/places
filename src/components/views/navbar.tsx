@@ -1,6 +1,6 @@
 'use client'
 
-import {City, type Icon, Info, List, MapPin, Sparkle} from '@phosphor-icons/react'
+import {City, type Icon, Info, List, MapPin} from '@phosphor-icons/react'
 import Link from 'next/link'
 import {useRef, useState} from 'react'
 import {useClickAway} from 'react-use'
@@ -23,7 +23,6 @@ function NavbarDesktop() {
 
             <NavbarItemDesktop href="/cities" icon={City} title="Cities" />
             <NavbarItemDesktop href="/places" icon={MapPin} title="Places" />
-            <NavbarItemDesktop href="/concierge" icon={Sparkle} title="Concierge" />
             <NavbarItemDesktop href="/about" icon={Info} title="About" />
         </div>
     )
@@ -47,7 +46,6 @@ function NavbarMobile() {
                 <div className="flex w-full flex-col gap-4 px-4 pt-4">
                     <NavbarItemMobile href="/cities" icon={City} title="Cities" onClick={() => setOpen(false)} />
                     <NavbarItemMobile href="/places" icon={MapPin} title="Places" onClick={() => setOpen(false)} />
-                    <NavbarItemMobile href="/concierge" icon={Sparkle} title="Concierge" onClick={() => setOpen(false)} />
                     <NavbarItemMobile href="/about" icon={Info} title="About" onClick={() => setOpen(false)} />
                 </div>
             )}
@@ -58,7 +56,7 @@ function NavbarMobile() {
 // shared
 function NavbarTitle() {
     return (
-        <Link href="/" className={`${robotoSlab.className} line-clamp-1 text-xl font-bold active:opacity-60`}>
+        <Link href="/" className={`${robotoSlab.className} line-clamp-1 text-2xl font-bold active:opacity-60`}>
             Travel Guide
         </Link>
     )

@@ -1,2 +1,2 @@
-export {karla, robotoSlab, inter} from './font'
+export {inter, robotoSlab} from './font'
 export {Heading} from './heading'

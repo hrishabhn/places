@@ -1,4 +1,4 @@
-import {Database, GithubLogo, MapPin, Triangle} from '@phosphor-icons/react/dist/ssr'
+import {Database, GithubLogo, MapPin, Sparkle, Triangle} from '@phosphor-icons/react/dist/ssr'
 import Link from 'next/link'
 
 import {notionDatabaseId} from '@/model/config'
@@ -12,6 +12,16 @@ export default function About() {
         <Section>
             <Heading size="h1">About</Heading>
             <p>A curated list of the best places that I have encountered on my travels</p>
+
+            <Heading size="h3">Pages</Heading>
+            <ButtonTray>
+                <Link href="/concierge" className="active:opacity-60">
+                    <Button>
+                        <Sparkle weight="duotone" />
+                        <p>AI Concierge</p>
+                    </Button>
+                </Link>
+            </ButtonTray>
 
             <Heading size="h3">Links</Heading>
             <ButtonTray>

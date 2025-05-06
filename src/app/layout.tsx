@@ -4,7 +4,7 @@ import {Providers} from './providers'
 import type {Metadata, Viewport} from 'next'
 import colors from 'tailwindcss/colors'
 
-import {karla} from '@/components/layout'
+import {inter} from '@/components/layout'
 import {Navbar} from '@/components/views/navbar'
 
 export const metadata: Metadata = {
@@ -28,7 +28,7 @@ export default function RootLayout({
     return (
         <html lang="en">
             <Providers>
-                <body className={`${karla.className} flex min-h-screen w-full flex-col bg-layer-0 text-black antialiased dark:bg-layer-0-dark dark:text-white`}>
+                <body className={`${inter.className} flex min-h-screen w-full flex-col bg-layer-0 text-black antialiased dark:bg-layer-0-dark dark:text-white`}>
                     <Navbar />
                     {children}
                 </body>
