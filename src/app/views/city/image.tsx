@@ -1,5 +1,3 @@
-import './style.css'
-
 import {type City} from '@/server/types'
 
 import {Heading, robotoSlab} from '@/components/layout'

@@ -1,3 +1,5 @@
+import './style.css'
+
 import {SimpleImage} from '@/components/ui'
 
 type SplashProps = {
