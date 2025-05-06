@@ -95,8 +95,8 @@ export function PlacesSearch({show, onHide}: {show: boolean; onHide: () => void}
                     />
                     <button
                         onClick={() => {
-                            setQuery('')
-                            onHide()
+                            if (query) setQuery('')
+                            else onHide()
                         }}
                         className="active:opacity-60"
                     >
