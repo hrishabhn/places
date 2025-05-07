@@ -12,10 +12,10 @@ import {useTRPC} from '@/lib/trpc'
 import {Heading, robotoSlab} from '@/components/layout'
 import {Card} from '@/components/ui'
 import {Loading} from '@/components/views/loading'
-import {RotateWords} from '@/components/views/rotate-words'
 import {ScrollStack} from '@/components/views/scroll'
 import {Section} from '@/components/views/section'
 import {Splash} from '@/components/views/splash'
+import {TypeWords} from '@/components/views/type-words'
 
 export default function Home() {
     const trpc = useTRPC()
@@ -38,7 +38,7 @@ export default function Home() {
                         className="flex items-center gap-2 rounded-full bg-white px-3 py-2 text-sm font-medium text-black backdrop-blur-lg active:opacity-60"
                     >
                         <MagnifyingGlass weight="bold" />
-                        <RotateWords text="Search for" words={['Places', 'Cities', 'Countries']} />
+                        <TypeWords text="Search for" words={['restaurants', 'bars', 'cafes', 'parks']} />
                     </Link>
                 </div>
             </Splash>
