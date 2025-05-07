@@ -1,6 +1,7 @@
 import {Database, GithubLogo, MapPin, Sparkle, Triangle} from '@phosphor-icons/react/dist/ssr'
 import Link from 'next/link'
 
+import {appDescription} from '@/model/app'
 import {notionDatabaseId} from '@/model/config'
 
 import {Heading} from '@/components/layout'
@@ -11,7 +12,7 @@ export default function About() {
     return (
         <Section>
             <Heading size="h1">About</Heading>
-            <p>A curated list of the best places that I have encountered on my travels</p>
+            <p>{appDescription}</p>
 
             <Heading size="h3">Pages</Heading>
             <ButtonTray>

@@ -11,7 +11,7 @@ import {type SearchResult} from '@/server/types'
 import {useArrayState, useStringState} from '@/lib/hooks/nuqs'
 import {useTRPC} from '@/lib/trpc'
 
-import {Heading, inter} from '@/components/layout'
+import {Heading} from '@/components/layout'
 
 export function PlacesSearch({show, onHide}: {show: boolean; onHide: () => void}) {
     const selectedPlaceId = useStringState('id')
@@ -52,11 +52,7 @@ export function PlacesSearch({show, onHide}: {show: boolean; onHide: () => void}
     const {status, data} = useQuery(trpc.Search.queryOptions({query}))
 
     return (
-        <dialog
-            ref={dialogRef}
-            open={show}
-            className={`${inter.className} fixed top-0 z-10 size-full flex-col bg-transparent text-inherit sm:top-48 sm:max-h-96 sm:w-[512px] sm:max-w-full`}
-        >
+        <dialog ref={dialogRef} open={show} className="fixed top-0 z-10 size-full flex-col bg-transparent text-inherit sm:top-48 sm:max-h-96 sm:w-[512px] sm:max-w-full">
             <div className="grid size-full grid-flow-row grid-rows-[auto,1fr] border-black/10 bg-layer-1/80 font-medium text-inherit shadow-lg backdrop-blur-lg sm:rounded-xl sm:border sm:text-sm dark:border-white/10 dark:bg-layer-1-dark/80">
                 <div className="flex items-center gap-2 border-b border-black/10 p-3 text-base dark:border-white/10">
                     <MagnifyingGlass weight="bold" />

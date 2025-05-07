@@ -7,14 +7,14 @@ import {ArrowCircleRight, MagnifyingGlass} from '@phosphor-icons/react'
 import {useQuery} from '@tanstack/react-query'
 import Link from 'next/link'
 
+import {appDescription, appTitle} from '@/model/app'
+
 import {useTRPC} from '@/lib/trpc'
 
 import {Heading, robotoSlab} from '@/components/layout'
-import {Card} from '@/components/ui'
 import {Loading} from '@/components/views/loading'
 import {ScrollStack} from '@/components/views/scroll'
 import {Section} from '@/components/views/section'
-import {Splash} from '@/components/views/splash'
 import {TypeWords} from '@/components/views/type-words'
 
 export default function Home() {
@@ -28,20 +28,19 @@ export default function Home() {
 
     return (
         <>
-            <Splash url="https://images.unsplash.com/photo-1451187580459-43490279c0fa">
-                <div className={`${robotoSlab.className}`}>
-                    <Heading size="h2">Travel Guide</Heading>
-                    <p className="mb-2 font-medium opacity-60">Discover the best places to visit</p>
+            <div className="flex w-full flex-col items-center justify-center gap-6 bg-[url('https://images.unsplash.com/photo-1451187580459-43490279c0fa')] bg-cover bg-center px-4 py-12 text-center text-white sm:px-10 sm:py-20">
+                <p className={`${robotoSlab.className} text-5xl font-bold sm:text-5xl md:text-6xl lg:text-7xl`}>{appTitle}</p>
 
-                    <Link
-                        href="/places?search=true"
-                        className="flex items-center gap-2 rounded-full bg-white px-3 py-2 text-sm font-medium text-black backdrop-blur-lg active:opacity-60"
-                    >
-                        <MagnifyingGlass weight="bold" />
-                        <TypeWords text="Search for" words={['restaurants', 'bars', 'cafes', 'parks']} />
-                    </Link>
-                </div>
-            </Splash>
+                <p className="text-lg font-semibold opacity-80 md:text-xl">{appDescription}</p>
+
+                <Link
+                    href="/places?search=true"
+                    className="mt-2 flex w-full max-w-72 items-center gap-2 rounded-full border border-g-500/50 bg-line/30 px-3 py-2 text-base font-medium text-white backdrop-blur-md active:opacity-60"
+                >
+                    <MagnifyingGlass weight="bold" />
+                    <TypeWords text="Search for" words={['restaurants', 'bars', 'cafes', 'parks']} />
+                </Link>
+            </div>
 
             <Section>
                 <Heading size="h2">Cities</Heading>
@@ -50,19 +49,11 @@ export default function Home() {
                 {allCity.map(city => (
                     <CityCard key={city.slug} city={city} />
                 ))}
-                <Card rounded="md" ring>
-                    <Link href="/cities" className="flex size-full flex-col active:opacity-60">
-                        <div className="flex size-full flex-col items-center justify-center">
-                            <ArrowCircleRight weight="duotone" size={32} className="text-accent dark:text-accent-dark" />
-                            <p className="text-accent dark:text-accent-dark">View All</p>
-                        </div>
-                    </Link>
-                </Card>
                 <ViewAll href="/cities" />
             </ScrollStack>
 
             <Section>
-                <Heading size="h2">New Places</Heading>
+                <Heading size="h2">Recently Added</Heading>
             </Section>
             <ScrollStack>
                 {allPlaceNew.map(place => (

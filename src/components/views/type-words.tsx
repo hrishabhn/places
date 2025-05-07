@@ -68,8 +68,8 @@ export function TypeWords({text, words}: TypeWordsProps) {
     return (
         <div className="flex">
             {text}
-            <p className="pl-1 text-accent">{typedText}</p>
-            <span className={`${state !== 'complete' ? 'animate-blink' : ''} text-accent`}>|</span>
+            <p className="pl-1">{typedText}</p>
+            <span className="animate-blink">|</span>
         </div>
     )
 }

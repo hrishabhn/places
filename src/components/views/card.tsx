@@ -5,7 +5,7 @@ import {TagTray, type Tags} from './tags'
 import {type Icon} from '@phosphor-icons/react'
 import Link from 'next/link'
 
-import {Heading, inter} from '@/components/layout'
+import {Heading} from '@/components/layout'
 import {Badge, Card, SimpleImage} from '@/components/ui'
 
 type SimpleCardProps = {
@@ -52,7 +52,7 @@ export function SimpleCard({image, fallbackIcon, title, tags = [], links = [], d
                 {description && (
                     <>
                         <div className="my-1 h-px w-full bg-line dark:bg-line-dark" />
-                        <p className={`${inter.className} px-4 text-sm font-semibold opacity-60`}>{description}</p>
+                        <p className="px-4 text-sm font-semibold opacity-60">{description}</p>
                     </>
                 )}
             </div>
