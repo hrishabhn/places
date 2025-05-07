@@ -1,8 +1,9 @@
 'use client'
 
-import {Circle, type Icon} from '@phosphor-icons/react'
+import {TagTray, type Tags} from './tags'
+
+import {type Icon} from '@phosphor-icons/react'
 import Link from 'next/link'
-import {Fragment} from 'react'
 
 import {Heading, inter} from '@/components/layout'
 import {Badge, Card, SimpleImage} from '@/components/ui'
@@ -11,7 +12,7 @@ type SimpleCardProps = {
     image?: string | null
     fallbackIcon: Icon
     title: string
-    tags?: (TagProps | string)[]
+    tags?: Tags
     links?: CardLinkProps[]
     description?: string | null
 }
@@ -37,16 +38,8 @@ export function SimpleCard({image, fallbackIcon, title, tags = [], links = [], d
                     <p className="line-clamp-2 px-4">{title}</p>
                 </Heading>
 
-                {tags.length > 0 && (
-                    <div className="flex flex-wrap items-center gap-1.5 px-4 text-xs font-medium">
-                        {tags.map((tag, i) => (
-                            <Fragment key={i}>
-                                {typeof tag === 'string' ? <Tag type="secondary" text={tag} /> : <Tag {...tag} />}
-                                {i < tags.length - 1 && <Circle weight="fill" size={5} className="opacity-60" />}
-                            </Fragment>
-                        ))}
-                    </div>
-                )}
+                <TagTray tags={tags} />
+
                 {links.length > 0 && (
                     <div className="flex w-full flex-wrap gap-2 px-4 py-2">
                         {links.map((link, i) => (
@@ -62,28 +55,6 @@ export function SimpleCard({image, fallbackIcon, title, tags = [], links = [], d
                 )}
             </div>
         </Card>
-    )
-}
-
-type TagProps =
-    | {
-          type: 'primary'
-          icon: React.ReactNode
-          text: string
-      }
-    | {
-          type: 'secondary'
-          text: string
-      }
-
-function Tag(props: TagProps) {
-    if (props.type === 'secondary') return <p className="opacity-60">{props.text}</p>
-
-    return (
-        <>
-            {props.icon}
-            <p>{props.text}</p>
-        </>
     )
 }
 
