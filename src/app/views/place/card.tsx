@@ -3,9 +3,11 @@
 import {getPlaceIcon} from './place-icon'
 import {placeToTags} from './tags'
 
-import {MapPin} from '@phosphor-icons/react'
+import {MapPin, Pencil} from '@phosphor-icons/react'
 
 import {type Place} from '@/server/types'
+
+import {googleMapsUrl, notionUrl} from '@/model/util'
 
 import {SimpleCard} from '@/components/views/card'
 

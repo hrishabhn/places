@@ -38,7 +38,9 @@ export function SimpleCard({image, fallbackIcon, title, tags = [], links = [], d
                     <p className="line-clamp-2 px-4">{title}</p>
                 </Heading>
 
-                <TagTray tags={tags} />
+                <div className="px-4">
+                    <TagTray tags={tags} size="sm" />
+                </div>
 
                 {links.length > 0 && (
                     <div className="flex w-full flex-wrap gap-2 px-4 py-2">

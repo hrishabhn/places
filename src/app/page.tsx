@@ -31,7 +31,7 @@ export default function Home() {
             <Splash url="https://images.unsplash.com/photo-1451187580459-43490279c0fa">
                 <div className={`${robotoSlab.className}`}>
                     <Heading size="h2">Travel Guide</Heading>
-                    <p className="mb-2 font-medium text-g-400">Discover the best places to visit</p>
+                    <p className="mb-2 font-medium opacity-60">Discover the best places to visit</p>
 
                     <Link
                         href="/places?search=true"

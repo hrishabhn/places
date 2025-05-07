@@ -1,6 +1,6 @@
 'use client'
 
-import {City, type Icon, Info, List, MapPin} from '@phosphor-icons/react'
+import {City, type Icon, Info, List, MagnifyingGlass, MapPin} from '@phosphor-icons/react'
 import Link from 'next/link'
 import {useRef, useState} from 'react'
 import {useClickAway} from 'react-use'
@@ -23,6 +23,7 @@ function NavbarDesktop() {
 
             <NavbarItemDesktop href="/cities" icon={City} title="Cities" />
             <NavbarItemDesktop href="/places" icon={MapPin} title="Places" />
+            <NavbarItemDesktop href="/places?search=true" icon={MagnifyingGlass} title="Search" />
             <NavbarItemDesktop href="/about" icon={Info} title="About" />
         </div>
     )
@@ -46,6 +47,7 @@ function NavbarMobile() {
                 <div className="flex w-full flex-col gap-4 px-4 pt-4">
                     <NavbarItemMobile href="/cities" icon={City} title="Cities" onClick={() => setOpen(false)} />
                     <NavbarItemMobile href="/places" icon={MapPin} title="Places" onClick={() => setOpen(false)} />
+                    <NavbarItemMobile href="/places?search=true" icon={MagnifyingGlass} title="Search" onClick={() => setOpen(false)} />
                     <NavbarItemMobile href="/about" icon={Info} title="About" onClick={() => setOpen(false)} />
                 </div>
             )}

@@ -16,10 +16,17 @@ type Tag =
 
 export type Tags = (Tag | string)[]
 
-export function TagTray({tags = []}: {tags?: Tags}) {
+export function TagTray({tags = [], size}: {tags?: Tags; size: 'sm' | 'md' | 'lg'}) {
     if (tags.length === 0) return null
+
+    const tagSize = {
+        sm: 'text-xs',
+        md: 'text-sm',
+        lg: 'text-base',
+    }[size]
+
     return (
-        <div className="flex flex-wrap items-center gap-1.5 px-4 text-xs font-medium">
+        <div className={`flex flex-wrap items-center gap-1.5 font-medium ${tagSize}`}>
             {tags.map((tag, i) => (
                 <Fragment key={i}>
                     {typeof tag === 'string' ? <Tag type="secondary" text={tag} /> : <Tag {...tag} />}

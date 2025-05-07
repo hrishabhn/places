@@ -2,6 +2,7 @@ import {type City} from '@/server/types'
 
 import {Heading, robotoSlab} from '@/components/layout'
 import {Splash} from '@/components/views/splash'
+import {TagTray} from '@/components/views/tags'
 
 export function CityImage({city}: {city: City}) {
     if (!city.image)
@@ -24,7 +25,7 @@ function CityTitle({name, countryName, placeCount}: {name: string; countryName: 
             <Heading size="h1" withoutPadding>
                 {name}
             </Heading>
-            <p className="font-medium opacity-60">{[countryName, `${placeCount} places`].join(' • ')}</p>
+            <TagTray tags={[countryName, `${placeCount} places`]} size="lg" />
         </div>
     )
 }
