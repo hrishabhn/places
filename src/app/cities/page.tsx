@@ -28,7 +28,7 @@ export default function CitiesPage() {
     // state
     const selectedCountrySlug = useArrayState('country')
 
-    const [selectedSort, setSelectedSort] = useQueryState('sort', parseAsStringLiteral(allSort).withDefault('name'))
+    const [selectedSort, setSelectedSort] = useQueryState('sort', parseAsStringLiteral(allSort).withDefault('place_count'))
 
     // query
     const trpc = useTRPC()
