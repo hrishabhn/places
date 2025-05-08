@@ -18,7 +18,7 @@ import {getIcon} from '@/components/views/get-icon'
 import {GridStack} from '@/components/views/grid'
 import {Loading} from '@/components/views/loading'
 import {MenuBarSelect, MenuBarSort, MenuBarTray} from '@/components/views/menu-bar'
-import {SearchBar, SearchBarFilter} from '@/components/views/search'
+import {SearchBarFilter} from '@/components/views/search'
 import {Section} from '@/components/views/section'
 
 const allSort = ['place_count', 'country', 'name'] as const
@@ -115,9 +115,9 @@ export default function CitiesPage() {
             )}
 
             <Section>
-                <SearchBar>
+                <div className="pb-4 pt-8">
                     <SearchBarFilter query={query} setQuery={setQuery} />
-                </SearchBar>
+                </div>
 
                 {isPending ? (
                     <Loading />

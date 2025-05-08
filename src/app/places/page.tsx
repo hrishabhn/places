@@ -23,7 +23,7 @@ import {getIcon} from '@/components/views/get-icon'
 import {GridStack} from '@/components/views/grid'
 import {Loading} from '@/components/views/loading'
 import {MenuBarItem, MenuBarSelect, MenuBarSort, MenuBarTray} from '@/components/views/menu-bar'
-import {SearchBar, SearchBarButton, SearchBarFilter} from '@/components/views/search'
+import {SearchBarButton, SearchBarFilter} from '@/components/views/search'
 import {Section} from '@/components/views/section'
 
 const allSort = ['name', 'country', 'city'] as const
@@ -197,18 +197,21 @@ export default function PlacesPage() {
             )}
 
             <Section>
-                <SearchBar>
+                <div className="flex flex-col items-start gap-2 pb-4 pt-8">
                     <SearchBarFilter query={query} setQuery={setQuery} />
-                    <button onClick={() => showMap.toggle()} className="active:opacity-60" title="Map">
-                        <SearchBarButton icon={MapTrifold} text="Map" active={showMap.value} />
-                    </button>
-                    <button onClick={() => showStats.toggle()} className="active:opacity-60" title="Stats">
-                        <SearchBarButton icon={ChartLineUp} text="Stats" active={showStats.value} />
-                    </button>
-                    <button onClick={() => tableView.toggle()} className="active:opacity-60" title="Table">
-                        <SearchBarButton icon={Table} text="Table" active={tableView.value} />
-                    </button>
-                </SearchBar>
+
+                    <ButtonTray>
+                        <button onClick={() => showMap.toggle()} className="active:opacity-60" title="Map">
+                            <SearchBarButton icon={MapTrifold} text="Map" active={showMap.value} />
+                        </button>
+                        <button onClick={() => showStats.toggle()} className="active:opacity-60" title="Stats">
+                            <SearchBarButton icon={ChartLineUp} text="Stats" active={showStats.value} />
+                        </button>
+                        <button onClick={() => tableView.toggle()} className="active:opacity-60" title="Table">
+                            <SearchBarButton icon={Table} text="Table" active={tableView.value} />
+                        </button>
+                    </ButtonTray>
+                </div>
 
                 {isPending ? (
                     <Loading />
