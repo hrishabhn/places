@@ -65,7 +65,22 @@ export const GetAllPlace = publicProcedure.input(GetAllPlaceOptionsSchema).query
                 place.lon,
                 place.created,
                 place.modified
-                ${query ? sql`, GREATEST(similarity(place.name, ${query}), similarity(city.name, ${query}) * 0.9) as score` : sql``}
+                ${
+                    query
+                        ? sql`,
+                        GREATEST(
+                            similarity(place.name, ${query})
+                            ,
+                            similarity(city.name, ${query}) * 0.9
+                            ,
+                            similarity(country.name, ${query}) * 0.9
+                            ,
+                            (SELECT MAX(similarity(type, ${query}) * 0.8) FROM unnest(place.type) as type)
+                            ,
+                            (SELECT MAX(similarity(tag, ${query}) * 0.8) FROM unnest(place.tags) as tag)
+                        ) as score`
+                        : sql``
+                }
             FROM place
             JOIN city ON place.city_slug = city.slug
             JOIN country ON city.country_slug = country.slug
@@ -76,9 +91,23 @@ export const GetAllPlace = publicProcedure.input(GetAllPlaceOptionsSchema).query
                 ${citySlug.length > 0 ? sql`place.city_slug IN ('${sql.unsafe(citySlug.join("', '"))}') AND` : sql``}
                 ${placeType.length > 0 ? sql`place.type && ARRAY['${sql.unsafe(placeType.join("', '"))}'] AND` : sql``}
                 ${placeTag.length > 0 ? sql`place.tags && ARRAY['${sql.unsafe(placeTag.join("', '"))}'] AND` : sql``}
-                ${query ? sql`(place.name % ${query} OR city.name % ${query} OR country.name % ${query}) AND` : sql``}
+                ${
+                    query
+                        ? sql`(
+                        place.name % ${query}
+                        OR
+                        city.name % ${query}
+                        OR
+                        country.name % ${query}
+                        OR
+                        ${query} % ANY(place.type)
+                        OR
+                        ${query} % ANY(place.tags)
+                        ) AND`
+                        : sql``
+                }
                 TRUE
-            ORDER BY ${query ? sql`score DESC` : orderBy}
+            ORDER BY ${query ? sql`score DESC, place.name` : orderBy}
             ${limit ? sql`LIMIT ${limit}` : sql``}
             `
         )

@@ -47,15 +47,32 @@ export const GetAllCity = publicProcedure.input(GetAllCityOptionsSchema).query(
                 country.code as country_code,
                 city.image,
                 (SELECT COUNT(*) FROM place WHERE place.city_slug = city.slug) as place_count
-                ${query ? sql`, GREATEST(similarity(city.name, ${query}), similarity(country.name, ${query}) * 0.9) as score` : sql``}
+                ${
+                    query
+                        ? sql`,
+                        GREATEST(
+                            similarity(city.name, ${query})
+                            ,
+                            similarity(country.name, ${query}) * 0.9
+                        ) as score`
+                        : sql``
+                }
             FROM city
             JOIN country ON city.country_slug = country.slug
             WHERE
                 ${countrySlug.length > 0 ? sql`city.country_slug IN ('${sql.unsafe(countrySlug.join("', '"))}') AND` : sql``}
-                ${query ? sql`(city.name % ${query} OR country.name % ${query}) AND` : sql``}
+                ${
+                    query
+                        ? sql`(
+                        city.name % ${query}
+                        OR
+                        country.name % ${query}
+                        ) AND`
+                        : sql``
+                }
                 TRUE
             GROUP BY city.slug, country_name, country_code
-            ORDER BY ${query ? sql`score DESC` : orderBy}
+            ORDER BY ${query ? sql`score DESC, city.name` : orderBy}
             ${limit ? sql`LIMIT ${limit}` : sql``}
             `
         )
