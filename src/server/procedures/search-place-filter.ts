@@ -1,24 +1,29 @@
 import {publicProcedure} from '../trpc'
-import {type SearchResult, SearchResultSchema} from '../types'
+import {SearchInputSchema} from '../types'
 
 import {z} from 'zod'
 
 import {sql} from '@/model/neon'
 
-const SearchInputSchema = z.object({
-    query: z.string(),
+export const PlaceFilterSchema = z.object({
+    name: z.string(),
+    id: z.string(),
+    type: z.enum(['country', 'city', 'place_type', 'place_tag']),
+    score: z.coerce.number(),
 })
 
-export const Search = publicProcedure.input(SearchInputSchema).query(async ({input: {query}}): Promise<SearchResult[]> => {
-    if (!query) return []
-    await sql`select set_limit(0.1)`
+export type PlaceFilter = z.infer<typeof PlaceFilterSchema>
 
-    return z.array(SearchResultSchema).parse(
+export const SearchPlaceFilter = publicProcedure.input(SearchInputSchema).query(async ({input: {query}}): Promise<PlaceFilter[]> => {
+    if (!query) return []
+
+    // set limit for similarity
+    await sql`select set_limit(0.3)`
+
+    return z.array(PlaceFilterSchema).parse(
         await sql`
         select name, id, type, similarity(name, ${query}) as score
         from (
-            select name, cast(id as text) as id, 'place' as type from place
-            union
             select name, slug as id, 'country' as type from country
             union
             select name, slug as id, 'city' as type from city
@@ -29,7 +34,7 @@ export const Search = publicProcedure.input(SearchInputSchema).query(async ({inp
         )
         where name % ${query}
         order by score desc
-        limit 20
+        limit 10
         `
     )
 })

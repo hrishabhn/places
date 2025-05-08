@@ -16,6 +16,7 @@ const GetAllPlaceOptionsSchema = z.object({
             placeTag: z.array(z.string()).default([]),
         })
         .default({}),
+    query: z.string().default(''),
     sort: z.enum(['name', 'country', 'city', 'created', 'modified', 'random']),
     limit: z.number().optional(),
 })
@@ -26,10 +27,15 @@ export const GetAllPlace = publicProcedure.input(GetAllPlaceOptionsSchema).query
     async ({
         input: {
             filter: {id, top, countrySlug, citySlug, placeType, placeTag},
+            query,
             sort,
             limit,
         },
     }): Promise<Place[]> => {
+        // set limit for similarity
+        await sql`select set_limit(0.3)`
+
+        // order by
         const orderBy = {
             name: sql`place.name`,
             country: sql`country.name, place.name`,
@@ -59,6 +65,7 @@ export const GetAllPlace = publicProcedure.input(GetAllPlaceOptionsSchema).query
                 place.lon,
                 place.created,
                 place.modified
+                ${query ? sql`, GREATEST(similarity(place.name, ${query}), similarity(city.name, ${query}) * 0.9) as score` : sql``}
             FROM place
             JOIN city ON place.city_slug = city.slug
             JOIN country ON city.country_slug = country.slug
@@ -69,8 +76,9 @@ export const GetAllPlace = publicProcedure.input(GetAllPlaceOptionsSchema).query
                 ${citySlug.length > 0 ? sql`place.city_slug IN ('${sql.unsafe(citySlug.join("', '"))}') AND` : sql``}
                 ${placeType.length > 0 ? sql`place.type && ARRAY['${sql.unsafe(placeType.join("', '"))}'] AND` : sql``}
                 ${placeTag.length > 0 ? sql`place.tags && ARRAY['${sql.unsafe(placeTag.join("', '"))}'] AND` : sql``}
+                ${query ? sql`(place.name % ${query} OR city.name % ${query} OR country.name % ${query}) AND` : sql``}
                 TRUE
-            ORDER BY ${orderBy}
+            ORDER BY ${query ? sql`score DESC` : orderBy}
             ${limit ? sql`LIMIT ${limit}` : sql``}
             `
         )

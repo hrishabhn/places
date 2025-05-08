@@ -1,46 +1,48 @@
 'use client'
 
 import {PlacesMap} from './map'
-import {PlacesSearch} from './search'
 import {PlacesStats} from './stats'
 
-import {ChartLineUp, City, Flag, ForkKnife, List, MagnifyingGlass, MapTrifold, Star, Table, Tag, TextT, X} from '@phosphor-icons/react'
-import {useSuspenseQuery} from '@tanstack/react-query'
-import {parseAsStringLiteral, useQueryState} from 'nuqs'
-import {Suspense} from 'react'
-import {useKey} from 'react-use'
+import {ChartLineUp, City, Flag, ForkKnife, MapTrifold, Plus, Star, Table, Tag, TextT, X} from '@phosphor-icons/react'
+import {useQuery, useSuspenseQuery} from '@tanstack/react-query'
+import {parseAsString, parseAsStringLiteral, useQueryState} from 'nuqs'
 
 import {CityImage} from '@/app/views/city/image'
 import {PlaceCard} from '@/app/views/place/card'
 import {PlaceTable} from '@/app/views/place/table'
 
-import {type GetAllPlaceOptions} from '@/server/procedures/get-all-place'
-
 import {countryFlag} from '@/model/util'
 
-import {useArrayState, useBooleanState, useStringState} from '@/lib/hooks/nuqs'
+import {useArrayState, useBooleanState} from '@/lib/hooks/nuqs'
 import {useTRPC} from '@/lib/trpc'
 
 import {Heading} from '@/components/layout'
-import {Badge, IconButton} from '@/components/ui'
-import {type ActiveFilter, FilterBar, InfoBar} from '@/components/views/filter'
+import {Badge, ButtonTray} from '@/components/ui'
+import {type ActiveFilter, FilterBar} from '@/components/views/filter'
+import {getIcon} from '@/components/views/get-icon'
 import {GridStack} from '@/components/views/grid'
 import {Loading} from '@/components/views/loading'
 import {MenuBarItem, MenuBarSelect, MenuBarSort, MenuBarTray} from '@/components/views/menu-bar'
+import {SearchBar, SearchBarButton, SearchBarFilter} from '@/components/views/search'
 import {Section} from '@/components/views/section'
 
 const allSort = ['name', 'country', 'city'] as const
 
 export default function PlacesPage() {
     // state
-    const selectedPlaceId = useStringState('id')
     const top = useBooleanState('top')
     const selectedCountrySlug = useArrayState('country')
     const selectedCitySlug = useArrayState('city')
     const selectedPlaceType = useArrayState('type')
     const selectedPlaceTag = useArrayState('tag')
 
+    const [query, setQuery] = useQueryState('q', parseAsString.withDefault(''))
+
     const [selectedSort, setSelectedSort] = useQueryState('sort', parseAsStringLiteral(allSort).withDefault('name'))
+
+    const showMap = useBooleanState('map')
+    const showStats = useBooleanState('stats')
+    const tableView = useBooleanState('table')
 
     // query
     const trpc = useTRPC()
@@ -48,6 +50,27 @@ export default function PlacesPage() {
     const {data: allCity} = useSuspenseQuery(trpc.GetAllCity.queryOptions({sort: 'place_count'}))
     const {data: allPlaceType} = useSuspenseQuery(trpc.GetAllPlaceType.queryOptions())
     const {data: allPlaceTag} = useSuspenseQuery(trpc.GetAllPlaceTag.queryOptions())
+
+    const {status: searchStatus, data: searchResult} = useQuery(trpc.SearchPlaceFilter.queryOptions({query}))
+    const {status: allPlaceStatus, data: allPlace} = useQuery(
+        trpc.GetAllPlace.queryOptions({
+            filter: {
+                top: top.value,
+                countrySlug: selectedCountrySlug.value,
+                citySlug: selectedCitySlug.value,
+                placeType: selectedPlaceType.value,
+                placeTag: selectedPlaceTag.value,
+            },
+            query,
+            sort: selectedSort,
+        })
+    )
+
+    // derived state
+    const isPending = searchStatus === 'pending' || allPlaceStatus === 'pending'
+    const isError = searchStatus === 'error' || allPlaceStatus === 'error'
+
+    if (isError) throw new Error('Failed to load data')
 
     // single city for image
     const singleCity = (() => {
@@ -57,28 +80,24 @@ export default function PlacesPage() {
 
     // active filter
     const activeFilter: ActiveFilter[] = [
-        ...(selectedPlaceId.value
-            ? [
-                  {
-                      title: 'Selected Place',
-                      onRemove: () => selectedPlaceId.set(null),
-                  },
-              ]
-            : []),
         ...selectedCountrySlug.value.map(countrySlug => ({
             title: allCountry.find(country => country.slug === countrySlug)?.name || countrySlug,
+            type: 'country' as const,
             onRemove: () => selectedCountrySlug.remove(countrySlug),
         })),
         ...selectedCitySlug.value.map(citySlug => ({
             title: allCity.find(city => city.slug === citySlug)?.name || citySlug,
+            type: 'city' as const,
             onRemove: () => selectedCitySlug.remove(citySlug),
         })),
         ...selectedPlaceType.value.map(placeType => ({
             title: placeType,
+            type: 'place_type' as const,
             onRemove: () => selectedPlaceType.remove(placeType),
         })),
         ...selectedPlaceTag.value.map(placeTag => ({
             title: placeTag,
+            type: 'place_tag' as const,
             onRemove: () => selectedPlaceTag.remove(placeTag),
         })),
     ]
@@ -162,96 +181,109 @@ export default function PlacesPage() {
 
             {activeFilter.length > 0 && (
                 <FilterBar>
-                    {activeFilter.map(filter => (
-                        <button key={filter.title} className="active:opacity-60" onClick={() => filter.onRemove()}>
-                            <Badge>
-                                <X weight="bold" />
-                                <p>{filter.title}</p>
-                            </Badge>
-                        </button>
-                    ))}
+                    {activeFilter.map(filter => {
+                        const Icon = getIcon(filter.type)
+                        return (
+                            <button key={filter.title} className="active:opacity-60" onClick={() => filter.onRemove()}>
+                                <Badge>
+                                    <Icon weight="duotone" />
+                                    <p>{filter.title}</p>
+                                    <X weight="bold" />
+                                </Badge>
+                            </button>
+                        )
+                    })}
                 </FilterBar>
             )}
 
             <Section>
-                <Suspense fallback={<Loading />}>
-                    <PlacesStack
-                        options={{
-                            filter: {
-                                id: selectedPlaceId.value,
-                                top: top.value,
-                                countrySlug: selectedCountrySlug.value,
-                                citySlug: selectedCitySlug.value,
-                                placeType: selectedPlaceType.value,
-                                placeTag: selectedPlaceTag.value,
-                            },
-                            sort: selectedSort,
-                        }}
-                    />
-                </Suspense>
+                <SearchBar>
+                    <SearchBarFilter query={query} setQuery={setQuery} />
+                    <button onClick={() => showMap.toggle()} className="active:opacity-60" title="Map">
+                        <SearchBarButton icon={MapTrifold} text="Map" active={showMap.value} />
+                    </button>
+                    <button onClick={() => showStats.toggle()} className="active:opacity-60" title="Stats">
+                        <SearchBarButton icon={ChartLineUp} text="Stats" active={showStats.value} />
+                    </button>
+                    <button onClick={() => tableView.toggle()} className="active:opacity-60" title="Table">
+                        <SearchBarButton icon={Table} text="Table" active={tableView.value} />
+                    </button>
+                </SearchBar>
+
+                {isPending ? (
+                    <Loading />
+                ) : (
+                    <>
+                        {searchResult.length > 0 && (
+                            <>
+                                <Heading size="h2">Filters</Heading>
+                                <ButtonTray>
+                                    {searchResult.map((result, i) => {
+                                        const active = {
+                                            country: selectedCountrySlug.value.includes(result.id),
+                                            city: selectedCitySlug.value.includes(result.id),
+                                            place_type: selectedPlaceType.value.includes(result.id),
+                                            place_tag: selectedPlaceTag.value.includes(result.id),
+                                        }[result.type]
+
+                                        const onSelect = {
+                                            country: () => selectedCountrySlug.toggle(result.id),
+                                            city: () => selectedCitySlug.toggle(result.id),
+                                            place_type: () => selectedPlaceType.toggle(result.id),
+                                            place_tag: () => selectedPlaceTag.toggle(result.id),
+                                        }[result.type]
+
+                                        const Icon = getIcon(result.type)
+
+                                        return (
+                                            <button
+                                                key={i}
+                                                className="active:opacity-60"
+                                                onClick={() => {
+                                                    onSelect()
+                                                    setQuery('')
+                                                }}
+                                            >
+                                                <Badge active={active}>
+                                                    <Icon weight="duotone" />
+                                                    <p>{result.name}</p>
+                                                    {active ? <X weight="bold" /> : <Plus weight="bold" />}
+                                                </Badge>
+                                            </button>
+                                        )
+                                    })}
+                                </ButtonTray>
+                            </>
+                        )}
+                        <Heading size="h2">Places</Heading>
+                        {allPlace.length > 0 ? (
+                            <>
+                                {showMap.value && <PlacesMap allPlace={allPlace} />}
+                                {showStats.value && <PlacesStats allPlace={allPlace} />}
+
+                                {tableView.value ? (
+                                    <PlaceTable allPlace={allPlace} />
+                                ) : (
+                                    <GridStack>
+                                        {allPlace.map(place => (
+                                            <PlaceCard key={place.id} place={place} />
+                                        ))}
+                                    </GridStack>
+                                )}
+                            </>
+                        ) : (
+                            <>
+                                <Heading size="h4" withoutPadding>
+                                    No results
+                                </Heading>
+                                <Heading size="h5" withoutPadding>
+                                    Try adjusting the filters
+                                </Heading>
+                            </>
+                        )}
+                    </>
+                )}
             </Section>
-        </>
-    )
-}
-
-function PlacesStack({options}: {options: GetAllPlaceOptions}) {
-    // query
-    const trpc = useTRPC()
-    const {data: allPlace} = useSuspenseQuery(trpc.GetAllPlace.queryOptions(options))
-
-    // state
-    const showSearch = useBooleanState('search')
-    const showMap = useBooleanState('map')
-    const showStats = useBooleanState('stats')
-    const tableView = useBooleanState('table')
-
-    // effect
-    useKey('/', e => {
-        e.preventDefault()
-        showSearch.setTrue()
-    })
-
-    return (
-        <>
-            <InfoBar>
-                <p>{allPlace.length} places</p>
-                <div className="grow" />
-                <button onClick={() => showSearch.toggle()} className="active:opacity-60">
-                    <IconButton theme="hover" icon={MagnifyingGlass} active={showSearch.value} />
-                </button>
-                <button onClick={() => showMap.toggle()} className="active:opacity-60">
-                    <IconButton theme="hover" icon={MapTrifold} active={showMap.value} />
-                </button>
-                <button onClick={() => showStats.toggle()} className="active:opacity-60">
-                    <IconButton theme="hover" icon={ChartLineUp} active={showStats.value} />
-                </button>
-                <button onClick={() => tableView.toggle()} className="active:opacity-60">
-                    <IconButton theme="hover" icon={tableView ? Table : List} active={tableView.value} />
-                </button>
-            </InfoBar>
-
-            <PlacesSearch show={showSearch.value} onHide={() => showSearch.setFalse()} />
-            {showMap.value && <PlacesMap allPlace={allPlace} />}
-            {showStats.value && <PlacesStats allPlace={allPlace} />}
-
-            {allPlace.length === 0 ? (
-                <div className="py-3">
-                    <Heading size="h3" withoutPadding>
-                        No results
-                    </Heading>
-                    <Heading size="h5" withoutPadding>
-                        Try adjusting the filters
-                    </Heading>
-                </div>
-            ) : tableView.value ? (
-                <PlaceTable allPlace={allPlace} />
-            ) : (
-                <GridStack>
-                    {allPlace.map(place => (
-                        <PlaceCard key={place.id} place={place} />
-                    ))}
-                </GridStack>
-            )}
         </>
     )
 }

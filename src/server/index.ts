@@ -3,7 +3,8 @@ import {GetAllCountry} from './procedures/get-all-country'
 import {GetAllPlace} from './procedures/get-all-place'
 import {GetAllPlaceTag} from './procedures/get-all-place-tag'
 import {GetAllPlaceType} from './procedures/get-all-place-type'
-import {Search} from './procedures/search'
+import {SearchCityFilter} from './procedures/search-city-filter'
+import {SearchPlaceFilter} from './procedures/search-place-filter'
 import {router} from './trpc'
 
 export const appRouter = router({
@@ -15,7 +16,9 @@ export const appRouter = router({
 
     GetAllPlace,
 
-    Search,
+    // search
+    SearchCityFilter,
+    SearchPlaceFilter,
 })
 
 export type AppRouter = typeof appRouter

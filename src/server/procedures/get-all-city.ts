@@ -11,6 +11,7 @@ const GetAllCityOptionsSchema = z.object({
             countrySlug: z.array(z.string()).default([]),
         })
         .default({}),
+    query: z.string().default(''),
     sort: z.enum(['place_count', 'country', 'name']),
     limit: z.number().optional(),
 })
@@ -21,10 +22,15 @@ export const GetAllCity = publicProcedure.input(GetAllCityOptionsSchema).query(
     async ({
         input: {
             filter: {countrySlug},
+            query,
             sort,
             limit,
         },
     }): Promise<City[]> => {
+        // set limit for similarity
+        await sql`select set_limit(0.3)`
+
+        // order by
         const orderBy = {
             place_count: sql`place_count DESC, city.name`,
             country: sql`country.name, city.name`,
@@ -41,11 +47,15 @@ export const GetAllCity = publicProcedure.input(GetAllCityOptionsSchema).query(
                 country.code as country_code,
                 city.image,
                 (SELECT COUNT(*) FROM place WHERE place.city_slug = city.slug) as place_count
+                ${query ? sql`, GREATEST(similarity(city.name, ${query}), similarity(country.name, ${query}) * 0.9) as score` : sql``}
             FROM city
             JOIN country ON city.country_slug = country.slug
-            ${countrySlug.length > 0 ? sql`WHERE city.country_slug IN ('${sql.unsafe(countrySlug.join("', '"))}')` : sql``}
+            WHERE
+                ${countrySlug.length > 0 ? sql`city.country_slug IN ('${sql.unsafe(countrySlug.join("', '"))}') AND` : sql``}
+                ${query ? sql`(city.name % ${query} OR country.name % ${query}) AND` : sql``}
+                TRUE
             GROUP BY city.slug, country_name, country_code
-            ORDER BY ${orderBy}
+            ORDER BY ${query ? sql`score DESC` : orderBy}
             ${limit ? sql`LIMIT ${limit}` : sql``}
             `
         )

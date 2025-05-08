@@ -1,13 +1,10 @@
 'use client'
 
-import {Flag, MapPin, TextT, X} from '@phosphor-icons/react'
-import {useSuspenseQuery} from '@tanstack/react-query'
-import {parseAsStringLiteral, useQueryState} from 'nuqs'
-import {Suspense} from 'react'
+import {Flag, MapPin, Plus, TextT, X} from '@phosphor-icons/react'
+import {useQuery, useSuspenseQuery} from '@tanstack/react-query'
+import {parseAsString, parseAsStringLiteral, useQueryState} from 'nuqs'
 
 import {CityCard} from '@/app/views/city/card'
-
-import {type GetAllCityOptions} from '@/server/procedures/get-all-city'
 
 import {countryFlag} from '@/model/util'
 
@@ -15,11 +12,13 @@ import {useArrayState} from '@/lib/hooks/nuqs'
 import {useTRPC} from '@/lib/trpc'
 
 import {Heading} from '@/components/layout'
-import {Badge} from '@/components/ui'
-import {type ActiveFilter, FilterBar, InfoBar} from '@/components/views/filter'
+import {Badge, ButtonTray} from '@/components/ui'
+import {type ActiveFilter, FilterBar} from '@/components/views/filter'
+import {getIcon} from '@/components/views/get-icon'
 import {GridStack} from '@/components/views/grid'
 import {Loading} from '@/components/views/loading'
 import {MenuBarSelect, MenuBarSort, MenuBarTray} from '@/components/views/menu-bar'
+import {SearchBar, SearchBarFilter} from '@/components/views/search'
 import {Section} from '@/components/views/section'
 
 const allSort = ['place_count', 'country', 'name'] as const
@@ -28,16 +27,34 @@ export default function CitiesPage() {
     // state
     const selectedCountrySlug = useArrayState('country')
 
+    const [query, setQuery] = useQueryState('q', parseAsString.withDefault(''))
+
     const [selectedSort, setSelectedSort] = useQueryState('sort', parseAsStringLiteral(allSort).withDefault('place_count'))
 
     // query
     const trpc = useTRPC()
     const {data: allCountry} = useSuspenseQuery(trpc.GetAllCountry.queryOptions({sort: 'city_count'}))
 
+    const {status: searchStatus, data: searchResult} = useQuery(trpc.SearchCityFilter.queryOptions({query}))
+    const {status: allCityStatus, data: allCity} = useQuery(
+        trpc.GetAllCity.queryOptions({
+            filter: {countrySlug: selectedCountrySlug.value},
+            query,
+            sort: selectedSort,
+        })
+    )
+
+    // derived state
+    const isPending = searchStatus === 'pending' || allCityStatus === 'pending'
+    const isError = searchStatus === 'error' || allCityStatus === 'error'
+
+    if (isError) throw new Error('Failed to load data')
+
     // active filter
     const activeFilter: ActiveFilter[] = [
         ...selectedCountrySlug.value.map(countrySlug => ({
             title: allCountry.find(country => country.slug === countrySlug)?.name || countrySlug,
+            type: 'country' as const,
             onRemove: () => selectedCountrySlug.remove(countrySlug),
         })),
     ]
@@ -82,57 +99,86 @@ export default function CitiesPage() {
 
             {activeFilter.length > 0 && (
                 <FilterBar>
-                    {activeFilter.map(filter => (
-                        <button key={filter.title} className="active:opacity-60" onClick={() => filter.onRemove()}>
-                            <Badge>
-                                <X weight="bold" />
-                                <p>{filter.title}</p>
-                            </Badge>
-                        </button>
-                    ))}
+                    {activeFilter.map(filter => {
+                        const Icon = getIcon(filter.type)
+                        return (
+                            <button key={filter.title} className="active:opacity-60" onClick={() => filter.onRemove()}>
+                                <Badge>
+                                    <Icon weight="duotone" />
+                                    <p>{filter.title}</p>
+                                    <X weight="bold" />
+                                </Badge>
+                            </button>
+                        )
+                    })}
                 </FilterBar>
             )}
 
             <Section>
-                <Suspense fallback={<Loading />}>
-                    <CitiesStack
-                        options={{
-                            filter: {countrySlug: selectedCountrySlug.value},
-                            sort: selectedSort,
-                        }}
-                    />
-                </Suspense>
+                <SearchBar>
+                    <SearchBarFilter query={query} setQuery={setQuery} />
+                </SearchBar>
+
+                {isPending ? (
+                    <Loading />
+                ) : (
+                    <>
+                        {searchResult.length > 0 && (
+                            <>
+                                <Heading size="h2">Filters</Heading>
+                                <ButtonTray>
+                                    {searchResult.map((result, i) => {
+                                        const active = {
+                                            country: selectedCountrySlug.value.includes(result.id),
+                                        }[result.type]
+
+                                        const onSelect = {
+                                            country: () => selectedCountrySlug.toggle(result.id),
+                                        }[result.type]
+
+                                        const Icon = getIcon(result.type)
+
+                                        return (
+                                            <button
+                                                key={i}
+                                                className="active:opacity-60"
+                                                onClick={() => {
+                                                    onSelect()
+                                                    setQuery('')
+                                                }}
+                                            >
+                                                <Badge active={active}>
+                                                    <Icon weight="duotone" />
+                                                    <p>{result.name}</p>
+                                                    {active ? <X weight="bold" /> : <Plus weight="bold" />}
+                                                </Badge>
+                                            </button>
+                                        )
+                                    })}
+                                </ButtonTray>
+                            </>
+                        )}
+
+                        <Heading size="h2">Cities</Heading>
+                        {allCity.length > 0 ? (
+                            <GridStack>
+                                {allCity.map(city => (
+                                    <CityCard key={city.slug} city={city} />
+                                ))}
+                            </GridStack>
+                        ) : (
+                            <>
+                                <Heading size="h4" withoutPadding>
+                                    No results
+                                </Heading>
+                                <Heading size="h5" withoutPadding>
+                                    Try adjusting the filters
+                                </Heading>
+                            </>
+                        )}
+                    </>
+                )}
             </Section>
-        </>
-    )
-}
-
-function CitiesStack({options}: {options: GetAllCityOptions}) {
-    const trpc = useTRPC()
-    const {data: allCity} = useSuspenseQuery(trpc.GetAllCity.queryOptions(options))
-
-    if (allCity.length === 0)
-        return (
-            <div className="py-3">
-                <Heading size="h3" withoutPadding>
-                    No results
-                </Heading>
-                <Heading size="h5" withoutPadding>
-                    Try adjusting the filters
-                </Heading>
-            </div>
-        )
-
-    return (
-        <>
-            <InfoBar>
-                <p>{allCity.length} cities</p>
-            </InfoBar>
-            <GridStack>
-                {allCity.map(city => (
-                    <CityCard key={city.slug} city={city} />
-                ))}
-            </GridStack>
         </>
     )
 }

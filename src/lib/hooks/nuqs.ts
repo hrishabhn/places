@@ -1,10 +1,5 @@
 import {parseAsArrayOf, parseAsBoolean, parseAsString, useQueryState} from 'nuqs'
 
-export const useStringState = (key: string) => {
-    const [value, setValue] = useQueryState(key, parseAsString)
-    return {value, set: setValue}
-}
-
 export const useArrayState = (key: string) => {
     const [value, setValue] = useQueryState(key, parseAsArrayOf(parseAsString).withDefault([]))
 
