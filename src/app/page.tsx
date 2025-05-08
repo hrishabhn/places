@@ -3,19 +3,21 @@
 import {CityCard} from './views/city/card'
 import {PlaceCard} from './views/place/card'
 
-import {ArrowCircleRight, MagnifyingGlass} from '@phosphor-icons/react'
+import {ArrowRight, MagnifyingGlass} from '@phosphor-icons/react'
 import {useQuery} from '@tanstack/react-query'
 import Link from 'next/link'
 
-import {appDescription, appTitle} from '@/model/app'
+import {appDescription, appSubtitle} from '@/model/app'
 
 import {useTRPC} from '@/lib/trpc'
 
-import {Heading, robotoSlab} from '@/components/layout'
+import {Heading} from '@/components/layout'
+import {Button} from '@/components/ui'
 import {Loading} from '@/components/views/loading'
 import {ScrollStack} from '@/components/views/scroll'
 import {Section} from '@/components/views/section'
-import {TypeWords} from '@/components/views/type-words'
+
+const backdrop = 'https://images.unsplash.com/photo-1451187580459-43490279c0fa'
 
 export default function Home() {
     const trpc = useTRPC()
@@ -28,63 +30,73 @@ export default function Home() {
 
     return (
         <>
-            <div className="flex w-full flex-col items-center justify-center gap-6 bg-[url('https://images.unsplash.com/photo-1451187580459-43490279c0fa')] bg-cover bg-center px-4 py-12 text-center text-white sm:px-10 sm:py-20">
-                <p className={`${robotoSlab.className} text-5xl font-bold sm:text-5xl md:text-6xl lg:text-7xl`}>{appTitle}</p>
+            <div className="relative bg-layer-0-dark text-white">
+                <div style={{backgroundImage: `url(${backdrop})`}} className="absolute inset-0 bg-cover bg-center opacity-50" />
 
-                <p className="text-lg font-semibold opacity-80 md:text-xl">{appDescription}</p>
+                <div className="relative flex w-full flex-col items-center justify-center gap-6 px-10 py-48 text-center sm:py-64">
+                    <p className="text-4xl font-bold sm:text-5xl md:text-6xl lg:text-7xl">{appSubtitle}</p>
+                    <p className="text-lg font-medium md:text-xl">{appDescription}</p>
 
-                <Link
-                    href="/places?search=true"
-                    className="mt-2 flex w-full max-w-72 items-center gap-2 rounded-full border border-g-500/50 bg-line/30 px-3 py-2 text-base font-medium text-white backdrop-blur-md active:opacity-60"
-                >
-                    <MagnifyingGlass weight="bold" />
-                    <TypeWords text="Search for" words={['restaurants', 'bars', 'cafes', 'parks']} />
-                </Link>
+                    <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
+                        <Link href="/places" className="flex items-center gap-4 rounded-xl bg-accent-dark px-3.5 py-2.5 font-medium active:opacity-60">
+                            <p>Explore Places</p>
+                            <ArrowRight weight="bold" />
+                        </Link>
+                        <Link
+                            href="/search"
+                            className="flex items-center gap-2 rounded-xl border border-g-500/50 bg-g-500/30 px-3.5 py-2.5 font-medium backdrop-blur-md active:opacity-60"
+                        >
+                            <MagnifyingGlass weight="bold" />
+                            <p>Search</p>
+                        </Link>
+                    </div>
+                </div>
             </div>
 
-            <Section>
-                <Heading size="h2">Cities</Heading>
-            </Section>
+            <SectionHeader title="Cities" subtitle="Most popular cities" viewAll="/cities" />
             <ScrollStack>
                 {allCity.map(city => (
                     <CityCard key={city.slug} city={city} />
                 ))}
-                <ViewAll href="/cities" />
             </ScrollStack>
 
-            <Section>
-                <Heading size="h2">Recently Added</Heading>
-            </Section>
+            <SectionHeader title="Recently Added" subtitle="New additions to the collection" viewAll="/places" />
             <ScrollStack>
                 {allPlaceNew.map(place => (
                     <PlaceCard key={place.id} place={place} />
                 ))}
-                <ViewAll href="/places" />
             </ScrollStack>
 
-            <Section>
-                <Heading size="h2">Random Picks</Heading>
-            </Section>
+            <SectionHeader title="Random Picks" subtitle="Discover hidden gems" viewAll="/places" />
             <ScrollStack>
                 {allPlaceRandom.map(place => (
                     <PlaceCard key={place.id} place={place} />
                 ))}
-                <ViewAll href="/places" />
             </ScrollStack>
         </>
     )
 }
 
-function ViewAll({href}: {href: string}) {
+function SectionHeader({title, subtitle, viewAll}: {title: string; subtitle: string; viewAll: string}) {
     return (
-        <Link
-            href={href}
-            className="flex size-full flex-col items-center justify-center rounded-md bg-layer-1 text-accent ring-1 ring-line active:opacity-60 dark:bg-layer-1-dark dark:text-accent-dark dark:ring-line-dark"
-        >
-            <ArrowCircleRight weight="duotone" size={32} />
-            <Heading size="h4" withoutPadding>
-                View All
-            </Heading>
-        </Link>
+        <Section>
+            <div className="flex w-full items-end pb-4 pt-10">
+                <div>
+                    <Heading size="h2" withoutPadding>
+                        {title}
+                    </Heading>
+                    <p className="font-medium opacity-80">{subtitle}</p>
+                </div>
+
+                <div className="grow" />
+
+                <Link href={viewAll} className="flex items-center gap-2 rounded-xl">
+                    <Button theme="layer-1" ring>
+                        <p>View All</p>
+                        <ArrowRight weight="bold" />
+                    </Button>
+                </Link>
+            </div>
+        </Section>
     )
 }

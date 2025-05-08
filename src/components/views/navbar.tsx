@@ -1,6 +1,6 @@
 'use client'
 
-import {City, House, type Icon, Info, List, MagnifyingGlass, MapPin} from '@phosphor-icons/react'
+import {City, House, type Icon, Info, List, MagnifyingGlass, MapPin, X} from '@phosphor-icons/react'
 import Link from 'next/link'
 import {useRef, useState} from 'react'
 import {useClickAway} from 'react-use'
@@ -40,11 +40,11 @@ function NavbarMobile() {
                 </Link>
                 <div className="grow" />
                 <button onClick={() => setOpen(!open)} className="active:opacity-60">
-                    <List weight="bold" />
+                    {open ? <X weight="bold" /> : <List weight="bold" />}
                 </button>
             </div>
             {open && (
-                <div className="flex w-full flex-col gap-4 px-4 pt-4">
+                <div className="flex w-full flex-col px-4 pt-4">
                     <NavbarItemMobile href="/cities" icon={City} title="Cities" onClick={() => setOpen(false)} />
                     <NavbarItemMobile href="/places" icon={MapPin} title="Places" onClick={() => setOpen(false)} />
                     <NavbarItemMobile href="/places?search=true" icon={MagnifyingGlass} title="Search" onClick={() => setOpen(false)} />
@@ -76,10 +76,10 @@ function NavbarItemDesktop({href, icon, title, onClick}: NavbarItemProps) {
 function NavbarItemMobile({href, icon, title, onClick}: NavbarItemProps) {
     const Icon = icon
     return (
-        <Link href={href} onClick={onClick} className="flex w-full items-center text-sm active:opacity-60">
-            <p className={`font-semibold`}>{title}</p>
+        <Link href={href} onClick={onClick} className="flex w-full items-center py-2 font-semibold active:opacity-60">
+            <p>{title}</p>
             <div className="grow" />
-            <Icon weight="fill" />
+            <Icon weight="bold" />
         </Link>
     )
 }
