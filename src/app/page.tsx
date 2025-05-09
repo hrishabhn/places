@@ -3,7 +3,7 @@
 import {CityCard} from './views/city/card'
 import {PlaceCard} from './views/place/card'
 
-import {ArrowRight, MagnifyingGlass} from '@phosphor-icons/react'
+import {ArrowRight} from '@phosphor-icons/react'
 import {useQuery} from '@tanstack/react-query'
 import Link from 'next/link'
 
@@ -33,7 +33,7 @@ export default function Home() {
             <div className="relative bg-layer-0-dark text-white">
                 <div style={{backgroundImage: `url(${backdrop})`}} className="absolute inset-0 bg-cover bg-center opacity-50" />
 
-                <div className="relative flex w-full flex-col items-center justify-center gap-6 px-10 py-48 text-center sm:py-64">
+                <div className="relative flex w-full flex-col items-center justify-center gap-6 px-10 py-36 text-center sm:py-64">
                     <p className="text-4xl font-bold sm:text-5xl md:text-6xl lg:text-7xl">{appSubtitle}</p>
                     <p className="text-lg font-medium md:text-xl">{appDescription}</p>
 
@@ -41,13 +41,6 @@ export default function Home() {
                         <Link href="/places" className="flex items-center gap-4 rounded-xl bg-accent-dark px-3.5 py-2.5 font-medium active:opacity-60">
                             <p>Explore Places</p>
                             <ArrowRight weight="bold" />
-                        </Link>
-                        <Link
-                            href="/search"
-                            className="flex items-center gap-2 rounded-xl border border-g-500/50 bg-g-500/30 px-3.5 py-2.5 font-medium backdrop-blur-md active:opacity-60"
-                        >
-                            <MagnifyingGlass weight="bold" />
-                            <p>Search</p>
                         </Link>
                     </div>
                 </div>
