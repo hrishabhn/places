@@ -27,12 +27,10 @@ export default function Home() {
                     <p className="text-4xl font-bold sm:text-5xl md:text-6xl lg:text-7xl">{appSubtitle}</p>
                     <p className="text-lg font-medium md:text-xl">{appDescription}</p>
 
-                    <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
-                        <Link href="/places" className="flex items-center gap-4 rounded-xl bg-accent-dark px-3.5 py-2.5 font-medium active:opacity-60">
-                            <p>Explore Places</p>
-                            <ArrowRight weight="bold" />
-                        </Link>
-                    </div>
+                    <Link href="/places" className="flex items-center gap-4 rounded-xl bg-accent-dark px-3.5 py-2.5 font-medium active:opacity-60">
+                        <p>Explore Places</p>
+                        <ArrowRight weight="bold" />
+                    </Link>
                 </div>
             </div>
 

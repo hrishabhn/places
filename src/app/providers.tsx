@@ -1,8 +1,6 @@
 'use client'
 
-import {createSyncStoragePersister} from '@tanstack/query-sync-storage-persister'
-import {QueryClient, defaultShouldDehydrateQuery} from '@tanstack/react-query'
-import {PersistQueryClientProvider} from '@tanstack/react-query-persist-client'
+import {QueryClient, QueryClientProvider, defaultShouldDehydrateQuery} from '@tanstack/react-query'
 import {createTRPCClient, httpBatchLink} from '@trpc/client'
 import {NuqsAdapter} from 'nuqs/adapters/next/app'
 import {useState} from 'react'
@@ -31,8 +29,6 @@ function getQueryClient() {
     return browserQueryClient
 }
 
-const persister = createSyncStoragePersister({storage: typeof window !== 'undefined' ? window.localStorage : undefined})
-
 function getUrl() {
     const base = (() => {
         if (typeof window !== 'undefined') return ''
@@ -59,11 +55,11 @@ export function Providers({children}: {children: React.ReactNode}) {
     // return <>{children}</>
     return (
         <NuqsAdapter>
-            <PersistQueryClientProvider client={queryClient} persistOptions={{persister}}>
+            <QueryClientProvider client={queryClient}>
                 <TRPCProvider queryClient={queryClient} trpcClient={trpcClient}>
                     {children}
                 </TRPCProvider>
-            </PersistQueryClientProvider>
+            </QueryClientProvider>
         </NuqsAdapter>
     )
 }

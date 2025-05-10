@@ -1,14 +1,54 @@
 'use client'
 
 import {City, House, type Icon, Info, List, MapPin, X} from '@phosphor-icons/react'
+import {useQueryClient} from '@tanstack/react-query'
 import Link from 'next/link'
 import {useRef, useState} from 'react'
 import {useClickAway} from 'react-use'
 
 import {useBreakpoint} from '@/lib/hooks'
+import {useTRPC} from '@/lib/trpc'
 
 export function Navbar() {
     const sm = useBreakpoint('sm')
+
+    // prefetch
+    const trpc = useTRPC()
+    const queryClient = useQueryClient()
+
+    // cities page
+    queryClient.prefetchQuery(trpc.GetAllCountry.queryOptions({sort: 'city_count'}))
+
+    queryClient.prefetchQuery(trpc.SearchCityFilter.queryOptions({query: ''}))
+    queryClient.prefetchQuery(
+        trpc.GetAllCity.queryOptions({
+            filter: {countrySlug: []},
+            query: '',
+            sort: 'place_count',
+        })
+    )
+
+    // places page
+    queryClient.prefetchQuery(trpc.GetAllCountry.queryOptions({sort: 'place_count'}))
+    queryClient.prefetchQuery(trpc.GetAllCity.queryOptions({sort: 'place_count'}))
+    queryClient.prefetchQuery(trpc.GetAllPlaceType.queryOptions())
+    queryClient.prefetchQuery(trpc.GetAllPlaceTag.queryOptions())
+
+    queryClient.prefetchQuery(trpc.SearchPlaceFilter.queryOptions({query: ''}))
+    queryClient.prefetchQuery(
+        trpc.GetAllPlace.queryOptions({
+            filter: {
+                top: false,
+                countrySlug: [],
+                citySlug: [],
+                placeType: [],
+                placeTag: [],
+            },
+            query: '',
+            sort: 'name',
+        })
+    )
+
     return sm ? <NavbarDesktop /> : <NavbarMobile />
 }
 
