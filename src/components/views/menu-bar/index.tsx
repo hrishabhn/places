@@ -5,7 +5,7 @@ import './style.css'
 import {ArrowsDownUp, type Icon} from '@phosphor-icons/react'
 import {motion} from 'motion/react'
 
-import {useIsStuck} from '@/lib/hooks'
+import {useIsStuck, useOnScreen} from '@/lib/hooks'
 
 import {DropdownMenuItem, DropdownMenuItems, FilterItem, type LabelImageType, Menu, MenuButton} from '@/components/ui'
 
@@ -50,14 +50,25 @@ type MenuBarSelectProps<T> = {
     toTitle: (item: T) => string
     toSubtitle?: (item: T) => string
 
-    onOpen?: () => void
+    onScreen?: (item: T) => void
 }
 
-export function MenuBarSelect<T>({icon, placeholder, allItem, onSelect, isActive, toId, toImage, toTitle, toSubtitle, onOpen}: MenuBarSelectProps<T>) {
+type MenuBarSelectItemProps = {
+    onSelect: () => void
+
+    active: boolean
+    image?: LabelImageType
+    title: string
+    subtitle?: string
+
+    onScreen?: () => void
+}
+
+export function MenuBarSelect<T>({icon, placeholder, allItem, onSelect, isActive, toId, toImage, toTitle, toSubtitle, onScreen}: MenuBarSelectProps<T>) {
     const Icon = icon
     return (
         <Menu>
-            <MenuButton className="active:opacity-60" onClick={onOpen}>
+            <MenuButton className="active:opacity-60">
                 <FilterItem active={allItem.some(isActive)}>
                     <Icon weight="duotone" className="shrink-0" />
                     <p className="line-clamp-1">{placeholder}</p>
@@ -65,17 +76,27 @@ export function MenuBarSelect<T>({icon, placeholder, allItem, onSelect, isActive
             </MenuButton>
             <DropdownMenuItems>
                 {allItem.map(item => (
-                    <DropdownMenuItem
+                    <MenuBarSelectItem
                         key={toId(item)}
-                        action={{onClick: () => onSelect(item)}}
+                        onSelect={() => onSelect(item)}
                         image={toImage ? toImage(item) : undefined}
                         title={toTitle(item)}
                         subtitle={toSubtitle ? toSubtitle(item) : undefined}
                         active={isActive(item)}
+                        onScreen={() => onScreen?.(item)}
                     />
                 ))}
             </DropdownMenuItems>
         </Menu>
+    )
+}
+
+function MenuBarSelectItem({onSelect, image, title, subtitle, active, onScreen}: MenuBarSelectItemProps) {
+    const ref = useOnScreen(() => onScreen?.())
+    return (
+        <div ref={ref}>
+            <DropdownMenuItem action={{onClick: onSelect}} image={image} title={title} subtitle={subtitle} active={active} />
+        </div>
     )
 }
 
@@ -87,13 +108,23 @@ type MenuBarSortProps<AllOption extends readonly string[], Option = AllOption[nu
     toIcon: (option: Option) => Icon
     toTitle: (option: Option) => string
 
-    onOpen?: () => void
+    onScreen?: (option: Option) => void
 }
 
-export function MenuBarSort<T extends readonly string[]>({selectedSort, allSort, onSelect, toIcon, toTitle, onOpen}: MenuBarSortProps<T>) {
+type MenuBarSortItemProps = {
+    onSelect: () => void
+
+    active: boolean
+    image: LabelImageType
+    title: string
+
+    onScreen?: () => void
+}
+
+export function MenuBarSort<T extends readonly string[]>({selectedSort, allSort, onSelect, toIcon, toTitle, onScreen}: MenuBarSortProps<T>) {
     return (
         <Menu>
-            <MenuButton className="active:opacity-60" onClick={onOpen}>
+            <MenuButton className="active:opacity-60">
                 <FilterItem>
                     <ArrowsDownUp weight="bold" className="shrink-0" />
                     <p>{toTitle(selectedSort)}</p>
@@ -101,9 +132,25 @@ export function MenuBarSort<T extends readonly string[]>({selectedSort, allSort,
             </MenuButton>
             <DropdownMenuItems anchor="bottom end">
                 {allSort.map(sort => (
-                    <DropdownMenuItem key={sort} action={{onClick: () => onSelect(sort)}} image={{icon: toIcon(sort)}} title={toTitle(sort)} active={sort === selectedSort} />
+                    <MenuBarSortItem
+                        key={sort}
+                        onSelect={() => onSelect(sort)}
+                        image={{icon: toIcon(sort)}}
+                        title={toTitle(sort)}
+                        active={sort === selectedSort}
+                        onScreen={() => onScreen?.(sort)}
+                    />
                 ))}
             </DropdownMenuItems>
         </Menu>
+    )
+}
+
+function MenuBarSortItem({onSelect, image, title, active, onScreen}: MenuBarSortItemProps) {
+    const ref = useOnScreen(() => onScreen?.())
+    return (
+        <div ref={ref}>
+            <DropdownMenuItem action={{onClick: onSelect}} image={image} title={title} active={active} />
+        </div>
     )
 }

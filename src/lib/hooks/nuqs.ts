@@ -15,7 +15,10 @@ export const useArrayState = (key: string) => {
         if (value.includes(item)) remove(item)
         else add(item)
     }
-    return {value, clear, add, remove, toggle}
+
+    const getToggledValue = (item: string) => (value.includes(item) ? value.filter(v => v !== item) : [...value, item])
+
+    return {value, clear, add, remove, toggle, getToggledValue}
 }
 
 export const useBooleanState = (key: string) => {

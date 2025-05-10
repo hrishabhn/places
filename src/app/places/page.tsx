@@ -104,6 +104,21 @@ export default function PlacesPage() {
         })),
     ]
 
+    // prefetch top
+    queryClient.prefetchQuery(
+        trpc.GetAllPlace.queryOptions({
+            filter: {
+                top: !top.value,
+                countrySlug: selectedCountrySlug.value,
+                citySlug: selectedCitySlug.value,
+                placeType: selectedPlaceType.value,
+                placeTag: selectedPlaceTag.value,
+            },
+            query,
+            sort: selectedSort,
+        })
+    )
+
     return (
         <>
             {singleCity && <CityImage city={singleCity} />}
@@ -125,6 +140,21 @@ export default function PlacesPage() {
                     toImage={country => ({imageURL: countryFlag(country.code)})}
                     toTitle={country => country.name}
                     toSubtitle={country => `${country.place_count} places`}
+                    onScreen={country =>
+                        queryClient.prefetchQuery(
+                            trpc.GetAllPlace.queryOptions({
+                                filter: {
+                                    top: top.value,
+                                    countrySlug: selectedCountrySlug.getToggledValue(country.slug),
+                                    citySlug: selectedCitySlug.value,
+                                    placeType: selectedPlaceType.value,
+                                    placeTag: selectedPlaceTag.value,
+                                },
+                                query,
+                                sort: selectedSort,
+                            })
+                        )
+                    }
                 />
                 <MenuBarSelect
                     icon={City}
@@ -136,6 +166,21 @@ export default function PlacesPage() {
                     toImage={city => ({imageURL: countryFlag(city.country_code)})}
                     toTitle={city => city.name}
                     toSubtitle={city => `${city.place_count} places`}
+                    onScreen={city =>
+                        queryClient.prefetchQuery(
+                            trpc.GetAllPlace.queryOptions({
+                                filter: {
+                                    top: top.value,
+                                    countrySlug: selectedCountrySlug.value,
+                                    citySlug: selectedCitySlug.getToggledValue(city.slug),
+                                    placeType: selectedPlaceType.value,
+                                    placeTag: selectedPlaceTag.value,
+                                },
+                                query,
+                                sort: selectedSort,
+                            })
+                        )
+                    }
                 />
                 <MenuBarSelect
                     icon={ForkKnife}
@@ -146,6 +191,21 @@ export default function PlacesPage() {
                     toId={placeType => placeType.type_name}
                     toTitle={placeType => placeType.type_name}
                     toSubtitle={placeType => `${placeType.place_count} places`}
+                    onScreen={placeType =>
+                        queryClient.prefetchQuery(
+                            trpc.GetAllPlace.queryOptions({
+                                filter: {
+                                    top: top.value,
+                                    countrySlug: selectedCountrySlug.value,
+                                    citySlug: selectedCitySlug.value,
+                                    placeType: selectedPlaceType.getToggledValue(placeType.type_name),
+                                    placeTag: selectedPlaceTag.value,
+                                },
+                                query,
+                                sort: selectedSort,
+                            })
+                        )
+                    }
                 />
                 <MenuBarSelect
                     icon={Tag}
@@ -156,6 +216,21 @@ export default function PlacesPage() {
                     toId={placeTag => placeTag.tag_name}
                     toTitle={placeTag => placeTag.tag_name}
                     toSubtitle={placeTag => `${placeTag.place_count} places`}
+                    onScreen={placeTag =>
+                        queryClient.prefetchQuery(
+                            trpc.GetAllPlace.queryOptions({
+                                filter: {
+                                    top: top.value,
+                                    countrySlug: selectedCountrySlug.value,
+                                    citySlug: selectedCitySlug.value,
+                                    placeType: selectedPlaceType.value,
+                                    placeTag: selectedPlaceTag.getToggledValue(placeTag.tag_name),
+                                },
+                                query,
+                                sort: selectedSort,
+                            })
+                        )
+                    }
                 />
 
                 <div className="grow" />
@@ -178,21 +253,19 @@ export default function PlacesPage() {
                             city: 'City',
                         })[option]
                     }
-                    onOpen={() =>
-                        allSort.forEach(sort =>
-                            queryClient.prefetchQuery(
-                                trpc.GetAllPlace.queryOptions({
-                                    filter: {
-                                        top: top.value,
-                                        countrySlug: selectedCountrySlug.value,
-                                        citySlug: selectedCitySlug.value,
-                                        placeType: selectedPlaceType.value,
-                                        placeTag: selectedPlaceTag.value,
-                                    },
-                                    query,
-                                    sort,
-                                })
-                            )
+                    onScreen={sort =>
+                        queryClient.prefetchQuery(
+                            trpc.GetAllPlace.queryOptions({
+                                filter: {
+                                    top: top.value,
+                                    countrySlug: selectedCountrySlug.value,
+                                    citySlug: selectedCitySlug.value,
+                                    placeType: selectedPlaceType.value,
+                                    placeTag: selectedPlaceTag.value,
+                                },
+                                query,
+                                sort,
+                            })
                         )
                     }
                 />

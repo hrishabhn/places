@@ -74,6 +74,15 @@ export default function CitiesPage() {
                     toImage={country => ({imageURL: countryFlag(country.code)})}
                     toTitle={country => country.name}
                     toSubtitle={country => `${country.city_count} cities`}
+                    onScreen={country =>
+                        queryClient.prefetchQuery(
+                            trpc.GetAllCity.queryOptions({
+                                filter: {countrySlug: selectedCountrySlug.getToggledValue(country.slug)},
+                                query,
+                                sort: selectedSort,
+                            })
+                        )
+                    }
                 />
 
                 <div className="grow" />
@@ -96,15 +105,13 @@ export default function CitiesPage() {
                             name: 'Name',
                         })[option]
                     }
-                    onOpen={() =>
-                        allSort.forEach(sort =>
-                            queryClient.prefetchQuery(
-                                trpc.GetAllCity.queryOptions({
-                                    filter: {countrySlug: selectedCountrySlug.value},
-                                    query,
-                                    sort,
-                                })
-                            )
+                    onScreen={sort =>
+                        queryClient.prefetchQuery(
+                            trpc.GetAllCity.queryOptions({
+                                filter: {countrySlug: selectedCountrySlug.value},
+                                query,
+                                sort,
+                            })
                         )
                     }
                 />
