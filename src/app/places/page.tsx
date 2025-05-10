@@ -394,6 +394,65 @@ export default function PlacesPage() {
 
                                         const Icon = getIcon(result.type)
 
+                                        // prefetch
+                                        if (result.type === 'country') {
+                                            queryClient.prefetchQuery(
+                                                trpc.GetAllPlace.queryOptions({
+                                                    filter: {
+                                                        top: top.value,
+                                                        countrySlug: selectedCountrySlug.getToggledValue(result.id),
+                                                        citySlug: selectedCitySlug.value,
+                                                        placeType: selectedPlaceType.value,
+                                                        placeTag: selectedPlaceTag.value,
+                                                    },
+                                                    query: '',
+                                                    sort: selectedSort,
+                                                })
+                                            )
+                                        } else if (result.type === 'city') {
+                                            queryClient.prefetchQuery(
+                                                trpc.GetAllPlace.queryOptions({
+                                                    filter: {
+                                                        top: top.value,
+                                                        countrySlug: selectedCountrySlug.value,
+                                                        citySlug: selectedCitySlug.getToggledValue(result.id),
+                                                        placeType: selectedPlaceType.value,
+                                                        placeTag: selectedPlaceTag.value,
+                                                    },
+                                                    query: '',
+                                                    sort: selectedSort,
+                                                })
+                                            )
+                                        } else if (result.type === 'place_type') {
+                                            queryClient.prefetchQuery(
+                                                trpc.GetAllPlace.queryOptions({
+                                                    filter: {
+                                                        top: top.value,
+                                                        countrySlug: selectedCountrySlug.value,
+                                                        citySlug: selectedCitySlug.value,
+                                                        placeType: selectedPlaceType.getToggledValue(result.id),
+                                                        placeTag: selectedPlaceTag.value,
+                                                    },
+                                                    query: '',
+                                                    sort: selectedSort,
+                                                })
+                                            )
+                                        } else if (result.type === 'place_tag') {
+                                            queryClient.prefetchQuery(
+                                                trpc.GetAllPlace.queryOptions({
+                                                    filter: {
+                                                        top: top.value,
+                                                        countrySlug: selectedCountrySlug.value,
+                                                        citySlug: selectedCitySlug.value,
+                                                        placeType: selectedPlaceType.value,
+                                                        placeTag: selectedPlaceTag.getToggledValue(result.id),
+                                                    },
+                                                    query: '',
+                                                    sort: selectedSort,
+                                                })
+                                            )
+                                        }
+
                                         return (
                                             <button
                                                 key={i}

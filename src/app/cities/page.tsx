@@ -168,6 +168,17 @@ export default function CitiesPage() {
 
                                         const Icon = getIcon(result.type)
 
+                                        // prefetch
+                                        if (result.type === 'country') {
+                                            queryClient.prefetchQuery(
+                                                trpc.GetAllCity.queryOptions({
+                                                    filter: {countrySlug: selectedCountrySlug.getToggledValue(result.id)},
+                                                    query: '',
+                                                    sort: selectedSort,
+                                                })
+                                            )
+                                        }
+
                                         return (
                                             <button
                                                 key={i}
