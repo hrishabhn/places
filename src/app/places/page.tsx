@@ -120,7 +120,7 @@ export default function PlacesPage() {
                     onSelect={country => selectedCountrySlug.toggle(country.slug)}
                     isActive={country => selectedCountrySlug.value.includes(country.slug)}
                     toId={country => country.slug}
-                    toImage={country => ({imageURL: countryFlag(country.slug)})}
+                    toImage={country => ({imageURL: countryFlag(country.code)})}
                     toTitle={country => country.name}
                     toSubtitle={country => `${country.place_count} places`}
                 />
@@ -131,7 +131,7 @@ export default function PlacesPage() {
                     onSelect={city => selectedCitySlug.toggle(city.slug)}
                     isActive={city => selectedCitySlug.value.includes(city.slug)}
                     toId={city => city.slug}
-                    toImage={country => ({imageURL: countryFlag(country.slug)})}
+                    toImage={city => ({imageURL: countryFlag(city.country_code)})}
                     toTitle={city => city.name}
                     toSubtitle={city => `${city.place_count} places`}
                 />

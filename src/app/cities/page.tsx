@@ -69,7 +69,7 @@ export default function CitiesPage() {
                     onSelect={country => selectedCountrySlug.toggle(country.slug)}
                     isActive={country => selectedCountrySlug.value.includes(country.slug)}
                     toId={country => country.slug}
-                    toImage={country => ({imageURL: countryFlag(country.slug)})}
+                    toImage={country => ({imageURL: countryFlag(country.code)})}
                     toTitle={country => country.name}
                     toSubtitle={country => `${country.city_count} cities`}
                 />
