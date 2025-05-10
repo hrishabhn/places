@@ -49,13 +49,15 @@ type MenuBarSelectProps<T> = {
     toImage?: (item: T) => LabelImageType
     toTitle: (item: T) => string
     toSubtitle?: (item: T) => string
+
+    onOpen?: () => void
 }
 
-export function MenuBarSelect<T>({icon, placeholder, allItem, onSelect, isActive, toId, toImage, toTitle, toSubtitle}: MenuBarSelectProps<T>) {
+export function MenuBarSelect<T>({icon, placeholder, allItem, onSelect, isActive, toId, toImage, toTitle, toSubtitle, onOpen}: MenuBarSelectProps<T>) {
     const Icon = icon
     return (
         <Menu>
-            <MenuButton className="active:opacity-60">
+            <MenuButton className="active:opacity-60" onClick={onOpen}>
                 <FilterItem active={allItem.some(isActive)}>
                     <Icon weight="duotone" className="shrink-0" />
                     <p className="line-clamp-1">{placeholder}</p>
@@ -84,12 +86,14 @@ type MenuBarSortProps<AllOption extends readonly string[], Option = AllOption[nu
 
     toIcon: (option: Option) => Icon
     toTitle: (option: Option) => string
+
+    onOpen?: () => void
 }
 
-export function MenuBarSort<T extends readonly string[]>({selectedSort, allSort, onSelect, toIcon, toTitle}: MenuBarSortProps<T>) {
+export function MenuBarSort<T extends readonly string[]>({selectedSort, allSort, onSelect, toIcon, toTitle, onOpen}: MenuBarSortProps<T>) {
     return (
         <Menu>
-            <MenuButton className="active:opacity-60">
+            <MenuButton className="active:opacity-60" onClick={onOpen}>
                 <FilterItem>
                     <ArrowsDownUp weight="bold" className="shrink-0" />
                     <p>{toTitle(selectedSort)}</p>

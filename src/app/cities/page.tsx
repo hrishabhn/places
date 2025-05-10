@@ -1,7 +1,7 @@
 'use client'
 
 import {Flag, MapPin, Plus, TextT, X} from '@phosphor-icons/react'
-import {useQuery, useSuspenseQuery} from '@tanstack/react-query'
+import {useQuery, useQueryClient, useSuspenseQuery} from '@tanstack/react-query'
 import {parseAsString, parseAsStringLiteral, useQueryState} from 'nuqs'
 
 import {CityCard} from '@/app/views/city/card'
@@ -33,6 +33,8 @@ export default function CitiesPage() {
 
     // query
     const trpc = useTRPC()
+    const queryClient = useQueryClient()
+
     const {data: allCountry} = useSuspenseQuery(trpc.GetAllCountry.queryOptions({sort: 'city_count'}))
 
     const {status: searchStatus, data: searchResult} = useQuery(trpc.SearchCityFilter.queryOptions({query}))
@@ -93,6 +95,17 @@ export default function CitiesPage() {
                             country: 'Country',
                             name: 'Name',
                         })[option]
+                    }
+                    onOpen={() =>
+                        allSort.forEach(sort =>
+                            queryClient.prefetchQuery(
+                                trpc.GetAllCity.queryOptions({
+                                    filter: {countrySlug: selectedCountrySlug.value},
+                                    query,
+                                    sort,
+                                })
+                            )
+                        )
                     }
                 />
             </MenuBarTray>

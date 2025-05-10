@@ -4,7 +4,7 @@ import {PlacesMap} from './map'
 import {PlacesStats} from './stats'
 
 import {ChartLineUp, City, Flag, ForkKnife, MapTrifold, Plus, Star, Table, Tag, TextT, X} from '@phosphor-icons/react'
-import {useQuery, useSuspenseQuery} from '@tanstack/react-query'
+import {useQuery, useQueryClient, useSuspenseQuery} from '@tanstack/react-query'
 import {parseAsString, parseAsStringLiteral, useQueryState} from 'nuqs'
 
 import {CityImage} from '@/app/views/city/image'
@@ -46,6 +46,8 @@ export default function PlacesPage() {
 
     // query
     const trpc = useTRPC()
+    const queryClient = useQueryClient()
+
     const {data: allCountry} = useSuspenseQuery(trpc.GetAllCountry.queryOptions({sort: 'place_count'}))
     const {data: allCity} = useSuspenseQuery(trpc.GetAllCity.queryOptions({sort: 'place_count'}))
     const {data: allPlaceType} = useSuspenseQuery(trpc.GetAllPlaceType.queryOptions())
@@ -175,6 +177,23 @@ export default function PlacesPage() {
                             country: 'Country',
                             city: 'City',
                         })[option]
+                    }
+                    onOpen={() =>
+                        allSort.forEach(sort =>
+                            queryClient.prefetchQuery(
+                                trpc.GetAllPlace.queryOptions({
+                                    filter: {
+                                        top: top.value,
+                                        countrySlug: selectedCountrySlug.value,
+                                        citySlug: selectedCitySlug.value,
+                                        placeType: selectedPlaceType.value,
+                                        placeTag: selectedPlaceTag.value,
+                                    },
+                                    query,
+                                    sort,
+                                })
+                            )
+                        )
                     }
                 />
             </MenuBarTray>
