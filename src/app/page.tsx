@@ -1,15 +1,13 @@
-'use client'
-
 import {CityCard} from './views/city/card'
 import {PlaceCard} from './views/place/card'
 
-import {ArrowRight} from '@phosphor-icons/react'
-import {useQuery} from '@tanstack/react-query'
+import {ArrowRight} from '@phosphor-icons/react/dist/ssr'
 import Link from 'next/link'
+import {Suspense} from 'react'
+
+import {appRouter} from '@/server'
 
 import {appDescription, appSubtitle} from '@/model/app'
-
-import {useTRPC} from '@/lib/trpc'
 
 import {Heading} from '@/components/layout'
 import {Button} from '@/components/ui'
@@ -20,14 +18,6 @@ import {Section} from '@/components/views/section'
 const backdrop = 'https://images.unsplash.com/photo-1451187580459-43490279c0fa'
 
 export default function Home() {
-    const trpc = useTRPC()
-    const {status: allCityStatus, data: allCity} = useQuery(trpc.GetAllCity.queryOptions({sort: 'place_count', limit: 5}))
-    const {status: allPlaceNewStatus, data: allPlaceNew} = useQuery(trpc.GetAllPlace.queryOptions({sort: 'created', limit: 5}))
-    const {status: allPlaceRandomStatus, data: allPlaceRandom} = useQuery(trpc.GetAllPlace.queryOptions({sort: 'random', limit: 5}, {staleTime: 0}))
-
-    if (allCityStatus === 'pending' || allPlaceNewStatus === 'pending' || allPlaceRandomStatus === 'pending') return <Loading />
-    if (allCityStatus === 'error' || allPlaceNewStatus === 'error' || allPlaceRandomStatus === 'error') throw new Error('Failed to load data')
-
     return (
         <>
             <div className="relative bg-layer-0-dark text-white">
@@ -46,6 +36,23 @@ export default function Home() {
                 </div>
             </div>
 
+            <Suspense fallback={<Loading />}>
+                <HomeContent />
+            </Suspense>
+        </>
+    )
+}
+
+async function HomeContent() {
+    const caller = appRouter.createCaller({})
+    const [allCity, allPlaceNew, allPlaceRandom] = await Promise.all([
+        caller.GetAllCity({sort: 'place_count', limit: 5}),
+        caller.GetAllPlace({sort: 'created', limit: 5}),
+        caller.GetAllPlace({sort: 'random', limit: 5}),
+    ])
+
+    return (
+        <>
             <SectionHeader title="Cities" subtitle="Most popular cities" viewAll="/cities" />
             <ScrollStack>
                 {allCity.map(city => (

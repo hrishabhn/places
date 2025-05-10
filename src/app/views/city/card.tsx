@@ -1,3 +1,5 @@
+'use client'
+
 import {City as CityIcon, MapPin} from '@phosphor-icons/react'
 
 import {type City} from '@/server/types'
