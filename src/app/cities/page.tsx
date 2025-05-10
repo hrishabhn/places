@@ -54,11 +54,21 @@ export default function CitiesPage() {
 
     // active filter
     const activeFilter: ActiveFilter[] = [
-        ...selectedCountrySlug.value.map(countrySlug => ({
-            title: allCountry.find(country => country.slug === countrySlug)?.name || countrySlug,
-            type: 'country' as const,
-            onRemove: () => selectedCountrySlug.remove(countrySlug),
-        })),
+        ...selectedCountrySlug.value.map(countrySlug => {
+            queryClient.prefetchQuery(
+                trpc.GetAllCity.queryOptions({
+                    filter: {countrySlug: selectedCountrySlug.getToggledValue(countrySlug)},
+                    query,
+                    sort: selectedSort,
+                })
+            )
+
+            return {
+                title: allCountry.find(country => country.slug === countrySlug)?.name || countrySlug,
+                type: 'country' as const,
+                onRemove: () => selectedCountrySlug.remove(countrySlug),
+            }
+        }),
     ]
 
     return (

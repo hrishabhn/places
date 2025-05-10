@@ -82,26 +82,90 @@ export default function PlacesPage() {
 
     // active filter
     const activeFilter: ActiveFilter[] = [
-        ...selectedCountrySlug.value.map(countrySlug => ({
-            title: allCountry.find(country => country.slug === countrySlug)?.name || countrySlug,
-            type: 'country' as const,
-            onRemove: () => selectedCountrySlug.remove(countrySlug),
-        })),
-        ...selectedCitySlug.value.map(citySlug => ({
-            title: allCity.find(city => city.slug === citySlug)?.name || citySlug,
-            type: 'city' as const,
-            onRemove: () => selectedCitySlug.remove(citySlug),
-        })),
-        ...selectedPlaceType.value.map(placeType => ({
-            title: placeType,
-            type: 'place_type' as const,
-            onRemove: () => selectedPlaceType.remove(placeType),
-        })),
-        ...selectedPlaceTag.value.map(placeTag => ({
-            title: placeTag,
-            type: 'place_tag' as const,
-            onRemove: () => selectedPlaceTag.remove(placeTag),
-        })),
+        ...selectedCountrySlug.value.map(countrySlug => {
+            queryClient.prefetchQuery(
+                trpc.GetAllPlace.queryOptions({
+                    filter: {
+                        top: top.value,
+                        countrySlug: selectedCountrySlug.getToggledValue(countrySlug),
+                        citySlug: selectedCitySlug.value,
+                        placeType: selectedPlaceType.value,
+                        placeTag: selectedPlaceTag.value,
+                    },
+                    query,
+                    sort: selectedSort,
+                })
+            )
+
+            return {
+                title: allCountry.find(country => country.slug === countrySlug)?.name || countrySlug,
+                type: 'country' as const,
+                onRemove: () => selectedCountrySlug.remove(countrySlug),
+            }
+        }),
+        ...selectedCitySlug.value.map(citySlug => {
+            queryClient.prefetchQuery(
+                trpc.GetAllPlace.queryOptions({
+                    filter: {
+                        top: top.value,
+                        countrySlug: selectedCountrySlug.value,
+                        citySlug: selectedCitySlug.getToggledValue(citySlug),
+                        placeType: selectedPlaceType.value,
+                        placeTag: selectedPlaceTag.value,
+                    },
+                    query,
+                    sort: selectedSort,
+                })
+            )
+
+            return {
+                title: allCity.find(city => city.slug === citySlug)?.name || citySlug,
+                type: 'city' as const,
+                onRemove: () => selectedCitySlug.remove(citySlug),
+            }
+        }),
+        ...selectedPlaceType.value.map(placeType => {
+            queryClient.prefetchQuery(
+                trpc.GetAllPlace.queryOptions({
+                    filter: {
+                        top: top.value,
+                        countrySlug: selectedCountrySlug.value,
+                        citySlug: selectedCitySlug.value,
+                        placeType: selectedPlaceType.getToggledValue(placeType),
+                        placeTag: selectedPlaceTag.value,
+                    },
+                    query,
+                    sort: selectedSort,
+                })
+            )
+
+            return {
+                title: placeType,
+                type: 'place_type' as const,
+                onRemove: () => selectedPlaceType.remove(placeType),
+            }
+        }),
+        ...selectedPlaceTag.value.map(placeTag => {
+            queryClient.prefetchQuery(
+                trpc.GetAllPlace.queryOptions({
+                    filter: {
+                        top: top.value,
+                        countrySlug: selectedCountrySlug.value,
+                        citySlug: selectedCitySlug.value,
+                        placeType: selectedPlaceType.value,
+                        placeTag: selectedPlaceTag.getToggledValue(placeTag),
+                    },
+                    query,
+                    sort: selectedSort,
+                })
+            )
+
+            return {
+                title: placeTag,
+                type: 'place_tag' as const,
+                onRemove: () => selectedPlaceTag.remove(placeTag),
+            }
+        }),
     ]
 
     // prefetch top
