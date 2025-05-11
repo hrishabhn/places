@@ -11,13 +11,21 @@ import {googleMapsUrl, notionUrl} from '@/model/util'
 
 import {SimpleCard} from '@/components/views/card'
 
-export function PlaceCard({place}: {place: Place}) {
+type PlaceCardProps = {
+    place: Place
+    bookmark?: boolean
+    onBookmark?: () => void
+}
+
+export function PlaceCard({place, bookmark, onBookmark}: PlaceCardProps) {
     return (
         <SimpleCard
             image={place.image}
             fallbackIcon={getPlaceIcon(place.type.at(0))}
             title={place.name}
             tags={placeToTags(place)}
+            bookmark={bookmark}
+            onBookmark={onBookmark}
             links={[
                 {
                     url: googleMapsUrl(place),

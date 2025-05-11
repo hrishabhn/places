@@ -21,13 +21,7 @@ export function CityCard({city}: {city: City}) {
     const ref = useOnScreen(() =>
         queryClient.prefetchQuery(
             trpc.GetAllPlace.queryOptions({
-                filter: {
-                    top: false,
-                    countrySlug: [],
-                    citySlug: [city.slug],
-                    placeType: [],
-                    placeTag: [],
-                },
+                filter: {citySlug: [city.slug]},
                 query: '',
                 sort: 'name',
             })

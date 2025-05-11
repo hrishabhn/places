@@ -2,12 +2,15 @@ import {CityCard} from './views/city/card'
 import {PlaceCard} from './views/place/card'
 
 import {ArrowRight} from '@phosphor-icons/react/dist/ssr'
+import {getCookie} from 'cookies-next/server'
+import {cookies} from 'next/headers'
 import Link from 'next/link'
 import {Suspense} from 'react'
 
 import {appRouter} from '@/server'
 
 import {appDescription, appSubtitle} from '@/model/app'
+import {BookmarksSchema} from '@/model/bookmarks'
 
 import {Button} from '@/components/ui'
 import {Loading} from '@/components/views/loading'
@@ -41,15 +44,33 @@ export default function Home() {
 }
 
 async function HomeContent() {
+    const bookmarks = BookmarksSchema.parse(await getCookie('bookmarks', {cookies}))
+
     const caller = appRouter.createCaller({})
-    const [allCity, allPlaceNew, allPlaceRandom] = await Promise.all([
+    const [allCity, allPlaceBookmark, allPlaceNew, allPlaceRandom] = await Promise.all([
         caller.GetAllCity({sort: 'place_count', limit: 5}),
+        caller.GetAllPlace({filter: {id: bookmarks}, sort: 'name'}),
         caller.GetAllPlace({sort: 'created', limit: 5}),
         caller.GetAllPlace({sort: 'random', limit: 5}),
     ])
 
     return (
         <>
+            {bookmarks.length > 0 && (
+                <>
+                    <Section>
+                        <SectionHeader title="Your Bookmarks" subtitle="Saved places">
+                            <ViewAll href="/places?bookmarks=true" />
+                        </SectionHeader>
+                    </Section>
+                    <ScrollStack>
+                        {allPlaceBookmark.map(place => (
+                            <PlaceCard key={place.id} place={place} />
+                        ))}
+                    </ScrollStack>
+                </>
+            )}
+
             <Section>
                 <SectionHeader title="Cities" subtitle="Most popular cities">
                     <ViewAll href="/cities" />

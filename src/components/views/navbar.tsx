@@ -20,13 +20,7 @@ export function Navbar() {
     queryClient.prefetchQuery(trpc.GetAllCountry.queryOptions({sort: 'city_count'}))
 
     queryClient.prefetchQuery(trpc.SearchCityFilter.queryOptions({query: ''}))
-    queryClient.prefetchQuery(
-        trpc.GetAllCity.queryOptions({
-            filter: {countrySlug: []},
-            query: '',
-            sort: 'place_count',
-        })
-    )
+    queryClient.prefetchQuery(trpc.GetAllCity.queryOptions({sort: 'place_count'}))
 
     // places page
     queryClient.prefetchQuery(trpc.GetAllCountry.queryOptions({sort: 'place_count'}))
@@ -35,19 +29,7 @@ export function Navbar() {
     queryClient.prefetchQuery(trpc.GetAllPlaceTag.queryOptions())
 
     queryClient.prefetchQuery(trpc.SearchPlaceFilter.queryOptions({query: ''}))
-    queryClient.prefetchQuery(
-        trpc.GetAllPlace.queryOptions({
-            filter: {
-                top: false,
-                countrySlug: [],
-                citySlug: [],
-                placeType: [],
-                placeTag: [],
-            },
-            query: '',
-            sort: 'name',
-        })
-    )
+    queryClient.prefetchQuery(trpc.GetAllPlace.queryOptions({sort: 'name'}))
 
     return sm ? <NavbarDesktop /> : <NavbarMobile />
 }

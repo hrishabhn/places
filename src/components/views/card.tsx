@@ -2,7 +2,7 @@
 
 import {TagTray, type Tags} from './tags'
 
-import {type Icon} from '@phosphor-icons/react'
+import {Heart, type Icon} from '@phosphor-icons/react'
 import Link from 'next/link'
 
 import {Heading} from '@/components/layout'
@@ -13,11 +13,13 @@ type SimpleCardProps = {
     fallbackIcon: Icon
     title: string
     tags?: Tags
+    bookmark?: boolean
+    onBookmark?: () => void
     links?: CardLinkProps[]
     description?: string | null
 }
 
-export function SimpleCard({image, fallbackIcon, title, tags = [], links = [], description}: SimpleCardProps) {
+export function SimpleCard({image, fallbackIcon, title, tags = [], bookmark, onBookmark, links = [], description}: SimpleCardProps) {
     const Icon = fallbackIcon
     return (
         <Card rounded="md" ring>
@@ -34,12 +36,21 @@ export function SimpleCard({image, fallbackIcon, title, tags = [], links = [], d
             <div className="h-px w-full bg-line dark:bg-line-dark" />
 
             <div className="flex flex-col items-start gap-1 py-3">
-                <Heading size="h3" withoutPadding>
-                    <p className="line-clamp-2 px-4">{title}</p>
-                </Heading>
+                <div className="flex w-full items-start gap-1 px-4">
+                    <div className="space-y-1">
+                        <Heading size="h3" withoutPadding>
+                            <p className="line-clamp-2">{title}</p>
+                        </Heading>
+                        <TagTray tags={tags} size="sm" />
+                    </div>
 
-                <div className="px-4">
-                    <TagTray tags={tags} size="sm" />
+                    <div className="grow" />
+
+                    {bookmark !== undefined && (
+                        <button className="active:opacity-60" onClick={() => onBookmark?.()}>
+                            <Heart weight={bookmark ? 'fill' : 'bold'} className={`text-lg ${bookmark ? 'text-accent dark:text-accent-dark' : 'text-g-500'}`} />
+                        </button>
+                    )}
                 </div>
 
                 {links.length > 0 && (
