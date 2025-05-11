@@ -19,7 +19,7 @@ import {useArrayState, useBooleanState} from '@/lib/hooks/nuqs'
 import {useTRPC} from '@/lib/trpc'
 
 import {Badge, ButtonTray} from '@/components/ui'
-import {type ActiveFilter, FilterBar} from '@/components/views/filter'
+import {type ActiveFilter} from '@/components/views/filter'
 import {getIcon} from '@/components/views/get-icon'
 import {GridStack} from '@/components/views/grid'
 import {Loading} from '@/components/views/loading'
@@ -222,6 +222,25 @@ export default function PlacesPage() {
             {singleCity && <CityImage city={singleCity} />}
 
             <MenuBarTray>
+                {activeFilter.map(filter => {
+                    const Icon = getIcon(filter.type)
+                    return (
+                        <button key={filter.title} className="shrink-0 active:opacity-60" onClick={() => filter.onRemove()}>
+                            <MenuBarItem active>
+                                <Icon weight="duotone" />
+                                <p>{filter.title}</p>
+                                <X weight="bold" />
+                            </MenuBarItem>
+                        </button>
+                    )
+                })}
+
+                <button className="active:opacity-60" onClick={() => showBookmarks.toggle()}>
+                    <MenuBarItem active={showBookmarks.value}>
+                        <Heart weight="fill" />
+                        <p>Bookmarks</p>
+                    </MenuBarItem>
+                </button>
                 <button className="active:opacity-60" onClick={() => top.toggle()}>
                     <MenuBarItem active={top.value}>
                         <Star weight="fill" />
@@ -374,42 +393,32 @@ export default function PlacesPage() {
                 />
             </MenuBarTray>
 
-            {activeFilter.length > 0 && (
-                <FilterBar>
-                    {activeFilter.map(filter => {
-                        const Icon = getIcon(filter.type)
-                        return (
-                            <button key={filter.title} className="active:opacity-60" onClick={() => filter.onRemove()}>
-                                <Badge>
-                                    <Icon weight="duotone" />
-                                    <p>{filter.title}</p>
-                                    <X weight="bold" />
-                                </Badge>
-                            </button>
-                        )
-                    })}
-                </FilterBar>
-            )}
-
             <Section>
                 <div className="flex flex-col items-start gap-2 pt-6">
                     <SearchBarFilter query={query} setQuery={setQuery} />
-
-                    <ButtonTray>
-                        <button onClick={() => showBookmarks.toggle()} className="active:opacity-60" title="Bookmarks">
-                            <SearchBarButton icon={Heart} text="Bookmarks" active={showBookmarks.value} />
-                        </button>
-                        <button onClick={() => showMap.toggle()} className="active:opacity-60" title="Map">
-                            <SearchBarButton icon={MapTrifold} text="Map" active={showMap.value} />
-                        </button>
-                        <button onClick={() => showStats.toggle()} className="active:opacity-60" title="Stats">
-                            <SearchBarButton icon={ChartLineUp} text="Stats" active={showStats.value} />
-                        </button>
-                        <button onClick={() => tableView.toggle()} className="active:opacity-60" title="Table">
-                            <SearchBarButton icon={Table} text="Table" active={tableView.value} />
-                        </button>
-                    </ButtonTray>
                 </div>
+
+                <SectionHeader title="Views" />
+                <ButtonTray>
+                    <button onClick={() => showMap.toggle()} className="active:opacity-60" title="Map">
+                        <SearchBarButton active={showMap.value}>
+                            <MapTrifold weight="bold" />
+                            <p>Map</p>
+                        </SearchBarButton>
+                    </button>
+                    <button onClick={() => showStats.toggle()} className="active:opacity-60" title="Stats">
+                        <SearchBarButton active={showStats.value}>
+                            <ChartLineUp weight="bold" />
+                            <p>Stats</p>
+                        </SearchBarButton>
+                    </button>
+                    <button onClick={() => tableView.toggle()} className="active:opacity-60" title="Table">
+                        <SearchBarButton active={tableView.value}>
+                            <Table weight="bold" />
+                            <p>Table</p>
+                        </SearchBarButton>
+                    </button>
+                </ButtonTray>
 
                 {isPending ? (
                     <Loading />

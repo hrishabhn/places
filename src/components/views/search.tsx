@@ -1,6 +1,8 @@
 'use client'
 
-import {type Icon, MagnifyingGlass, X} from '@phosphor-icons/react'
+import {MagnifyingGlass, X} from '@phosphor-icons/react'
+
+import {Button} from '@/components/ui'
 
 type SearchBarFilterProps = {
     query: string
@@ -21,21 +23,10 @@ export function SearchBarFilter({query, setQuery}: SearchBarFilterProps) {
     )
 }
 
-type SearchBarButtonProps = {
-    icon?: Icon
-    text: string
-
-    active?: boolean
-}
-
-export function SearchBarButton({icon, text, active = false}: SearchBarButtonProps) {
-    const Icon = icon
+export function SearchBarButton({active = false, children}: {active?: boolean; children?: React.ReactNode}) {
     return (
-        <div
-            className={`flex items-center gap-2 rounded-xl px-2.5 py-1.5 text-sm font-medium ${active ? 'bg-accent text-white dark:bg-accent-dark' : 'bg-layer-1 ring-1 ring-line dark:bg-layer-1-dark dark:ring-line-dark'}`}
-        >
-            {Icon && <Icon weight="bold" className="shrink-0" />}
-            <p>{text}</p>
-        </div>
+        <Button ring={!active} rounded="xl" theme={active ? 'accent' : 'layer-1'}>
+            {children}
+        </Button>
     )
 }

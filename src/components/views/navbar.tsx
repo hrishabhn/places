@@ -57,7 +57,7 @@ function NavbarMobile() {
         <div ref={ref} className="w-full bg-accent py-6 text-white dark:bg-accent-dark">
             <div className="flex w-full items-center px-4 text-2xl">
                 <Link href="/" className="active:opacity-60">
-                    <House weight="fill" />
+                    <MapPin weight="fill" />
                 </Link>
                 <div className="grow" />
                 <button onClick={() => setOpen(!open)} className="active:opacity-60">
@@ -66,6 +66,7 @@ function NavbarMobile() {
             </div>
             {open && (
                 <div className="flex w-full flex-col px-4 pt-4">
+                    <NavbarItemMobile href="/" icon={House} title="Home" onClick={() => setOpen(false)} />
                     <NavbarItemMobile href="/cities" icon={City} title="Cities" onClick={() => setOpen(false)} />
                     <NavbarItemMobile href="/places" icon={MapPin} title="Places" onClick={() => setOpen(false)} />
                     <NavbarItemMobile href="/about" icon={Info} title="About" onClick={() => setOpen(false)} />

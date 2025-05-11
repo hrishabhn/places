@@ -7,7 +7,7 @@ export function Section({children}: {children?: React.ReactNode}) {
 export function SectionHeader({title, subtitle, children}: {title: string; subtitle?: string; children?: React.ReactNode}) {
     return (
         <>
-            <div className="flex w-full items-end pb-4 pt-10">
+            <div className="flex w-full items-end pb-2 pt-10">
                 <div>
                     <Heading size="h2" withoutPadding>
                         {title}

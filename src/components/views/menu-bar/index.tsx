@@ -7,7 +7,7 @@ import {motion} from 'motion/react'
 
 import {useIsStuck, useOnScreen} from '@/lib/hooks'
 
-import {DropdownMenuItem, DropdownMenuItems, FilterItem, type LabelImageType, Menu, MenuButton} from '@/components/ui'
+import {DropdownMenuItem, DropdownMenuItems, type LabelImageType, Menu, MenuButton} from '@/components/ui'
 
 export function MenuBarTray({children}: {children?: React.ReactNode}) {
     const {isStuck, ref} = useIsStuck()
@@ -30,7 +30,7 @@ export function MenuBarTray({children}: {children?: React.ReactNode}) {
 export function MenuBarItem({active = false, children}: {active?: boolean; children?: React.ReactNode}) {
     return (
         <div
-            className={`flex items-center gap-2 rounded-lg px-2 py-1 text-sm font-medium ${active ? 'bg-white text-accent dark:text-accent-dark' : 'bg-white/5 text-white hover:hover:bg-white/10'}`}
+            className={`flex items-center gap-2 rounded-full px-3 py-2 text-sm font-semibold ${active ? 'bg-white text-accent dark:text-accent-dark' : 'bg-white/5 text-white hover:hover:bg-white/10'}`}
         >
             {children}
         </div>
@@ -69,10 +69,10 @@ export function MenuBarSelect<T>({icon, placeholder, allItem, onSelect, isActive
     return (
         <Menu>
             <MenuButton className="active:opacity-60">
-                <FilterItem active={allItem.some(isActive)}>
+                <MenuBarItem active={allItem.some(isActive)}>
                     <Icon weight="duotone" className="shrink-0" />
                     <p className="line-clamp-1">{placeholder}</p>
-                </FilterItem>
+                </MenuBarItem>
             </MenuButton>
             <DropdownMenuItems>
                 {allItem.map(item => (
@@ -125,10 +125,10 @@ export function MenuBarSort<T extends readonly string[]>({selectedSort, allSort,
     return (
         <Menu>
             <MenuButton className="active:opacity-60">
-                <FilterItem>
+                <MenuBarItem>
                     <ArrowsDownUp weight="bold" className="shrink-0" />
                     <p>{toTitle(selectedSort)}</p>
-                </FilterItem>
+                </MenuBarItem>
             </MenuButton>
             <DropdownMenuItems anchor="bottom end">
                 {allSort.map(sort => (

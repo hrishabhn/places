@@ -12,11 +12,11 @@ import {useArrayState} from '@/lib/hooks/nuqs'
 import {useTRPC} from '@/lib/trpc'
 
 import {Badge, ButtonTray} from '@/components/ui'
-import {type ActiveFilter, FilterBar} from '@/components/views/filter'
+import {type ActiveFilter} from '@/components/views/filter'
 import {getIcon} from '@/components/views/get-icon'
 import {GridStack} from '@/components/views/grid'
 import {Loading} from '@/components/views/loading'
-import {MenuBarSelect, MenuBarSort, MenuBarTray} from '@/components/views/menu-bar'
+import {MenuBarItem, MenuBarSelect, MenuBarSort, MenuBarTray} from '@/components/views/menu-bar'
 import {SearchBarFilter} from '@/components/views/search'
 import {Section, SectionHeader} from '@/components/views/section'
 
@@ -73,6 +73,19 @@ export default function CitiesPage() {
     return (
         <>
             <MenuBarTray>
+                {activeFilter.map(filter => {
+                    const Icon = getIcon(filter.type)
+                    return (
+                        <button key={filter.title} className="shrink-0 active:opacity-60" onClick={() => filter.onRemove()}>
+                            <MenuBarItem active>
+                                <Icon weight="duotone" />
+                                <p>{filter.title}</p>
+                                <X weight="bold" />
+                            </MenuBarItem>
+                        </button>
+                    )
+                })}
+
                 <MenuBarSelect
                     icon={Flag}
                     placeholder="Country"
@@ -125,23 +138,6 @@ export default function CitiesPage() {
                     }
                 />
             </MenuBarTray>
-
-            {activeFilter.length > 0 && (
-                <FilterBar>
-                    {activeFilter.map(filter => {
-                        const Icon = getIcon(filter.type)
-                        return (
-                            <button key={filter.title} className="active:opacity-60" onClick={() => filter.onRemove()}>
-                                <Badge>
-                                    <Icon weight="duotone" />
-                                    <p>{filter.title}</p>
-                                    <X weight="bold" />
-                                </Badge>
-                            </button>
-                        )
-                    })}
-                </FilterBar>
-            )}
 
             <Section>
                 <div className="pt-6">

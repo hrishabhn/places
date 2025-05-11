@@ -18,7 +18,7 @@ type CardProps = {
     // styling
     theme?: CardTheme
     aspect?: AspectRatio
-    ring?: true
+    ring?: boolean
     rounded?: Rounded
     shadow?: Shadow
 
@@ -31,7 +31,7 @@ export function Card({
 
     theme = 'layer-1',
     aspect,
-    ring,
+    ring = false,
     rounded,
     shadow,
 

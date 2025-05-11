@@ -9,7 +9,7 @@ type ButtonSize = 'xs' | 'sm' | 'md' | 'lg'
 type ButtonStyleProps = {
     size?: ButtonSize
     theme?: CardTheme
-    ring?: true
+    ring?: boolean
     rounded?: Rounded
 }
 
