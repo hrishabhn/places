@@ -7,6 +7,7 @@ import {ChartLineUp, City, Flag, ForkKnife, Heart, MapTrifold, Plus, Star, Table
 import {useQuery, useQueryClient, useSuspenseQuery} from '@tanstack/react-query'
 import {getCookie, setCookie} from 'cookies-next'
 import {parseAsString, parseAsStringLiteral, useQueryState} from 'nuqs'
+import {useEffect} from 'react'
 
 import {CityImage} from '@/app/views/city/image'
 import {PlaceCard} from '@/app/views/place/card'
@@ -60,6 +61,10 @@ export default function PlacesPage() {
         setCookie('bookmarks', JSON.stringify(newBookmarks))
         queryClient.invalidateQueries({queryKey: ['bookmarks']})
     }
+
+    useEffect(() => {
+        if (bookmarks.length === 0) showBookmarks.setFalse()
+    }, [bookmarks.length, showBookmarks])
 
     const {data: allCountry} = useSuspenseQuery(trpc.GetAllCountry.queryOptions({sort: 'place_count'}))
     const {data: allCity} = useSuspenseQuery(trpc.GetAllCity.queryOptions({sort: 'place_count'}))
@@ -235,12 +240,14 @@ export default function PlacesPage() {
                     )
                 })}
 
-                <button className="active:opacity-60" onClick={() => showBookmarks.toggle()}>
-                    <MenuBarItem active={showBookmarks.value}>
-                        <Heart weight="fill" />
-                        <p>Bookmarks</p>
-                    </MenuBarItem>
-                </button>
+                {bookmarks.length > 0 && (
+                    <button className="active:opacity-60" onClick={() => showBookmarks.toggle()}>
+                        <MenuBarItem active={showBookmarks.value}>
+                            <Heart weight="fill" />
+                            <p>Bookmarks</p>
+                        </MenuBarItem>
+                    </button>
+                )}
                 <button className="active:opacity-60" onClick={() => top.toggle()}>
                     <MenuBarItem active={top.value}>
                         <Star weight="fill" />
