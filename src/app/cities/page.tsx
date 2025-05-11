@@ -11,7 +11,6 @@ import {countryFlag} from '@/model/util'
 import {useArrayState} from '@/lib/hooks/nuqs'
 import {useTRPC} from '@/lib/trpc'
 
-import {Heading} from '@/components/layout'
 import {Badge, ButtonTray} from '@/components/ui'
 import {type ActiveFilter, FilterBar} from '@/components/views/filter'
 import {getIcon} from '@/components/views/get-icon'
@@ -19,7 +18,7 @@ import {GridStack} from '@/components/views/grid'
 import {Loading} from '@/components/views/loading'
 import {MenuBarSelect, MenuBarSort, MenuBarTray} from '@/components/views/menu-bar'
 import {SearchBarFilter} from '@/components/views/search'
-import {Section} from '@/components/views/section'
+import {Section, SectionHeader} from '@/components/views/section'
 
 const allSort = ['place_count', 'country', 'name'] as const
 
@@ -145,7 +144,7 @@ export default function CitiesPage() {
             )}
 
             <Section>
-                <div className="pb-4 pt-8">
+                <div className="pt-6">
                     <SearchBarFilter query={query} setQuery={setQuery} />
                 </div>
 
@@ -155,7 +154,7 @@ export default function CitiesPage() {
                     <>
                         {searchResult.length > 0 && (
                             <>
-                                <Heading size="h2">Filters</Heading>
+                                <SectionHeader title="Filters" subtitle={`${searchResult.length} results`} />
                                 <ButtonTray>
                                     {searchResult.map((result, i) => {
                                         const active = {
@@ -200,22 +199,13 @@ export default function CitiesPage() {
                             </>
                         )}
 
-                        <Heading size="h2">Cities</Heading>
-                        {allCity.length > 0 ? (
+                        <SectionHeader title="Cities" subtitle={`${allCity.length > 0 ? allCity.length : 'No'} results`} />
+                        {allCity.length > 0 && (
                             <GridStack>
                                 {allCity.map(city => (
                                     <CityCard key={city.slug} city={city} />
                                 ))}
                             </GridStack>
-                        ) : (
-                            <>
-                                <Heading size="h4" withoutPadding>
-                                    No results
-                                </Heading>
-                                <Heading size="h5" withoutPadding>
-                                    Try adjusting the filters
-                                </Heading>
-                            </>
                         )}
                     </>
                 )}

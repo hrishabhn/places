@@ -16,7 +16,6 @@ import {countryFlag} from '@/model/util'
 import {useArrayState, useBooleanState} from '@/lib/hooks/nuqs'
 import {useTRPC} from '@/lib/trpc'
 
-import {Heading} from '@/components/layout'
 import {Badge, ButtonTray} from '@/components/ui'
 import {type ActiveFilter, FilterBar} from '@/components/views/filter'
 import {getIcon} from '@/components/views/get-icon'
@@ -24,7 +23,7 @@ import {GridStack} from '@/components/views/grid'
 import {Loading} from '@/components/views/loading'
 import {MenuBarItem, MenuBarSelect, MenuBarSort, MenuBarTray} from '@/components/views/menu-bar'
 import {SearchBarButton, SearchBarFilter} from '@/components/views/search'
-import {Section} from '@/components/views/section'
+import {Section, SectionHeader} from '@/components/views/section'
 
 const allSort = ['name', 'country', 'city'] as const
 
@@ -353,7 +352,7 @@ export default function PlacesPage() {
             )}
 
             <Section>
-                <div className="flex flex-col items-start gap-2 pb-4 pt-8">
+                <div className="flex flex-col items-start gap-2 pt-6">
                     <SearchBarFilter query={query} setQuery={setQuery} />
 
                     <ButtonTray>
@@ -375,7 +374,7 @@ export default function PlacesPage() {
                     <>
                         {searchResult.length > 0 && (
                             <>
-                                <Heading size="h2">Filters</Heading>
+                                <SectionHeader title="Filters" subtitle={`${searchResult.length} results`} />
                                 <ButtonTray>
                                     {searchResult.map((result, i) => {
                                         const active = {
@@ -473,8 +472,9 @@ export default function PlacesPage() {
                                 </ButtonTray>
                             </>
                         )}
-                        <Heading size="h2">Places</Heading>
-                        {allPlace.length > 0 ? (
+
+                        <SectionHeader title="Places" subtitle={`${allPlace.length > 0 ? allPlace.length : 'No'} results`} />
+                        {allPlace.length > 0 && (
                             <>
                                 {showMap.value && <PlacesMap allPlace={allPlace} />}
                                 {showStats.value && <PlacesStats allPlace={allPlace} />}
@@ -488,15 +488,6 @@ export default function PlacesPage() {
                                         ))}
                                     </GridStack>
                                 )}
-                            </>
-                        ) : (
-                            <>
-                                <Heading size="h4" withoutPadding>
-                                    No results
-                                </Heading>
-                                <Heading size="h5" withoutPadding>
-                                    Try adjusting the filters
-                                </Heading>
                             </>
                         )}
                     </>

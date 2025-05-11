@@ -9,11 +9,10 @@ import {appRouter} from '@/server'
 
 import {appDescription, appSubtitle} from '@/model/app'
 
-import {Heading} from '@/components/layout'
 import {Button} from '@/components/ui'
 import {Loading} from '@/components/views/loading'
 import {ScrollStack} from '@/components/views/scroll'
-import {Section} from '@/components/views/section'
+import {Section, SectionHeader} from '@/components/views/section'
 
 const backdrop = 'https://images.unsplash.com/photo-1451187580459-43490279c0fa'
 
@@ -51,21 +50,33 @@ async function HomeContent() {
 
     return (
         <>
-            <SectionHeader title="Cities" subtitle="Most popular cities" viewAll="/cities" />
+            <Section>
+                <SectionHeader title="Cities" subtitle="Most popular cities">
+                    <ViewAll href="/cities" />
+                </SectionHeader>
+            </Section>
             <ScrollStack>
                 {allCity.map(city => (
                     <CityCard key={city.slug} city={city} />
                 ))}
             </ScrollStack>
 
-            <SectionHeader title="Recently Added" subtitle="New additions to the collection" viewAll="/places" />
+            <Section>
+                <SectionHeader title="Recently Added" subtitle="New additions to the collection">
+                    <ViewAll href="/places" />
+                </SectionHeader>
+            </Section>
             <ScrollStack>
                 {allPlaceNew.map(place => (
                     <PlaceCard key={place.id} place={place} />
                 ))}
             </ScrollStack>
 
-            <SectionHeader title="Random Picks" subtitle="Discover hidden gems" viewAll="/places" />
+            <Section>
+                <SectionHeader title="Random Picks" subtitle="Discover hidden gems">
+                    <ViewAll href="/places" />
+                </SectionHeader>
+            </Section>
             <ScrollStack>
                 {allPlaceRandom.map(place => (
                     <PlaceCard key={place.id} place={place} />
@@ -75,26 +86,13 @@ async function HomeContent() {
     )
 }
 
-function SectionHeader({title, subtitle, viewAll}: {title: string; subtitle: string; viewAll: string}) {
+function ViewAll({href}: {href: string}) {
     return (
-        <Section>
-            <div className="flex w-full items-end pb-4 pt-10">
-                <div>
-                    <Heading size="h2" withoutPadding>
-                        {title}
-                    </Heading>
-                    <p className="font-medium opacity-80">{subtitle}</p>
-                </div>
-
-                <div className="grow" />
-
-                <Link href={viewAll} className="flex items-center gap-2 rounded-xl">
-                    <Button theme="layer-1" ring>
-                        <p>View All</p>
-                        <ArrowRight weight="bold" />
-                    </Button>
-                </Link>
-            </div>
-        </Section>
+        <Link href={href} className="flex items-center gap-2 rounded-xl active:opacity-60">
+            <Button theme="layer-1" ring>
+                <p>View All</p>
+                <ArrowRight weight="bold" />
+            </Button>
+        </Link>
     )
 }
