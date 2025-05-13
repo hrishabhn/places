@@ -1,6 +1,7 @@
 import './globals.css'
 import {Providers} from './providers'
 
+import {Analytics} from '@vercel/analytics/next'
 import type {Metadata, Viewport} from 'next'
 import colors from 'tailwindcss/colors'
 
@@ -29,6 +30,8 @@ export default function RootLayout({
 }>) {
     return (
         <html lang="en">
+            <Analytics />
+
             <Providers>
                 <body className={`${inter.className} flex min-h-screen w-full flex-col bg-layer-0 text-black antialiased dark:bg-layer-0-dark dark:text-white`}>
                     <Navbar />
