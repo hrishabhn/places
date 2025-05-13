@@ -1,8 +1,6 @@
-import {CityCard} from './views/city/card'
-import {PlaceCard} from './views/place/card'
+import HomeContent from './content'
 
 import {ArrowRight} from '@phosphor-icons/react/dist/ssr'
-import {getCookie} from 'cookies-next/server'
 import {cookies} from 'next/headers'
 import Link from 'next/link'
 import {Suspense} from 'react'
@@ -10,12 +8,9 @@ import {Suspense} from 'react'
 import {appRouter} from '@/server'
 
 import {appDescription, appSubtitle} from '@/model/app'
-import {BookmarksSchema} from '@/model/bookmarks'
+import {getBookmarks} from '@/model/bookmarks'
 
-import {Button} from '@/components/ui'
 import {Loading} from '@/components/views/loading'
-import {ScrollStack} from '@/components/views/scroll'
-import {Section, SectionHeader} from '@/components/views/section'
 
 const backdrop = 'https://images.unsplash.com/photo-1451187580459-43490279c0fa'
 
@@ -35,85 +30,31 @@ export default function Home() {
                     </Link>
                 </div>
             </div>
-
             <Suspense fallback={<Loading />}>
-                <HomeContent />
+                <HomeContentSuspense />
             </Suspense>
         </>
     )
 }
 
-async function HomeContent() {
-    const bookmarks = BookmarksSchema.parse(await getCookie('bookmarks', {cookies}))
+async function HomeContentSuspense() {
+    const bookmarks = await getBookmarks({cookies})
 
     const caller = appRouter.createCaller({})
-    const [allCity, allPlaceBookmark, allPlaceNew, allPlaceRandom] = await Promise.all([
+    const [allPlaceBookmark, allCity, allPlaceNew, allPlaceRandom] = await Promise.all([
+        bookmarks.length > 0 ? caller.GetAllPlace({filter: {id: bookmarks}, sort: 'name'}) : [],
         caller.GetAllCity({sort: 'place_count', limit: 5}),
-        caller.GetAllPlace({filter: {id: bookmarks}, sort: 'name'}),
         caller.GetAllPlace({sort: 'created', limit: 5}),
         caller.GetAllPlace({sort: 'random', limit: 5}),
     ])
 
     return (
-        <>
-            {bookmarks.length > 0 && (
-                <>
-                    <Section>
-                        <SectionHeader title="Your Bookmarks" subtitle="Saved places">
-                            <ViewAll href="/places?bookmarks=true" />
-                        </SectionHeader>
-                    </Section>
-                    <ScrollStack>
-                        {allPlaceBookmark.map(place => (
-                            <PlaceCard key={place.id} place={place} />
-                        ))}
-                    </ScrollStack>
-                </>
-            )}
-
-            <Section>
-                <SectionHeader title="Cities" subtitle="Most popular cities">
-                    <ViewAll href="/cities" />
-                </SectionHeader>
-            </Section>
-            <ScrollStack>
-                {allCity.map(city => (
-                    <CityCard key={city.slug} city={city} />
-                ))}
-            </ScrollStack>
-
-            <Section>
-                <SectionHeader title="Recently Added" subtitle="New additions to the collection">
-                    <ViewAll href="/places" />
-                </SectionHeader>
-            </Section>
-            <ScrollStack>
-                {allPlaceNew.map(place => (
-                    <PlaceCard key={place.id} place={place} />
-                ))}
-            </ScrollStack>
-
-            <Section>
-                <SectionHeader title="Random Picks" subtitle="Discover hidden gems">
-                    <ViewAll href="/places" />
-                </SectionHeader>
-            </Section>
-            <ScrollStack>
-                {allPlaceRandom.map(place => (
-                    <PlaceCard key={place.id} place={place} />
-                ))}
-            </ScrollStack>
-        </>
-    )
-}
-
-function ViewAll({href}: {href: string}) {
-    return (
-        <Link href={href} className="flex items-center gap-2 rounded-xl active:opacity-60">
-            <Button theme="layer-1" ring>
-                <p>View All</p>
-                <ArrowRight weight="bold" />
-            </Button>
-        </Link>
+        <HomeContent
+            initialBookmarks={bookmarks}
+            initialAllPlaceBookmark={allPlaceBookmark}
+            initialAllCity={allCity}
+            initialAllPlaceNew={allPlaceNew}
+            initialAllPlaceRandom={allPlaceRandom}
+        />
     )
 }

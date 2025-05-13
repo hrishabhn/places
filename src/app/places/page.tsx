@@ -4,8 +4,7 @@ import {PlacesMap} from './map'
 import {PlacesStats} from './stats'
 
 import {ChartLineUp, City, Flag, ForkKnife, Heart, MapTrifold, Plus, Star, Table, Tag, TextT, X} from '@phosphor-icons/react'
-import {useQuery, useQueryClient, useSuspenseQuery} from '@tanstack/react-query'
-import {getCookie, setCookie} from 'cookies-next'
+import {useMutation, useQuery, useQueryClient, useSuspenseQuery} from '@tanstack/react-query'
 import {parseAsString, parseAsStringLiteral, useQueryState} from 'nuqs'
 import {useEffect} from 'react'
 
@@ -13,7 +12,7 @@ import {CityImage} from '@/app/views/city/image'
 import {PlaceCard} from '@/app/views/place/card'
 import {PlaceTable} from '@/app/views/place/table'
 
-import {BookmarksSchema} from '@/model/bookmarks'
+import {getBookmarks, toggleBookmark} from '@/model/bookmarks'
 import {countryFlag} from '@/model/util'
 
 import {useArrayState, useBooleanState} from '@/lib/hooks/nuqs'
@@ -53,14 +52,10 @@ export default function PlacesPage() {
 
     const {data: bookmarks} = useSuspenseQuery({
         queryKey: ['bookmarks'],
-        queryFn: async () => BookmarksSchema.parse(await getCookie('bookmarks')),
+        queryFn: async () => await getBookmarks(),
     })
 
-    const toggleBookmark = (id: string) => {
-        const newBookmarks = bookmarks.includes(id) ? bookmarks.filter(f => f !== id) : [...bookmarks, id]
-        setCookie('bookmarks', JSON.stringify(newBookmarks))
-        queryClient.invalidateQueries({queryKey: ['bookmarks']})
-    }
+    const {mutate: toggle} = useMutation({mutationFn: async (id: string) => await queryClient.setQueryData(['bookmarks'], await toggleBookmark(id))})
 
     useEffect(() => {
         if (bookmarks.length === 0) showBookmarks.setFalse()
@@ -547,7 +542,7 @@ export default function PlacesPage() {
                                 ) : (
                                     <GridStack>
                                         {allPlace.map(place => (
-                                            <PlaceCard key={place.id} place={place} bookmark={bookmarks.includes(place.id)} onBookmark={() => toggleBookmark(place.id)} />
+                                            <PlaceCard key={place.id} place={place} bookmark={bookmarks.includes(place.id)} onBookmark={() => toggle(place.id)} />
                                         ))}
                                     </GridStack>
                                 )}

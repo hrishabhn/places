@@ -12,3 +12,8 @@ export function countryFlag(country_code: string): string {
     if (country_code.length !== 2) throw new Error('Invalid country code')
     return `https://hatscripts.github.io/circle-flags/flags/${country_code.toLowerCase()}.svg`
 }
+
+export function setsEqual<T extends string>(a: Set<T>, b: Set<T>): boolean {
+    if (a.size !== b.size) return false
+    return [...a].every(value => b.has(value))
+}
