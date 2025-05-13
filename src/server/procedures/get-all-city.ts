@@ -64,9 +64,9 @@ export const GetAllCity = publicProcedure.input(GetAllCityOptionsSchema).query(
                 ${
                     query
                         ? sql`(
-                        city.name % ${query}
+                        (city.name % ${query} OR city.name ILIKE ${`%${query}%`})
                         OR
-                        country.name % ${query}
+                        (country.name % ${query} OR country.name ILIKE ${`%${query}%`})
                         ) AND`
                         : sql``
                 }

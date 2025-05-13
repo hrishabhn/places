@@ -33,7 +33,7 @@ export const SearchPlaceFilter = publicProcedure.input(SearchInputSchema).query(
             select name, name as id, 'place_tag' as type from (select distinct unnest(tags) as name from place)
         )
         where name % ${query}
-        order by score desc
+        order by score desc, name
         limit 10
         `
     )

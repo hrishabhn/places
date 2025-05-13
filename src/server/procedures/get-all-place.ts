@@ -96,15 +96,15 @@ export const GetAllPlace = publicProcedure.input(GetAllPlaceOptionsSchema).query
                 ${
                     query
                         ? sql`(
-                        place.name % ${query}
+                        (place.name % ${query} OR place.name ILIKE ${`%${query}%`})
                         OR
-                        city.name % ${query}
+                        (city.name % ${query} OR city.name ILIKE ${`%${query}%`})
                         OR
-                        country.name % ${query}
+                        (country.name % ${query} OR country.name ILIKE ${`%${query}%`})
                         OR
-                        ${query} % ANY(place.type)
+                        (${query} % ANY(place.type) OR ${query} ILIKE ANY(place.type))
                         OR
-                        ${query} % ANY(place.tags)
+                        (${query} % ANY(place.tags) OR ${query} ILIKE ANY(place.tags))
                         ) AND`
                         : sql``
                 }
