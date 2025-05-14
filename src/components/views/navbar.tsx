@@ -1,7 +1,7 @@
 'use client'
 
 import {City, House, type Icon, Info, List, MapPin, X} from '@phosphor-icons/react'
-import {useQueryClient} from '@tanstack/react-query'
+import {usePrefetchQuery} from '@tanstack/react-query'
 import Link from 'next/link'
 import {useRef, useState} from 'react'
 import {useClickAway} from 'react-use'
@@ -14,22 +14,40 @@ export function Navbar() {
 
     // prefetch
     const trpc = useTRPC()
-    const queryClient = useQueryClient()
 
     // cities page
-    queryClient.prefetchQuery(trpc.GetAllCountry.queryOptions({sort: 'city_count'}))
+    usePrefetchQuery(trpc.GetAllCountry.queryOptions({sort: 'city_count'}))
 
-    queryClient.prefetchQuery(trpc.SearchCityFilter.queryOptions({query: ''}))
-    queryClient.prefetchQuery(trpc.GetAllCity.queryOptions({sort: 'place_count'}))
+    usePrefetchQuery(trpc.SearchCityFilter.queryOptions({query: ''}))
+    usePrefetchQuery(
+        trpc.GetAllCity.queryOptions({
+            filter: {countrySlug: []},
+            query: '',
+            sort: 'place_count',
+        })
+    )
 
     // places page
-    queryClient.prefetchQuery(trpc.GetAllCountry.queryOptions({sort: 'place_count'}))
-    queryClient.prefetchQuery(trpc.GetAllCity.queryOptions({sort: 'place_count'}))
-    queryClient.prefetchQuery(trpc.GetAllPlaceType.queryOptions())
-    queryClient.prefetchQuery(trpc.GetAllPlaceTag.queryOptions())
+    usePrefetchQuery(trpc.GetAllCountry.queryOptions({sort: 'place_count'}))
+    usePrefetchQuery(trpc.GetAllCity.queryOptions({sort: 'place_count'}))
+    usePrefetchQuery(trpc.GetAllPlaceType.queryOptions())
+    usePrefetchQuery(trpc.GetAllPlaceTag.queryOptions())
 
-    queryClient.prefetchQuery(trpc.SearchPlaceFilter.queryOptions({query: ''}))
-    queryClient.prefetchQuery(trpc.GetAllPlace.queryOptions({sort: 'name'}))
+    usePrefetchQuery(trpc.SearchPlaceFilter.queryOptions({query: ''}))
+    usePrefetchQuery(
+        trpc.GetAllPlace.queryOptions({
+            filter: {
+                id: undefined,
+                top: false,
+                countrySlug: [],
+                citySlug: [],
+                placeType: [],
+                placeTag: [],
+            },
+            query: '',
+            sort: 'name',
+        })
+    )
 
     return sm ? <NavbarDesktop /> : <NavbarMobile />
 }
