@@ -18,7 +18,7 @@ export const GetAllPlaceType = publicProcedure.query(
             SELECT UNNEST(type) as type_name, COUNT(*) as place_count
             FROM place
             GROUP BY type_name
-            ORDER BY place_count DESC, lower(type_name)
+            ORDER BY place_count DESC, LOWER(UNNEST(type))
             `
         )
 )
