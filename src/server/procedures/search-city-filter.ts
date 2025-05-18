@@ -27,7 +27,7 @@ export const SearchCityFilter = publicProcedure.input(SearchInputSchema).query(a
             select name, slug as id, 'country' as type from country
         )
         where name % ${query}
-        order by score desc, name
+        order by score desc, lower(name)
         limit 10
         `
     )

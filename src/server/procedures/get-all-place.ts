@@ -37,9 +37,9 @@ export const GetAllPlace = publicProcedure
 
             // order by
             const orderBy = {
-                name: sql`place.name`,
-                country: sql`country.name, place.name`,
-                city: sql`city.name, country.name, place.name`,
+                name: sql`lower(place.name)`,
+                country: sql`lower(country.name), lower(place.name)`,
+                city: sql`lower(city.name), lower(country.name), lower(place.name)`,
                 created: sql`place.created DESC`,
                 modified: sql`place.modified DESC`,
                 random: sql`random()`,
@@ -107,7 +107,7 @@ export const GetAllPlace = publicProcedure
                             : sql``
                     }
                     TRUE
-                ORDER BY ${query ? sql`score DESC, place.name` : orderBy}
+                ORDER BY ${query ? sql`score DESC, lower(place.name)` : orderBy}
                 ${limit ? sql`LIMIT ${limit}` : sql``}
                 `
             )

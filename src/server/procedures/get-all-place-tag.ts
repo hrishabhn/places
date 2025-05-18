@@ -18,7 +18,7 @@ export const GetAllPlaceTag = publicProcedure.query(
             SELECT UNNEST(tags) AS tag_name, COUNT(*) AS place_count
             FROM place
             GROUP BY tag_name
-            ORDER BY place_count DESC, tag_name
+            ORDER BY place_count DESC, lower(tag_name)
             `
         )
 )

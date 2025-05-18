@@ -14,9 +14,9 @@ export const GetAllCountry = publicProcedure
     )
     .query(async ({input: {sort, limit}}): Promise<Country[]> => {
         const orderBy = {
-            name: sql`name`,
-            city_count: sql`city_count DESC, name`,
-            place_count: sql`place_count DESC, name`,
+            name: sql`lower(country.name)`,
+            city_count: sql`city_count DESC, lower(country.name)`,
+            place_count: sql`place_count DESC, lower(country.name)`,
         }[sort]
 
         return z.array(CountrySchema).parse(

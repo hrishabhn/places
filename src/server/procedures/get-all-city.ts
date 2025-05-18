@@ -32,9 +32,9 @@ export const GetAllCity = publicProcedure
 
             // order by
             const orderBy = {
-                place_count: sql`place_count DESC, city.name`,
-                country: sql`country.name, city.name`,
-                name: sql`city.name`,
+                place_count: sql`place_count DESC, lower(city.name)`,
+                country: sql`lower(country.name), lower(city.name)`,
+                name: sql`lower(city.name)`,
             }[sort]
 
             return z.array(CitySchema).parse(
@@ -72,7 +72,7 @@ export const GetAllCity = publicProcedure
                     }
                     TRUE
                 GROUP BY city.slug, country_name, country_code
-                ORDER BY ${query ? sql`score DESC, city.name` : orderBy}
+                ORDER BY ${query ? sql`score DESC, lower(city.name)` : orderBy}
                 ${limit ? sql`LIMIT ${limit}` : sql``}
                 `
             )
