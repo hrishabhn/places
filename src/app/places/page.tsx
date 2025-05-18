@@ -1,9 +1,8 @@
 'use client'
 
 import {PlacesMap} from './map'
-import {PlacesStats} from './stats'
 
-import {ChartLineUp, City, Flag, ForkKnife, Heart, List, MapTrifold, Plus, Star, Table, Tag, TextT, X} from '@phosphor-icons/react'
+import {City, Flag, ForkKnife, Heart, List, MapTrifold, Plus, Star, Table, Tag, TextT, X} from '@phosphor-icons/react'
 import {useMutation, useQuery, useQueryClient, useSuspenseQuery} from '@tanstack/react-query'
 import {parseAsString, parseAsStringLiteral, useQueryState} from 'nuqs'
 import {useEffect} from 'react'
@@ -29,7 +28,7 @@ import {SearchBarButton, SearchBarFilter} from '@/components/views/search'
 import {Section, SectionHeader} from '@/components/views/section'
 
 const allSort = ['name', 'country', 'city'] as const
-const allView = ['list', 'table', 'map', 'stats'] as const
+const allView = ['list', 'table', 'map'] as const
 
 type View = (typeof allView)[number]
 
@@ -407,14 +406,12 @@ export default function PlacesPage() {
                             list: List,
                             table: Table,
                             map: MapTrifold,
-                            stats: ChartLineUp,
                         }[view]
 
                         const title = {
                             list: 'List',
                             table: 'Table',
                             map: 'Map',
-                            stats: 'Stats',
                         }[view]
 
                         return (
@@ -567,8 +564,5 @@ function PlacesStack({allPlace, view}: {allPlace: Place[]; view: View}) {
 
         case 'map':
             return <PlacesMap allPlace={allPlace} />
-
-        case 'stats':
-            return <PlacesStats allPlace={allPlace} />
     }
 }
