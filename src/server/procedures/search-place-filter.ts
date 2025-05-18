@@ -12,7 +12,7 @@ export const PlaceFilterSchema = z.object({
     score: z.coerce.number(),
 })
 
-export type PlaceFilter = z.infer<typeof PlaceFilterSchema>
+type PlaceFilter = z.infer<typeof PlaceFilterSchema>
 
 export const SearchPlaceFilter = publicProcedure.input(SearchInputSchema).query(async ({input: {query}}): Promise<PlaceFilter[]> => {
     if (!query) return []

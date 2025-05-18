@@ -1,9 +1,15 @@
 import {publicProcedure} from '../trpc'
-import {type PlaceTag, PlaceTagSchema} from '../types'
 
 import {z} from 'zod'
 
 import {sql} from '@/model/neon'
+
+const PlaceTagSchema = z.object({
+    tag_name: z.string(),
+    place_count: z.coerce.number(),
+})
+
+type PlaceTag = z.infer<typeof PlaceTagSchema>
 
 export const GetAllPlaceTag = publicProcedure.query(
     async (): Promise<PlaceTag[]> =>
