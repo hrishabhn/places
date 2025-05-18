@@ -3,14 +3,16 @@
 import {PlacesMap} from './map'
 import {PlacesStats} from './stats'
 
-import {ChartLineUp, City, Flag, ForkKnife, Heart, MapTrifold, Plus, Star, Table, Tag, TextT, X} from '@phosphor-icons/react'
+import {ChartLineUp, City, Flag, ForkKnife, Heart, List, MapTrifold, Plus, Star, Table, Tag, TextT, X} from '@phosphor-icons/react'
 import {useMutation, useQuery, useQueryClient, useSuspenseQuery} from '@tanstack/react-query'
 import {parseAsString, parseAsStringLiteral, useQueryState} from 'nuqs'
 import {useEffect} from 'react'
 
 import {CityImage} from '@/app/views/city/image'
-import {PlaceCard} from '@/app/views/place/card'
+import {PlaceGrid} from '@/app/views/place/grid'
 import {PlaceTable} from '@/app/views/place/table'
+
+import {type Place} from '@/server/types'
 
 import {getBookmarks, toggleBookmark} from '@/model/bookmarks'
 import {countryFlag} from '@/model/util'
@@ -21,13 +23,15 @@ import {useTRPC} from '@/lib/trpc'
 import {Badge, ButtonTray} from '@/components/ui'
 import {type ActiveFilter} from '@/components/views/filter'
 import {getIcon} from '@/components/views/get-icon'
-import {GridStack} from '@/components/views/grid'
 import {Loading} from '@/components/views/loading'
 import {MenuBarItem, MenuBarSelect, MenuBarSort, MenuBarTray} from '@/components/views/menu-bar'
 import {SearchBarButton, SearchBarFilter} from '@/components/views/search'
 import {Section, SectionHeader} from '@/components/views/section'
 
 const allSort = ['name', 'country', 'city'] as const
+const allView = ['list', 'table', 'map', 'stats'] as const
+
+type View = (typeof allView)[number]
 
 export default function PlacesPage() {
     // state
@@ -42,9 +46,7 @@ export default function PlacesPage() {
 
     const [selectedSort, setSelectedSort] = useQueryState('sort', parseAsStringLiteral(allSort).withDefault('name'))
 
-    const showMap = useBooleanState('map')
-    const showStats = useBooleanState('stats')
-    const tableView = useBooleanState('table')
+    const [selectedView, setSelectedView] = useQueryState('view', parseAsStringLiteral(allView).withDefault('list'))
 
     // query
     const trpc = useTRPC()
@@ -54,8 +56,6 @@ export default function PlacesPage() {
         queryKey: ['bookmarks'],
         queryFn: async () => await getBookmarks(),
     })
-
-    const {mutate: toggle} = useMutation({mutationFn: async (id: string) => await queryClient.setQueryData(['bookmarks'], await toggleBookmark(id))})
 
     useEffect(() => {
         if (bookmarks.length === 0) showBookmarks.setFalse()
@@ -402,24 +402,30 @@ export default function PlacesPage() {
 
                 <SectionHeader title="Views" />
                 <ButtonTray>
-                    <button onClick={() => showMap.toggle()} className="active:opacity-60" title="Map">
-                        <SearchBarButton active={showMap.value}>
-                            <MapTrifold weight="bold" />
-                            <p>Map</p>
-                        </SearchBarButton>
-                    </button>
-                    <button onClick={() => showStats.toggle()} className="active:opacity-60" title="Stats">
-                        <SearchBarButton active={showStats.value}>
-                            <ChartLineUp weight="bold" />
-                            <p>Stats</p>
-                        </SearchBarButton>
-                    </button>
-                    <button onClick={() => tableView.toggle()} className="active:opacity-60" title="Table">
-                        <SearchBarButton active={tableView.value}>
-                            <Table weight="bold" />
-                            <p>Table</p>
-                        </SearchBarButton>
-                    </button>
+                    {allView.map(view => {
+                        const Icon = {
+                            list: List,
+                            table: Table,
+                            map: MapTrifold,
+                            stats: ChartLineUp,
+                        }[view]
+
+                        const title = {
+                            list: 'List',
+                            table: 'Table',
+                            map: 'Map',
+                            stats: 'Stats',
+                        }[view]
+
+                        return (
+                            <button key={view} className="active:opacity-60" onClick={() => setSelectedView(view)}>
+                                <SearchBarButton active={selectedView === view}>
+                                    <Icon weight="bold" />
+                                    <p>{title}</p>
+                                </SearchBarButton>
+                            </button>
+                        )
+                    })}
                 </ButtonTray>
 
                 {isPending ? (
@@ -532,25 +538,37 @@ export default function PlacesPage() {
                         )}
 
                         <SectionHeader title="Places" subtitle={`${allPlace.length > 0 ? allPlace.length : 'No'} results`} />
-                        {allPlace.length > 0 && (
-                            <>
-                                {showMap.value && <PlacesMap allPlace={allPlace} />}
-                                {showStats.value && <PlacesStats allPlace={allPlace} />}
-
-                                {tableView.value ? (
-                                    <PlaceTable allPlace={allPlace} />
-                                ) : (
-                                    <GridStack>
-                                        {allPlace.map(place => (
-                                            <PlaceCard key={place.id} place={place} bookmark={bookmarks.includes(place.id)} onBookmark={() => toggle(place.id)} />
-                                        ))}
-                                    </GridStack>
-                                )}
-                            </>
-                        )}
+                        <PlacesStack allPlace={allPlace} view={selectedView} />
                     </>
                 )}
             </Section>
         </>
     )
+}
+
+function PlacesStack({allPlace, view}: {allPlace: Place[]; view: View}) {
+    const queryClient = useQueryClient()
+
+    const {data: bookmarks} = useSuspenseQuery({
+        queryKey: ['bookmarks'],
+        queryFn: async () => await getBookmarks(),
+    })
+
+    const {mutate: toggle} = useMutation({mutationFn: async (id: string) => await queryClient.setQueryData(['bookmarks'], await toggleBookmark(id))})
+
+    if (allPlace.length === 0) return null
+
+    switch (view) {
+        case 'list':
+            return <PlaceGrid allPlace={allPlace} bookmarks={bookmarks} onToggleBookmark={id => toggle(id)} />
+
+        case 'table':
+            return <PlaceTable allPlace={allPlace} bookmarks={bookmarks} onToggleBookmark={id => toggle(id)} />
+
+        case 'map':
+            return <PlacesMap allPlace={allPlace} />
+
+        case 'stats':
+            return <PlacesStats allPlace={allPlace} />
+    }
 }

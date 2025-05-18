@@ -1,6 +1,6 @@
 'use client'
 
-import {City, ForkKnife, Image as ImageIcon, Link as LinkIcon, MapPin, Pencil, Star, Tag, TextT} from '@phosphor-icons/react'
+import {City, ForkKnife, Heart, Image as ImageIcon, Link as LinkIcon, MapPin, Pencil, Star, Tag, TextT} from '@phosphor-icons/react'
 import Link from 'next/link'
 
 import {type Place} from '@/server/types'
@@ -9,7 +9,13 @@ import {googleMapsUrl, notionUrl} from '@/model/util'
 
 import {Badge, SimpleImage} from '@/components/ui'
 
-export function PlaceTable({allPlace}: {allPlace: Place[]}) {
+type PlaceTableProps = {
+    allPlace: Place[]
+    bookmarks: string[]
+    onToggleBookmark: (id: string) => void
+}
+
+export function PlaceTable({allPlace, bookmarks, onToggleBookmark}: PlaceTableProps) {
     return (
         <div className="overflow-x-auto rounded-lg border border-line dark:border-line-dark">
             <table className="w-full border-collapse rounded-lg">
@@ -18,6 +24,10 @@ export function PlaceTable({allPlace}: {allPlace: Place[]}) {
                         <TH>
                             <TextT weight="bold" />
                             <p>Name</p>
+                        </TH>
+                        <TH>
+                            <Heart weight="bold" />
+                            <p>Bookmark</p>
                         </TH>
                         <TH>
                             <Star weight="bold" />
@@ -54,6 +64,15 @@ export function PlaceTable({allPlace}: {allPlace: Place[]}) {
                         <tr key={place.id}>
                             <TD>
                                 <p className="text-nowrap text-lg font-bold">{place.name}</p>
+                            </TD>
+
+                            <TD>
+                                <button onClick={() => onToggleBookmark(place.id)} className="active:opacity-60">
+                                    <Heart
+                                        weight={bookmarks.includes(place.id) ? 'fill' : 'bold'}
+                                        className={`${bookmarks.includes(place.id) ? 'text-accent dark:text-accent-dark' : 'text-g-500'}`}
+                                    />
+                                </button>
                             </TD>
 
                             <TD>{place.top && <Star weight="fill" className="text-yellow-400" />}</TD>
