@@ -17,7 +17,7 @@ type PlaceTableProps = {
 
 export function PlaceTable({allPlace, bookmarks, onToggleBookmark}: PlaceTableProps) {
     return (
-        <div className="overflow-x-auto rounded-lg border border-line dark:border-line-dark">
+        <div className="mb-4 overflow-x-auto rounded-lg border border-line dark:border-line-dark">
             <table className="w-full border-collapse rounded-lg">
                 <thead>
                     <tr className="text-left font-medium">
@@ -136,7 +136,7 @@ export function PlaceTable({allPlace, bookmarks, onToggleBookmark}: PlaceTablePr
 // standard cells
 function TH({children}: {children?: React.ReactNode}) {
     return (
-        <th className="border border-transparent border-b-line border-r-line px-2 py-1 last:border-r-transparent dark:border-b-line-dark dark:border-r-line-dark">
+        <th className="border-r border-line px-2 py-1 last:border-r-0 dark:border-line-dark">
             <div className="flex items-center gap-1.5">{children}</div>
         </th>
     )
@@ -144,7 +144,7 @@ function TH({children}: {children?: React.ReactNode}) {
 
 function TD({children}: {children?: React.ReactNode}) {
     return (
-        <td className="border border-transparent border-b-line border-r-line px-2 py-1.5 last:border-r-transparent dark:border-b-line-dark dark:border-r-line-dark">
+        <td className="border-r border-t border-line px-2 py-1.5 last:border-r-0 dark:border-line-dark">
             <div className="flex items-center gap-1.5">{children}</div>
         </td>
     )
