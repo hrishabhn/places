@@ -1,11 +1,13 @@
 'use client'
 
+import {getPlaceIcon} from './place-icon'
+
 import {City, ForkKnife, Heart, Image as ImageIcon, Link as LinkIcon, MapPin, Pencil, Star, Tag, TextT} from '@phosphor-icons/react'
 import Link from 'next/link'
 
 import {type Place} from '@/server/types'
 
-import {googleMapsUrl, notionUrl} from '@/model/util'
+import {countryFlag, googleMapsUrl, notionUrl} from '@/model/util'
 
 import {Badge, SimpleImage} from '@/components/ui'
 
@@ -79,7 +81,10 @@ export function PlaceTable({allPlace, bookmarks, onToggleBookmark}: PlaceTablePr
 
                             <TD>
                                 <Badge size="sm" theme="g" border={false}>
-                                    {place.city_name}
+                                    <div className="size-[1em]">
+                                        <SimpleImage url={countryFlag(place.country_code)} />
+                                    </div>
+                                    <p>{place.city_name}</p>
                                 </Badge>
                             </TD>
 
@@ -92,11 +97,15 @@ export function PlaceTable({allPlace, bookmarks, onToggleBookmark}: PlaceTablePr
                             </TD>
 
                             <TD>
-                                {place.type.map(p => (
-                                    <Badge key={p} size="sm" theme="g" border={false}>
-                                        {p}
-                                    </Badge>
-                                ))}
+                                {place.type.map(p => {
+                                    const Icon = getPlaceIcon(p)
+                                    return (
+                                        <Badge key={p} size="sm" theme="g" border={false}>
+                                            <Icon weight="duotone" />
+                                            <p>{p}</p>
+                                        </Badge>
+                                    )
+                                })}
                             </TD>
 
                             <TD>
@@ -107,9 +116,7 @@ export function PlaceTable({allPlace, bookmarks, onToggleBookmark}: PlaceTablePr
                                 ))}
                             </TD>
 
-                            <TD>
-                                <p className="line-clamp-2 text-sm">{place.description}</p>
-                            </TD>
+                            <TD>{place.description ? <p className="line-clamp-2 min-w-72 text-sm">{place.description}</p> : null}</TD>
 
                             <TD>
                                 <Link href={googleMapsUrl({name: place.name, city_name: place.city_name, maps_id: place.maps_id})} target="_blank" className="active:opacity-60">

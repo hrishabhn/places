@@ -9,6 +9,7 @@ import {useEffect} from 'react'
 
 import {CityImage} from '@/app/views/city/image'
 import {PlaceGrid} from '@/app/views/place/grid'
+import {getPlaceIcon} from '@/app/views/place/place-icon'
 import {PlaceTable} from '@/app/views/place/table'
 
 import {type Place} from '@/server/types'
@@ -309,6 +310,7 @@ export default function PlacesPage() {
                     onSelect={placeType => selectedPlaceType.toggle(placeType.type_name)}
                     isActive={placeType => selectedPlaceType.value.includes(placeType.type_name)}
                     toId={placeType => placeType.type_name}
+                    toImage={placeType => ({icon: getPlaceIcon(placeType.type_name)})}
                     toTitle={placeType => placeType.type_name}
                     toSubtitle={placeType => `${placeType.place_count} places`}
                     onScreen={placeType =>
