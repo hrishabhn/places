@@ -10,7 +10,7 @@ export function SectionHeader({title, subtitle, children}: {title: string; subti
             <div className="flex w-full items-end pb-2 pt-10">
                 <div>
                     <Heading size="h2" withoutPadding>
-                        {title}
+                        <p className="line-clamp-1 font-serif text-olive dark:text-cream">{title}</p>
                     </Heading>
                     <p className="font-medium opacity-80">{subtitle}</p>
                 </div>

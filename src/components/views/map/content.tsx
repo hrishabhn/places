@@ -56,7 +56,7 @@ export function MapViewContent({allPlace}: {allPlace: MapPin[]}) {
 
 function customIcon(theme: 'accent' | 'blue') {
     const themeClass = {
-        accent: tw`bg-accent dark:bg-accent-dark`,
+        accent: tw`bg-olive dark:bg-cream`,
         blue: tw`bg-blue-500`,
     }[theme]
 

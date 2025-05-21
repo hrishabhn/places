@@ -20,7 +20,7 @@ export function MenuBarTray({children}: {children?: React.ReactNode}) {
                 paddingInline: isStuck ? '1rem' : 'var(--px)',
             }}
             transition={{duration: 0.1}}
-            className="sticky top-0 z-10 flex items-center gap-2 overflow-x-scroll border-t border-t-white/10 bg-accent py-3 dark:bg-accent-dark"
+            className="sticky top-0 z-10 flex items-center gap-2 overflow-x-scroll border-b border-cream/10 bg-olive py-3"
         >
             {children}
         </motion.div>
@@ -29,9 +29,7 @@ export function MenuBarTray({children}: {children?: React.ReactNode}) {
 
 export function MenuBarItem({active = false, children}: {active?: boolean; children?: React.ReactNode}) {
     return (
-        <div
-            className={`flex items-center gap-2 rounded-full px-3 py-2 text-sm font-semibold ${active ? 'bg-white text-accent dark:text-accent-dark' : 'bg-white/5 text-white hover:hover:bg-white/10'}`}
-        >
+        <div className={`flex items-center gap-2 rounded-full px-3 py-2 text-sm font-semibold ${active ? 'bg-cream text-olive' : 'bg-cream/5 text-cream hover:hover:bg-cream/10'}`}>
             {children}
         </div>
     )

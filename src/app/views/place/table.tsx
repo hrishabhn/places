@@ -29,7 +29,6 @@ export function PlaceTable({allPlace, bookmarks, onToggleBookmark}: PlaceTablePr
                         </TH>
                         <TH>
                             <Heart weight="bold" />
-                            <p>Bookmark</p>
                         </TH>
                         <TH>
                             <Star weight="bold" />
@@ -70,10 +69,7 @@ export function PlaceTable({allPlace, bookmarks, onToggleBookmark}: PlaceTablePr
 
                             <TD>
                                 <button onClick={() => onToggleBookmark(place.id)} className="active:opacity-60">
-                                    <Heart
-                                        weight={bookmarks.includes(place.id) ? 'fill' : 'bold'}
-                                        className={`${bookmarks.includes(place.id) ? 'text-accent dark:text-accent-dark' : 'text-g-500'}`}
-                                    />
+                                    <Heart weight={bookmarks.includes(place.id) ? 'fill' : 'bold'} className={`${bookmarks.includes(place.id) ? 'text-red-500' : 'text-g-500'}`} />
                                 </button>
                             </TD>
 

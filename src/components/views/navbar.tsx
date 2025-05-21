@@ -3,14 +3,12 @@
 import {City, House, type Icon, Info, List, MapPin, X} from '@phosphor-icons/react'
 import {usePrefetchQuery} from '@tanstack/react-query'
 import Link from 'next/link'
-import {useRef, useState} from 'react'
-import {useClickAway} from 'react-use'
+import {useState} from 'react'
 
-import {useBreakpoint} from '@/lib/hooks'
 import {useTRPC} from '@/lib/trpc'
 
 export function Navbar() {
-    const sm = useBreakpoint('sm')
+    const [open, setOpen] = useState<boolean>(false)
 
     // prefetch
     const trpc = useTRPC()
@@ -49,48 +47,44 @@ export function Navbar() {
         })
     )
 
-    return sm ? <NavbarDesktop /> : <NavbarMobile />
-}
-
-function NavbarDesktop() {
     return (
-        <div className="flex w-full items-center gap-6 bg-accent px-10 py-4 text-white dark:bg-accent-dark">
-            <NavbarItemDesktop href="/" icon={House} title="Home" />
-            <NavbarItemDesktop href="/cities" icon={City} title="Cities" />
-            <NavbarItemDesktop href="/places" icon={MapPin} title="Places" />
-
-            <div className="grow" />
-
-            <NavbarItemDesktop href="/about" icon={Info} title="About" />
-        </div>
-    )
-}
-
-function NavbarMobile() {
-    const ref = useRef<HTMLDivElement>(null)
-    const [open, setOpen] = useState<boolean>(false)
-    useClickAway(ref, () => setOpen(false))
-
-    return (
-        <div ref={ref} className="w-full bg-accent py-6 text-white dark:bg-accent-dark">
-            <div className="flex w-full items-center px-4 text-2xl">
-                <Link href="/" className="active:opacity-60">
-                    <MapPin weight="fill" />
-                </Link>
-                <div className="grow" />
-                <button onClick={() => setOpen(!open)} className="active:opacity-60">
-                    {open ? <X weight="bold" /> : <List weight="bold" />}
-                </button>
-            </div>
-            {open && (
-                <div className="flex w-full flex-col px-4 pt-4">
-                    <NavbarItemMobile href="/" icon={House} title="Home" onClick={() => setOpen(false)} />
-                    <NavbarItemMobile href="/cities" icon={City} title="Cities" onClick={() => setOpen(false)} />
-                    <NavbarItemMobile href="/places" icon={MapPin} title="Places" onClick={() => setOpen(false)} />
-                    <NavbarItemMobile href="/about" icon={Info} title="About" onClick={() => setOpen(false)} />
+        <>
+            <div className="hidden w-full items-center gap-4 border-b border-cream/10 bg-olive p-4 text-cream sm:grid sm:grid-cols-[1fr,auto,1fr] sm:px-10">
+                <div className="flex items-center justify-start">
+                    <Link href="/" className="active:opacity-60">
+                        <p className="font-serif text-2xl font-bold">Parts Unknown</p>
+                    </Link>
                 </div>
-            )}
-        </div>
+                <div className="flex items-center justify-center gap-4">
+                    <NavbarItemDesktop href="/" icon={House} title="Home" />
+                    <NavbarItemDesktop href="/cities" icon={City} title="Cities" />
+                    <NavbarItemDesktop href="/places" icon={MapPin} title="Places" />
+                </div>
+                <div className="flex items-center justify-end">
+                    <NavbarItemDesktop href="/about" icon={Info} title="About" />
+                </div>
+            </div>
+
+            <div className="w-full border-b border-cream/10 bg-olive py-4 text-cream sm:hidden">
+                <div className="flex w-full items-center px-4 text-2xl">
+                    <Link href="/" className="active:opacity-60">
+                        <p className="font-serif text-2xl font-bold">Parts Unknown</p>
+                    </Link>
+                    <div className="grow" />
+                    <button onClick={() => setOpen(!open)} className="active:opacity-60">
+                        {open ? <X weight="bold" /> : <List weight="bold" />}
+                    </button>
+                </div>
+                {open && (
+                    <div className="flex w-full flex-col px-4 pt-4">
+                        <NavbarItemMobile href="/" icon={House} title="Home" onClick={() => setOpen(false)} />
+                        <NavbarItemMobile href="/cities" icon={City} title="Cities" onClick={() => setOpen(false)} />
+                        <NavbarItemMobile href="/places" icon={MapPin} title="Places" onClick={() => setOpen(false)} />
+                        <NavbarItemMobile href="/about" icon={Info} title="About" onClick={() => setOpen(false)} />
+                    </div>
+                )}
+            </div>
+        </>
     )
 }
 

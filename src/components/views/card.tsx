@@ -28,7 +28,7 @@ export function SimpleCard({image, fallbackIcon, title, tags = [], bookmark, onB
                     <SimpleImage url={image} alt="maps" />
                 </Card>
             ) : (
-                <div className="flex aspect-video items-center justify-center bg-accent/20 dark:bg-accent-dark/20">
+                <div className="flex aspect-video items-center justify-center bg-olive/20 text-olive dark:bg-cream/10 dark:text-cream">
                     <Icon size={24} weight="bold" />
                 </div>
             )}
@@ -39,7 +39,7 @@ export function SimpleCard({image, fallbackIcon, title, tags = [], bookmark, onB
                 <div className="flex w-full items-start gap-1 px-4">
                     <div className="space-y-1">
                         <Heading size="h3" withoutPadding>
-                            <p className="line-clamp-2">{title}</p>
+                            <p className="line-clamp-2 font-serif font-bold text-olive dark:text-cream">{title}</p>
                         </Heading>
                         <TagTray tags={tags} size="sm" />
                     </div>
@@ -48,7 +48,7 @@ export function SimpleCard({image, fallbackIcon, title, tags = [], bookmark, onB
 
                     {bookmark !== undefined && (
                         <button className="active:opacity-60" onClick={() => onBookmark?.()}>
-                            <Heart weight={bookmark ? 'fill' : 'bold'} className={`text-lg ${bookmark ? 'text-accent dark:text-accent-dark' : 'text-g-500'}`} />
+                            <Heart weight={bookmark ? 'fill' : 'bold'} className={`text-lg ${bookmark ? 'text-red-500' : 'text-g-500'}`} />
                         </button>
                     )}
                 </div>

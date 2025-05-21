@@ -1,6 +1,9 @@
 import type {Config} from 'tailwindcss'
 import colors from 'tailwindcss/colors'
 
+const olive = '#292718'
+const cream = '#F4F1DE'
+
 export default {
     content: [
         //
@@ -10,15 +13,10 @@ export default {
     ],
     theme: {
         extend: {
+            fontFamily: {
+                serif: ['var(--font-serif)', 'serif'],
+            },
             colors: {
-                accent: {
-                    DEFAULT: colors.red[800],
-                    dark: colors.red[700],
-                    secondary: {
-                        DEFAULT: colors.red[900],
-                        dark: colors.red[800],
-                    },
-                },
                 g: colors.zinc,
                 line: {
                     DEFAULT: colors.zinc[200],
@@ -34,6 +32,8 @@ export default {
                         dark: colors.zinc[900],
                     },
                 },
+                olive,
+                cream,
             },
             height: {
                 screen: '100vh 100dvh',
