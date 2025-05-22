@@ -5,48 +5,46 @@ import {z} from 'zod'
 
 import {sql} from '@/model/neon'
 
-export const GetAllPlace = publicProcedure
-    .input(
-        z.object({
-            filter: z
-                .object({
-                    id: z.array(z.string().uuid()).default([]),
-                    top: z.boolean().default(false),
-                    countrySlug: z.array(z.string()).default([]),
-                    citySlug: z.array(z.string()).default([]),
-                    placeType: z.array(z.string()).default([]),
-                    placeTag: z.array(z.string()).default([]),
-                })
-                .default({}),
-            query: z.string().default(''),
-            sort: z.enum(['name', 'country', 'city', 'created', 'modified', 'random']),
-            limit: z.number().optional(),
+export const GetAllPlaceOptions = z.object({
+    filter: z
+        .object({
+            id: z.array(z.string().uuid()).default([]),
+            top: z.boolean().default(false),
+            countrySlug: z.array(z.string()).default([]),
+            citySlug: z.array(z.string()).default([]),
+            placeType: z.array(z.string()).default([]),
+            placeTag: z.array(z.string()).default([]),
         })
-    )
-    .query(
-        async ({
-            input: {
-                filter: {id, top, countrySlug, citySlug, placeType, placeTag},
-                query,
-                sort,
-                limit,
-            },
-        }): Promise<Place[]> => {
-            // set limit for similarity
-            await sql`select set_limit(0.3)`
+        .default({}),
+    query: z.string().default(''),
+    sort: z.enum(['name', 'country', 'city', 'created', 'modified', 'random']),
+    limit: z.number().optional(),
+})
 
-            // order by
-            const orderBy = {
-                name: sql`lower(place.name)`,
-                country: sql`lower(country.name), lower(place.name)`,
-                city: sql`lower(city.name), lower(country.name), lower(place.name)`,
-                created: sql`place.created DESC`,
-                modified: sql`place.modified DESC`,
-                random: sql`random()`,
-            }[sort]
+export const GetAllPlace = publicProcedure.input(GetAllPlaceOptions).query(
+    async ({
+        input: {
+            filter: {id, top, countrySlug, citySlug, placeType, placeTag},
+            query,
+            sort,
+            limit,
+        },
+    }): Promise<Place[]> => {
+        // set limit for similarity
+        await sql`select set_limit(0.3)`
 
-            return z.array(PlaceSchema).parse(
-                await sql`
+        // order by
+        const orderBy = {
+            name: sql`lower(place.name)`,
+            country: sql`lower(country.name), lower(place.name)`,
+            city: sql`lower(city.name), lower(country.name), lower(place.name)`,
+            created: sql`place.created DESC`,
+            modified: sql`place.modified DESC`,
+            random: sql`random()`,
+        }[sort]
+
+        return z.array(PlaceSchema).parse(
+            await sql`
                 SELECT
                     place.id,
                     place.name,
@@ -110,6 +108,6 @@ export const GetAllPlace = publicProcedure
                 ORDER BY ${query ? sql`score DESC, lower(place.name)` : orderBy}
                 ${limit ? sql`LIMIT ${limit}` : sql``}
                 `
-            )
-        }
-    )
+        )
+    }
+)

@@ -5,22 +5,20 @@ import {z} from 'zod'
 
 import {sql} from '@/model/neon'
 
-export const GetAllCountry = publicProcedure
-    .input(
-        z.object({
-            sort: z.enum(['name', 'city_count', 'place_count']),
-            limit: z.number().optional(),
-        })
-    )
-    .query(async ({input: {sort, limit}}): Promise<Country[]> => {
-        const orderBy = {
-            name: sql`lower(country.name)`,
-            city_count: sql`city_count DESC, lower(country.name)`,
-            place_count: sql`place_count DESC, lower(country.name)`,
-        }[sort]
+export const GetAllCountryOptions = z.object({
+    sort: z.enum(['name', 'city_count', 'place_count']),
+    limit: z.number().optional(),
+})
 
-        return z.array(CountrySchema).parse(
-            await sql`
+export const GetAllCountry = publicProcedure.input(GetAllCountryOptions).query(async ({input: {sort, limit}}): Promise<Country[]> => {
+    const orderBy = {
+        name: sql`lower(country.name)`,
+        city_count: sql`city_count DESC, lower(country.name)`,
+        place_count: sql`place_count DESC, lower(country.name)`,
+    }[sort]
+
+    return z.array(CountrySchema).parse(
+        await sql`
             SELECT
                 country.slug,
                 country.name,
@@ -31,5 +29,5 @@ export const GetAllCountry = publicProcedure
             ORDER BY ${orderBy}
             ${limit ? sql`LIMIT ${limit}` : sql``}
             `
-        )
-    })
+    )
+})

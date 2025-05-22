@@ -5,40 +5,38 @@ import {z} from 'zod'
 
 import {sql} from '@/model/neon'
 
-export const GetAllCity = publicProcedure
-    .input(
-        z.object({
-            filter: z
-                .object({
-                    countrySlug: z.array(z.string()).default([]),
-                })
-                .default({}),
-            query: z.string().default(''),
-            sort: z.enum(['place_count', 'country', 'name']),
-            limit: z.number().optional(),
+export const GetAllCityOptions = z.object({
+    filter: z
+        .object({
+            countrySlug: z.array(z.string()).default([]),
         })
-    )
-    .query(
-        async ({
-            input: {
-                filter: {countrySlug},
-                query,
-                sort,
-                limit,
-            },
-        }): Promise<City[]> => {
-            // set limit for similarity
-            await sql`select set_limit(0.3)`
+        .default({}),
+    query: z.string().default(''),
+    sort: z.enum(['place_count', 'country', 'name']),
+    limit: z.number().optional(),
+})
 
-            // order by
-            const orderBy = {
-                place_count: sql`place_count DESC, lower(city.name)`,
-                country: sql`lower(country.name), lower(city.name)`,
-                name: sql`lower(city.name)`,
-            }[sort]
+export const GetAllCity = publicProcedure.input(GetAllCityOptions).query(
+    async ({
+        input: {
+            filter: {countrySlug},
+            query,
+            sort,
+            limit,
+        },
+    }): Promise<City[]> => {
+        // set limit for similarity
+        await sql`select set_limit(0.3)`
 
-            return z.array(CitySchema).parse(
-                await sql`
+        // order by
+        const orderBy = {
+            place_count: sql`place_count DESC, lower(city.name)`,
+            country: sql`lower(country.name), lower(city.name)`,
+            name: sql`lower(city.name)`,
+        }[sort]
+
+        return z.array(CitySchema).parse(
+            await sql`
                 SELECT
                     city.slug,
                     city.name,
@@ -75,6 +73,6 @@ export const GetAllCity = publicProcedure
                 ORDER BY ${query ? sql`score DESC, lower(city.name)` : orderBy}
                 ${limit ? sql`LIMIT ${limit}` : sql``}
                 `
-            )
-        }
-    )
+        )
+    }
+)
