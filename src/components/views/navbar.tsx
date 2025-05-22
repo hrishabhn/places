@@ -5,6 +5,8 @@ import {usePrefetchQuery} from '@tanstack/react-query'
 import Link from 'next/link'
 import {useState} from 'react'
 
+import {appTitle} from '@/model/app'
+
 import {useTRPC} from '@/lib/trpc'
 
 export function Navbar() {
@@ -52,7 +54,7 @@ export function Navbar() {
             <div className="hidden w-full items-center gap-4 border-b border-cream/10 bg-olive p-4 text-cream sm:grid sm:grid-cols-[1fr,auto,1fr] sm:px-10">
                 <div className="flex items-center justify-start">
                     <Link href="/" className="active:opacity-60">
-                        <p className="font-serif text-2xl font-bold">Parts Unknown</p>
+                        <p className="font-serif text-2xl font-bold">{appTitle}</p>
                     </Link>
                 </div>
                 <div className="flex items-center justify-center gap-4">
@@ -68,7 +70,7 @@ export function Navbar() {
             <div className="w-full border-b border-cream/10 bg-olive py-4 text-cream sm:hidden">
                 <div className="flex w-full items-center px-4 text-2xl">
                     <Link href="/" className="active:opacity-60">
-                        <p className="font-serif text-2xl font-bold">Parts Unknown</p>
+                        <p className="font-serif text-2xl font-bold">{appTitle}</p>
                     </Link>
                     <div className="grow" />
                     <button onClick={() => setOpen(!open)} className="active:opacity-60">

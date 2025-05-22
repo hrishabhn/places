@@ -12,7 +12,8 @@ export default function About() {
     return (
         <Section>
             <Heading size="h1">About</Heading>
-            <p>{appDescription}</p>
+            <Heading size="h4">{appDescription}</Heading>
+            <p>{`The name "Parts Unknown" is inspired by Anthony Bourdain's show, where he explored the world and its hidden gems.`}</p>
 
             <Heading size="h3">Pages</Heading>
             <ButtonTray>
