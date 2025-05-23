@@ -43,41 +43,13 @@ export default function HomeContent({
 
     const {mutate: toggle} = useMutation({mutationFn: async (id: string) => await queryClient.setQueryData(['bookmarks'], await toggleBookmark(id))})
 
-    const {data: allPlaceBookmark} = useQuery(
-        trpc.GetAllPlace.queryOptions(
-            {filter: {id: bookmarks}, sort: 'name'},
-            {
-                initialData: () => {
-                    // empty
-                    if (bookmarks.length === 0) return []
-
-                    // compare with initial data
-                    if (setsEqual(new Set(initialAllPlaceBookmark.map(place => place.id)), new Set(bookmarks))) return initialAllPlaceBookmark
-                },
-                placeholderData: keepPreviousData,
-            }
-        )
-    )
     const {data: allCity} = useQuery(trpc.GetAllCity.queryOptions({sort: 'place_count', limit: 5}, {initialData: initialAllCity}))
     const {data: allPlaceNew} = useQuery(trpc.GetAllPlace.queryOptions({sort: 'created', limit: 5}, {initialData: initialAllPlaceNew}))
     const {data: allPlaceRandom} = useQuery(trpc.GetAllPlace.queryOptions({sort: 'random', limit: 5}, {initialData: initialAllPlaceRandom}))
 
     return (
         <>
-            {allPlaceBookmark !== undefined && allPlaceBookmark.length > 0 && (
-                <>
-                    <Section>
-                        <SectionHeader title="Your Bookmarks" subtitle="Saved places">
-                            <ViewAll href="/places?bookmarks=true" />
-                        </SectionHeader>
-                    </Section>
-                    <ScrollStack>
-                        {allPlaceBookmark.map(place => (
-                            <PlaceCard key={place.id} place={place} bookmark={bookmarks.includes(place.id)} onBookmark={() => toggle(place.id)} />
-                        ))}
-                    </ScrollStack>
-                </>
-            )}
+            {bookmarks.length > 0 && <HomeContentBookmark bookmarks={bookmarks} initialAllPlaceBookmark={initialAllPlaceBookmark} />}
 
             <Section>
                 <SectionHeader title="Top Cities" subtitle="Most popular cities">
@@ -115,7 +87,42 @@ export default function HomeContent({
     )
 }
 
-function ViewAll({href}: {href: string}) {
+function HomeContentBookmark({bookmarks, initialAllPlaceBookmark}: {bookmarks: Bookmarks; initialAllPlaceBookmark: Place[]}) {
+    const trpc = useTRPC()
+    const queryClient = useQueryClient()
+
+    const {mutate: toggle} = useMutation({mutationFn: async (id: string) => await queryClient.setQueryData(['bookmarks'], await toggleBookmark(id))})
+
+    const {data: allPlaceBookmark} = useQuery(
+        trpc.GetAllPlace.queryOptions(
+            {filter: {id: bookmarks}, sort: 'name'},
+            {
+                initialData: () => {
+                    if (setsEqual(new Set(initialAllPlaceBookmark.map(place => place.id)), new Set(bookmarks))) return initialAllPlaceBookmark
+                },
+                placeholderData: keepPreviousData,
+            }
+        )
+    )
+
+    if (allPlaceBookmark === undefined) return null
+    return (
+        <>
+            <Section>
+                <SectionHeader title="Your Bookmarks" subtitle="Saved places">
+                    <ViewAll href="/places?bookmarks=true" />
+                </SectionHeader>
+            </Section>
+            <ScrollStack>
+                {allPlaceBookmark.map(place => (
+                    <PlaceCard key={place.id} place={place} bookmark={bookmarks.includes(place.id)} onBookmark={() => toggle(place.id)} />
+                ))}
+            </ScrollStack>
+        </>
+    )
+}
+
+export function ViewAll({href}: {href: string}) {
     return (
         <Link href={href} className="flex items-center gap-2 rounded-xl active:opacity-60">
             <Button theme="layer-1" ring>
