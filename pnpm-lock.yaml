@@ -39,6 +39,9 @@ importers:
       '@vercel/mcp-adapter':
         specifier: ^0.6.0
         version: 0.6.0(next@15.4.0-canary.30(@babel/core@7.27.1)(babel-plugin-react-compiler@19.0.0-beta-bafa41b-20250307)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(sass@1.77.4))
+      '@vercel/speed-insights':
+        specifier: ^1.2.0
+        version: 1.2.0(next@15.4.0-canary.30(@babel/core@7.27.1)(babel-plugin-react-compiler@19.0.0-beta-bafa41b-20250307)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(sass@1.77.4))(react@19.1.0)
       cookies-next:
         specifier: ^5.1.0
         version: 5.1.0(next@15.4.0-canary.30(@babel/core@7.27.1)(babel-plugin-react-compiler@19.0.0-beta-bafa41b-20250307)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(sass@1.77.4))(react@19.1.0)
@@ -915,6 +918,29 @@ packages:
     hasBin: true
     peerDependencies:
       next: '>=13.0.0'
+
+  '@vercel/speed-insights@1.2.0':
+    resolution: {integrity: sha512-y9GVzrUJ2xmgtQlzFP2KhVRoCglwfRQgjyfY607aU0hh0Un6d0OUyrJkjuAlsV18qR4zfoFPs/BiIj9YDS6Wzw==}
+    peerDependencies:
+      '@sveltejs/kit': ^1 || ^2
+      next: '>= 13'
+      react: ^18 || ^19 || ^19.0.0-rc
+      svelte: '>= 4'
+      vue: ^3
+      vue-router: ^4
+    peerDependenciesMeta:
+      '@sveltejs/kit':
+        optional: true
+      next:
+        optional: true
+      react:
+        optional: true
+      svelte:
+        optional: true
+      vue:
+        optional: true
+      vue-router:
+        optional: true
 
   '@xobotyi/scrollbar-width@1.9.5':
     resolution: {integrity: sha512-N8tkAACJx2ww8vFMneJmaAgmjAG1tnVBZJRLRcx061tmsLRZHSEZSLuGWnwPtunsSLvSqXQ2wfp7Mgqg1I+2dQ==}
@@ -3787,6 +3813,11 @@ snapshots:
       redis: 4.7.1
     transitivePeerDependencies:
       - supports-color
+
+  '@vercel/speed-insights@1.2.0(next@15.4.0-canary.30(@babel/core@7.27.1)(babel-plugin-react-compiler@19.0.0-beta-bafa41b-20250307)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(sass@1.77.4))(react@19.1.0)':
+    optionalDependencies:
+      next: 15.4.0-canary.30(@babel/core@7.27.1)(babel-plugin-react-compiler@19.0.0-beta-bafa41b-20250307)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(sass@1.77.4)
+      react: 19.1.0
 
   '@xobotyi/scrollbar-width@1.9.5': {}
 
