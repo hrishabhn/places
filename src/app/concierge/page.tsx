@@ -4,8 +4,8 @@ import {getRecs, validateKey} from './action'
 import {TextInput} from './input'
 import {Website} from './website'
 
-import {CheckCircle, Circle, City, ForkKnife, Info, Key, MapPin, Sparkle, Spinner, WarningCircle} from '@phosphor-icons/react'
-import {Fragment, useActionState, useState} from 'react'
+import {CheckCircle, City, ForkKnife, Info, Key, MapPin, Sparkle, Spinner, WarningCircle} from '@phosphor-icons/react'
+import {useActionState, useState} from 'react'
 import {useLocalStorage} from 'usehooks-ts'
 
 import {type Dataset, type Model, allDataset, allModel, datasetName, modelName} from '@/model/ai'
@@ -14,6 +14,7 @@ import {Heading} from '@/components/layout'
 import {Button, ButtonTray, Card} from '@/components/ui'
 import {DataListItem} from '@/components/views/data-list'
 import {Section, SectionHeader} from '@/components/views/section'
+import {TagTray} from '@/components/views/tags'
 
 export default function ConciergePage() {
     // form state
@@ -29,7 +30,9 @@ export default function ConciergePage() {
         <Section>
             <SectionHeader size="lg" title="AI Concierge" subtitle="Use the curated list of places to get your next recommendation." />
 
-            <Heading size="h2">API Key</Heading>
+            <Heading size="h2" serif>
+                API Key
+            </Heading>
 
             <form action={validAction}>
                 <DataListItem label="OpenAI API Key">
@@ -77,7 +80,9 @@ export default function ConciergePage() {
 
             {valid && (
                 <>
-                    <Heading size="h2">Options</Heading>
+                    <Heading size="h2" serif>
+                        Options
+                    </Heading>
 
                     <form action={recsAction}>
                         <input type="hidden" name="apiKey" value={apiKey} />
@@ -143,7 +148,9 @@ export default function ConciergePage() {
                         </ButtonTray>
                     </form>
 
-                    <Heading size="h2">Recommendations</Heading>
+                    <Heading size="h2" serif>
+                        Recommendations
+                    </Heading>
 
                     {recsPending ? (
                         <div className="flex items-center gap-1.5 font-medium">
@@ -159,19 +166,20 @@ export default function ConciergePage() {
                                     {recs.map((rec, i) => (
                                         <Card key={i} ring rounded="xl">
                                             <div className="flex flex-col gap-1 px-4 py-3">
-                                                <Heading size="h3" withoutPadding>
+                                                <Heading size="h3" withoutPadding serif>
                                                     {rec.name}
                                                 </Heading>
-                                                <div className="flex flex-wrap items-center gap-1.5 text-xs font-medium">
-                                                    <MapPin weight="bold" className="opacity-60" />
-                                                    <p>{rec.city}</p>
-                                                    {[rec.type].map(tag => (
-                                                        <Fragment key={tag}>
-                                                            <Circle weight="fill" size={5} className="opacity-60" />
-                                                            <p className="opacity-60">{tag}</p>
-                                                        </Fragment>
-                                                    ))}
-                                                </div>
+                                                <TagTray
+                                                    tags={[
+                                                        {
+                                                            type: 'primary',
+                                                            icon: <MapPin weight="bold" />,
+                                                            text: rec.city,
+                                                        },
+                                                        rec.type,
+                                                    ]}
+                                                    size="sm"
+                                                />
                                                 <p className="line-clamp-2">{rec.description}</p>
                                                 {rec.website && <Website url={rec.website} />}
                                             </div>

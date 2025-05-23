@@ -22,8 +22,8 @@ export function CityImage({city}: {city: City}) {
 function CityTitle({name, countryName, placeCount}: {name: string; countryName: string; placeCount: number}) {
     return (
         <div className="flex size-full flex-col items-start justify-end">
-            <Heading size="h1" withoutPadding>
-                <p className="font-serif">{name}</p>
+            <Heading size="h1" withoutPadding serif>
+                {name}
             </Heading>
             <TagTray tags={[countryName, `${placeCount} places`]} size="md" />
         </div>

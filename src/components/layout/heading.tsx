@@ -8,10 +8,11 @@ type HeadingProps = {
     size: HeadingSize
     theme?: HeadingTheme
     withoutPadding?: boolean
+    serif?: boolean
     children?: React.ReactNode
 }
 
-export function Heading({size, theme = 'default', withoutPadding = false, children}: HeadingProps) {
+export function Heading({size, theme = 'default', withoutPadding = false, serif = false, children}: HeadingProps) {
     const sizeClass = {
         h1: tw`text-3xl font-bold`,
         h2: tw`text-2xl font-bold`,
@@ -48,5 +49,7 @@ export function Heading({size, theme = 'default', withoutPadding = false, childr
               base: tw`py-1`,
           }[size]
 
-    return <div className={`${sizeClass} ${themeClass} ${paddingClass} flex items-center gap-1`}>{children}</div>
+    const fontClass = serif ? tw`font-serif` : ''
+
+    return <div className={`${sizeClass} ${themeClass} ${paddingClass} ${fontClass} flex items-center gap-1`}>{children}</div>
 }

@@ -38,8 +38,8 @@ export function SimpleCard({image, fallbackIcon, title, tags = [], bookmark, onB
             <div className="flex flex-col items-start gap-1 py-3">
                 <div className="flex w-full items-start gap-1 px-4">
                     <div className="space-y-1">
-                        <Heading size="h3" withoutPadding>
-                            <p className="line-clamp-2 font-serif font-bold text-olive dark:text-cream">{title}</p>
+                        <Heading size="h3" withoutPadding serif>
+                            <p className="line-clamp-2 font-bold text-olive dark:text-cream">{title}</p>
                         </Heading>
                         <TagTray tags={tags} size="sm" />
                     </div>

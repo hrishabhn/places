@@ -14,7 +14,9 @@ export default function About() {
             <SectionHeader size="lg" title="About" subtitle={appDescription} />
             <p>{appDetails}</p>
 
-            <Heading size="h3">Pages</Heading>
+            <Heading size="h2" serif>
+                Pages
+            </Heading>
             <ButtonTray>
                 <Link href="/concierge" className="active:opacity-60">
                     <Button>
@@ -24,7 +26,9 @@ export default function About() {
                 </Link>
             </ButtonTray>
 
-            <Heading size="h3">Links</Heading>
+            <Heading size="h2" serif>
+                Links
+            </Heading>
             <ButtonTray>
                 <Link href={`https://notion.so/${notionDatabaseId}`} target="_blank" className="active:opacity-60">
                     <Button>
