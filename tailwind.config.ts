@@ -1,9 +1,6 @@
 import type {Config} from 'tailwindcss'
 import colors from 'tailwindcss/colors'
 
-const olive = '#292718'
-const cream = '#F4F1DE'
-
 export default {
     content: [
         //
@@ -32,8 +29,8 @@ export default {
                         dark: colors.zinc[900],
                     },
                 },
-                olive,
-                cream,
+                olive: '#292718',
+                cream: '#F4F1DE',
             },
             height: {
                 screen: '100vh 100dvh',
