@@ -1,19 +1,18 @@
 import {Database, GithubLogo, MapPin, Sparkle, Triangle} from '@phosphor-icons/react/dist/ssr'
 import Link from 'next/link'
 
-import {appDescription} from '@/model/app'
+import {appDescription, appDetails} from '@/model/app'
 import {notionDatabaseId} from '@/model/config'
 
 import {Heading} from '@/components/layout'
 import {Button, ButtonTray} from '@/components/ui'
-import {Section} from '@/components/views/section'
+import {Section, SectionHeader} from '@/components/views/section'
 
 export default function About() {
     return (
         <Section>
-            <Heading size="h1">About</Heading>
-            <Heading size="h4">{appDescription}</Heading>
-            <p>{`The name "Parts Unknown" is inspired by Anthony Bourdain's show, where he explored the world and its hidden gems.`}</p>
+            <SectionHeader size="lg" title="About" subtitle={appDescription} />
+            <p>{appDetails}</p>
 
             <Heading size="h3">Pages</Heading>
             <ButtonTray>

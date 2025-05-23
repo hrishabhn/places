@@ -23,7 +23,7 @@ function CityTitle({name, countryName, placeCount}: {name: string; countryName: 
     return (
         <div className="flex size-full flex-col items-start justify-end">
             <Heading size="h1" withoutPadding>
-                {name}
+                <p className="font-serif">{name}</p>
             </Heading>
             <TagTray tags={[countryName, `${placeCount} places`]} size="md" />
         </div>

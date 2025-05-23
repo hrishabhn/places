@@ -13,7 +13,7 @@ import {type Dataset, type Model, allDataset, allModel, datasetName, modelName} 
 import {Heading} from '@/components/layout'
 import {Button, ButtonTray, Card} from '@/components/ui'
 import {DataListItem} from '@/components/views/data-list'
-import {Section} from '@/components/views/section'
+import {Section, SectionHeader} from '@/components/views/section'
 
 export default function ConciergePage() {
     // form state
@@ -27,8 +27,7 @@ export default function ConciergePage() {
 
     return (
         <Section>
-            <Heading size="h1">AI Concierge</Heading>
-            <p>Use the curated list of places to get your next recommendation.</p>
+            <SectionHeader size="lg" title="AI Concierge" subtitle="Use the curated list of places to get your next recommendation." />
 
             <Heading size="h2">API Key</Heading>
 
