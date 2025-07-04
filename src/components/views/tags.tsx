@@ -1,9 +1,9 @@
 'use client'
 
-import {Circle} from '@phosphor-icons/react'
+import {Circle as CircleIcon} from '@phosphor-icons/react'
 import {Fragment} from 'react'
 
-type Tag =
+type TagIcon =
     | {
           type: 'primary'
           icon: React.ReactNode
@@ -14,7 +14,7 @@ type Tag =
           text: string
       }
 
-export type Tags = (Tag | string)[]
+export type Tags = (TagIcon | string)[]
 
 export function TagTray({tags = [], size}: {tags?: Tags; size: 'sm' | 'md' | 'lg'}) {
     if (tags.length === 0) return null
@@ -29,15 +29,15 @@ export function TagTray({tags = [], size}: {tags?: Tags; size: 'sm' | 'md' | 'lg
         <div className={`flex flex-wrap items-center gap-1.5 font-medium ${tagSize}`}>
             {tags.map((tag, i) => (
                 <Fragment key={i}>
-                    {typeof tag === 'string' ? <Tag type="secondary" text={tag} /> : <Tag {...tag} />}
-                    {i < tags.length - 1 && <Circle weight="fill" size={5} className="opacity-60" />}
+                    {typeof tag === 'string' ? <TagIcon type="secondary" text={tag} /> : <TagIcon {...tag} />}
+                    {i < tags.length - 1 && <CircleIcon weight="fill" size={5} className="opacity-60" />}
                 </Fragment>
             ))}
         </div>
     )
 }
 
-function Tag(props: Tag) {
+function TagIcon(props: TagIcon) {
     if (props.type === 'secondary') return <p className="opacity-60">{props.text}</p>
 
     return (

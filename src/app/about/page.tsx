@@ -1,4 +1,4 @@
-import {Database, GithubLogo, MapPin, Sparkle, Triangle} from '@phosphor-icons/react/dist/ssr'
+import {Database as DatabaseIcon, GithubLogo as GithubLogoIcon, MapPin as MapPinIcon, Sparkle as SparkleIcon, Triangle as TriangleIcon} from '@phosphor-icons/react/dist/ssr'
 import Link from 'next/link'
 
 import {appDescription, appDetails} from '@/model/app'
@@ -20,7 +20,7 @@ export default function About() {
             <ButtonTray>
                 <Link href="/concierge" className="active:opacity-60">
                     <Button>
-                        <Sparkle weight="duotone" />
+                        <SparkleIcon weight="duotone" />
                         <p>AI Concierge</p>
                     </Button>
                 </Link>
@@ -32,25 +32,25 @@ export default function About() {
             <ButtonTray>
                 <Link href={`https://notion.so/${notionDatabaseId}`} target="_blank" className="active:opacity-60">
                     <Button>
-                        <Database weight="duotone" />
-                        <p>Database</p>
+                        <DatabaseIcon weight="duotone" />
+                        <p>DatabaseIcon</p>
                     </Button>
                 </Link>
                 <Link href="https://developers.google.com/maps/documentation/places/web-service/place-id" target="_blank" className="active:opacity-60">
                     <Button>
-                        <MapPin weight="duotone" />
+                        <MapPinIcon weight="duotone" />
                         <p>Place IDs</p>
                     </Button>
                 </Link>
                 <Link href="https://github.com/hrishabhn/places" target="_blank" className="active:opacity-60">
                     <Button>
-                        <GithubLogo weight="duotone" />
+                        <GithubLogoIcon weight="duotone" />
                         <p>Source Code</p>
                     </Button>
                 </Link>
                 <Link href="https://vercel.com/hrishabhns/places" target="_blank" className="active:opacity-60">
                     <Button>
-                        <Triangle weight="duotone" />
+                        <TriangleIcon weight="duotone" />
                         <p>Preview</p>
                     </Button>
                 </Link>

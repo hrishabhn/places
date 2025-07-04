@@ -1,20 +1,20 @@
 'use client'
 
-import {City, Flag, ForkKnife, type Icon, MapPin, Tag} from '@phosphor-icons/react'
+import {City as CityIcon, Flag as FlagIcon, ForkKnife as ForkKnifeIcon, type Icon, MapPin as MapPinIcon, Tag as TagIcon} from '@phosphor-icons/react'
 
 type IconKey = 'place' | 'country' | 'city' | 'place_type' | 'place_tag'
 
 export const getIcon = (key: IconKey): Icon => {
     switch (key) {
         case 'place':
-            return MapPin
+            return MapPinIcon
         case 'country':
-            return Flag
+            return FlagIcon
         case 'city':
-            return City
+            return CityIcon
         case 'place_type':
-            return ForkKnife
+            return ForkKnifeIcon
         case 'place_tag':
-            return Tag
+            return TagIcon
     }
 }

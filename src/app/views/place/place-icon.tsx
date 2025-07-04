@@ -1,41 +1,41 @@
 'use client'
 
-import {BeerStein, BookOpen, Coffee, DiscoBall, ForkKnife, IceCream, type Icon, MapPin, Tree} from '@phosphor-icons/react'
+import {BeerStein as BeerSteinIcon, BookOpen as BookOpenIcon, Coffee as CoffeeIcon, DiscoBall as DiscoBallIcon, ForkKnife as ForkKnifeIcon, IceCream as IceCreamIcon, type Icon, MapPin as MapPinIcon, Tree as TreeIcon} from '@phosphor-icons/react'
 
 export function getPlaceIcon(placeType: string | undefined): Icon {
     switch (placeType) {
         // food
         case 'Restaurant':
         case 'Food Hall/Market':
-            return ForkKnife
+            return ForkKnifeIcon
 
         // drink
         case 'Bar':
         case 'Nightlife/Bar Area':
-            return BeerStein
+            return BeerSteinIcon
 
         // coffee
-        case 'Coffee Shop':
-            return Coffee
+        case 'CoffeeIcon Shop':
+            return CoffeeIcon
 
         // book
         case 'Book Shop':
-            return BookOpen
+            return BookOpenIcon
 
         // club
         case 'Club':
-            return DiscoBall
+            return DiscoBallIcon
 
         // dessert
         case 'Dessert':
-            return IceCream
+            return IceCreamIcon
 
         // park
         case 'Park':
-            return Tree
+            return TreeIcon
 
         // default
         default:
-            return MapPin
+            return MapPinIcon
     }
 }

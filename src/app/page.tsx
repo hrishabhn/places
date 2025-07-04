@@ -1,6 +1,6 @@
 import HomeContent from './content'
 
-import {ArrowRight} from '@phosphor-icons/react/dist/ssr'
+import {ArrowRight as ArrowRightIcon} from '@phosphor-icons/react/dist/ssr'
 import {cookies} from 'next/headers'
 import Link from 'next/link'
 import {Suspense} from 'react'
@@ -26,7 +26,7 @@ export default function Home() {
 
                     <Link href="/places" className="flex items-center gap-4 rounded-xl bg-olive px-3.5 py-2.5 font-medium text-cream active:opacity-60">
                         <p>Explore Places</p>
-                        <ArrowRight weight="bold" />
+                        <ArrowRightIcon weight="bold" />
                     </Link>
                 </div>
             </div>

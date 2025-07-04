@@ -2,7 +2,7 @@
 
 import './style.css'
 
-import {ArrowsDownUp, type Icon} from '@phosphor-icons/react'
+import {ArrowsDownUp as ArrowsDownUpIcon, type Icon} from '@phosphor-icons/react'
 import {motion} from 'motion/react'
 
 import {useIsStuck, useOnScreen} from '@/lib/hooks'
@@ -124,7 +124,7 @@ export function MenuBarSort<T extends readonly string[]>({selectedSort, allSort,
         <Menu>
             <MenuButton className="active:opacity-60">
                 <MenuBarItem>
-                    <ArrowsDownUp weight="bold" className="shrink-0" />
+                    <ArrowsDownUpIcon weight="bold" className="shrink-0" />
                     <p>{toTitle(selectedSort)}</p>
                 </MenuBarItem>
             </MenuButton>

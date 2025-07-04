@@ -1,6 +1,6 @@
 'use client'
 
-import {Warning} from '@phosphor-icons/react'
+import {Warning as WarningIcon} from '@phosphor-icons/react'
 
 import {Heading} from '@/components/layout'
 import {Button, ButtonTray} from '@/components/ui'
@@ -10,7 +10,7 @@ export default function ErrorPage({error, reset}: {error: Error & {digest?: stri
     return (
         <Section>
             <div className="flex flex-col items-center justify-center py-24 text-center">
-                <Warning weight="fill" size={96} className="pb-4 text-red-500" />
+                <WarningIcon weight="fill" size={96} className="pb-4 text-red-500" />
                 <Heading size="h4" withoutPadding>
                     Application Error
                 </Heading>

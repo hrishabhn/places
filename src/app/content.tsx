@@ -3,7 +3,7 @@
 import {CityCard} from './views/city/card'
 import {PlaceCard} from './views/place/card'
 
-import {ArrowRight} from '@phosphor-icons/react'
+import {ArrowRight as ArrowRightIcon} from '@phosphor-icons/react'
 import {keepPreviousData, useMutation, useQuery, useQueryClient} from '@tanstack/react-query'
 import Link from 'next/link'
 
@@ -127,7 +127,7 @@ export function ViewAll({href}: {href: string}) {
         <Link href={href} className="flex items-center gap-2 rounded-xl active:opacity-60">
             <Button theme="layer-1" ring>
                 <p>View All</p>
-                <ArrowRight weight="bold" />
+                <ArrowRightIcon weight="bold" />
             </Button>
         </Link>
     )

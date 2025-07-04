@@ -2,7 +2,7 @@
 
 import {PlacesMap} from './map'
 
-import {City, Flag, ForkKnife, Heart, List, MapTrifold, Plus, Star, Table, Tag, TextT, X} from '@phosphor-icons/react'
+import {City as CityIcon, Flag as FlagIcon, ForkKnife as ForkKnifeIcon, Heart as HeartIcon, List as ListIcon, MapTrifold as MapTrifoldIcon, Plus as PlusIcon, Star as StarIcon, Table as TableIcon, Tag as TagIcon, TextT as TextTIcon, X as XIcon} from '@phosphor-icons/react'
 import {useMutation, useQuery, useQueryClient, useSuspenseQuery} from '@tanstack/react-query'
 import {parseAsString, parseAsStringLiteral, useQueryState} from 'nuqs'
 import {useEffect} from 'react'
@@ -229,7 +229,7 @@ export default function PlacesPage() {
                             <MenuBarItem active>
                                 <Icon weight="duotone" />
                                 <p>{filter.title}</p>
-                                <X weight="bold" />
+                                <XIcon weight="bold" />
                             </MenuBarItem>
                         </button>
                     )
@@ -238,19 +238,19 @@ export default function PlacesPage() {
                 {bookmarks.length > 0 && (
                     <button className="active:opacity-60" onClick={() => showBookmarks.toggle()}>
                         <MenuBarItem active={showBookmarks.value}>
-                            <Heart weight="fill" />
+                            <HeartIcon weight="fill" />
                             <p>Bookmarks</p>
                         </MenuBarItem>
                     </button>
                 )}
                 <button className="active:opacity-60" onClick={() => top.toggle()}>
                     <MenuBarItem active={top.value}>
-                        <Star weight="fill" />
+                        <StarIcon weight="fill" />
                         <p>Top</p>
                     </MenuBarItem>
                 </button>
                 <MenuBarSelect
-                    icon={Flag}
+                    icon={FlagIcon}
                     placeholder="Country"
                     allItem={allCountry}
                     onSelect={country => selectedCountrySlug.toggle(country.slug)}
@@ -277,7 +277,7 @@ export default function PlacesPage() {
                     }
                 />
                 <MenuBarSelect
-                    icon={City}
+                    icon={CityIcon}
                     placeholder="City"
                     allItem={allCity}
                     onSelect={city => selectedCitySlug.toggle(city.slug)}
@@ -304,7 +304,7 @@ export default function PlacesPage() {
                     }
                 />
                 <MenuBarSelect
-                    icon={ForkKnife}
+                    icon={ForkKnifeIcon}
                     placeholder="Type"
                     allItem={allPlaceType}
                     onSelect={placeType => selectedPlaceType.toggle(placeType.type_name)}
@@ -331,7 +331,7 @@ export default function PlacesPage() {
                     }
                 />
                 <MenuBarSelect
-                    icon={Tag}
+                    icon={TagIcon}
                     placeholder="Tag"
                     allItem={allPlaceTag}
                     onSelect={placeTag => selectedPlaceTag.toggle(placeTag.tag_name)}
@@ -365,9 +365,9 @@ export default function PlacesPage() {
                     onSelect={option => setSelectedSort(option)}
                     toIcon={option =>
                         ({
-                            name: TextT,
-                            country: Flag,
-                            city: City,
+                            name: TextTIcon,
+                            country: FlagIcon,
+                            city: CityIcon,
                         })[option]
                     }
                     toTitle={option =>
@@ -405,9 +405,9 @@ export default function PlacesPage() {
                 <ButtonTray>
                     {allView.map(view => {
                         const Icon = {
-                            list: List,
-                            table: Table,
-                            map: MapTrifold,
+                            list: ListIcon,
+                            table: TableIcon,
+                            map: MapTrifoldIcon,
                         }[view]
 
                         const title = {
@@ -527,7 +527,7 @@ export default function PlacesPage() {
                                                 <Badge active={active}>
                                                     <Icon weight="duotone" />
                                                     <p>{result.name}</p>
-                                                    {active ? <X weight="bold" /> : <Plus weight="bold" />}
+                                                    {active ? <XIcon weight="bold" /> : <PlusIcon weight="bold" />}
                                                 </Badge>
                                             </button>
                                         )

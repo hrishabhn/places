@@ -1,6 +1,6 @@
 'use client'
 
-import {City, House, type Icon, Info, List, MapPin, X} from '@phosphor-icons/react'
+import {City as CityIcon, House as HouseIcon, type Icon, Info as InfoIcon, List as ListIcon, MapPin as MapPinIcon, X as XIcon} from '@phosphor-icons/react'
 import {usePrefetchQuery} from '@tanstack/react-query'
 import Link from 'next/link'
 import {useState} from 'react'
@@ -58,12 +58,12 @@ export function Navbar() {
                     </Link>
                 </div>
                 <div className="flex items-center justify-center gap-4">
-                    <NavbarItemDesktop href="/" icon={House} title="Home" />
-                    <NavbarItemDesktop href="/cities" icon={City} title="Cities" />
-                    <NavbarItemDesktop href="/places" icon={MapPin} title="Places" />
+                    <NavbarItemDesktop href="/" icon={HouseIcon} title="Home" />
+                    <NavbarItemDesktop href="/cities" icon={CityIcon} title="Cities" />
+                    <NavbarItemDesktop href="/places" icon={MapPinIcon} title="Places" />
                 </div>
                 <div className="flex items-center justify-end">
-                    <NavbarItemDesktop href="/about" icon={Info} title="About" />
+                    <NavbarItemDesktop href="/about" icon={InfoIcon} title="About" />
                 </div>
             </div>
 
@@ -74,15 +74,15 @@ export function Navbar() {
                     </Link>
                     <div className="grow" />
                     <button onClick={() => setOpen(!open)} className="active:opacity-60">
-                        {open ? <X weight="bold" /> : <List weight="bold" />}
+                        {open ? <XIcon weight="bold" /> : <ListIcon weight="bold" />}
                     </button>
                 </div>
                 {open && (
                     <div className="flex w-full flex-col px-4 pt-4">
-                        <NavbarItemMobile href="/" icon={House} title="Home" onClick={() => setOpen(false)} />
-                        <NavbarItemMobile href="/cities" icon={City} title="Cities" onClick={() => setOpen(false)} />
-                        <NavbarItemMobile href="/places" icon={MapPin} title="Places" onClick={() => setOpen(false)} />
-                        <NavbarItemMobile href="/about" icon={Info} title="About" onClick={() => setOpen(false)} />
+                        <NavbarItemMobile href="/" icon={HouseIcon} title="Home" onClick={() => setOpen(false)} />
+                        <NavbarItemMobile href="/cities" icon={CityIcon} title="Cities" onClick={() => setOpen(false)} />
+                        <NavbarItemMobile href="/places" icon={MapPinIcon} title="Places" onClick={() => setOpen(false)} />
+                        <NavbarItemMobile href="/about" icon={InfoIcon} title="About" onClick={() => setOpen(false)} />
                     </div>
                 )}
             </div>

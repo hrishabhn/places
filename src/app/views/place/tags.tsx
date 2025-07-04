@@ -1,6 +1,6 @@
 'use client'
 
-import {Star} from '@phosphor-icons/react'
+import {Star as StarIcon} from '@phosphor-icons/react'
 
 import {type Place} from '@/server/types'
 
@@ -15,7 +15,7 @@ export function placeToTags(place: Place): Tags {
             ? [
                   {
                       type: 'primary' as const,
-                      icon: <Star weight="fill" className="text-yellow-400" />,
+                      icon: <StarIcon weight="fill" className="text-yellow-400" />,
                       text: 'Top',
                   },
               ]
