@@ -1,6 +1,6 @@
 'use client'
 
-import {Flag, MapPin, Plus, TextT, X} from '@phosphor-icons/react'
+import {FlagIcon, MapPinIcon, PlusIcon, TextTIcon, XIcon} from '@phosphor-icons/react'
 import {useQuery, useQueryClient, useSuspenseQuery} from '@tanstack/react-query'
 import {parseAsString, parseAsStringLiteral, useQueryState} from 'nuqs'
 
@@ -80,14 +80,14 @@ export default function CitiesPage() {
                             <MenuBarItem active>
                                 <Icon weight="duotone" />
                                 <p>{filter.title}</p>
-                                <X weight="bold" />
+                                <XIcon weight="bold" />
                             </MenuBarItem>
                         </button>
                     )
                 })}
 
                 <MenuBarSelect
-                    icon={Flag}
+                    icon={FlagIcon}
                     placeholder="Country"
                     allItem={allCountry}
                     onSelect={country => selectedCountrySlug.toggle(country.slug)}
@@ -115,9 +115,9 @@ export default function CitiesPage() {
                     onSelect={option => setSelectedSort(option)}
                     toIcon={option =>
                         ({
-                            place_count: MapPin,
-                            country: Flag,
-                            name: TextT,
+                            place_count: MapPinIcon,
+                            country: FlagIcon,
+                            name: TextTIcon,
                         })[option]
                     }
                     toTitle={option =>
@@ -186,7 +186,7 @@ export default function CitiesPage() {
                                                 <Badge active={active}>
                                                     <Icon weight="duotone" />
                                                     <p>{result.name}</p>
-                                                    {active ? <X weight="bold" /> : <Plus weight="bold" />}
+                                                    {active ? <XIcon weight="bold" /> : <PlusIcon weight="bold" />}
                                                 </Badge>
                                             </button>
                                         )

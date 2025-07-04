@@ -1,6 +1,6 @@
 'use client'
 
-import {CheckCircle, Info, WarningCircle} from '@phosphor-icons/react'
+import {CheckCircleIcon, InfoIcon, WarningCircleIcon} from '@phosphor-icons/react'
 
 import {tw} from '@/lib/tailwind'
 
@@ -19,10 +19,10 @@ export function Callout({theme, message}: CalloutProps) {
     }[theme]
 
     const Icon = {
-        info: Info,
-        success: CheckCircle,
-        warning: WarningCircle,
-        error: WarningCircle,
+        info: InfoIcon,
+        success: CheckCircleIcon,
+        warning: WarningCircleIcon,
+        error: WarningCircleIcon,
     }[theme]
 
     const iconClass = {

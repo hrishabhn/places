@@ -2,7 +2,7 @@
 
 import {getPlaceIcon} from './place-icon'
 
-import {City, ForkKnife, Heart, Image as ImageIcon, Link as LinkIcon, MapPin, Pencil, Star, Tag, TextT} from '@phosphor-icons/react'
+import {CityIcon, ForkKnifeIcon, HeartIcon, ImageIcon, LinkIcon, MapPinIcon, PencilIcon, StarIcon, TagIcon, TextTIcon} from '@phosphor-icons/react'
 import Link from 'next/link'
 
 import {type Place} from '@/server/types'
@@ -24,18 +24,18 @@ export function PlaceTable({allPlace, bookmarks, onToggleBookmark}: PlaceTablePr
                 <thead>
                     <tr className="text-left font-medium">
                         <TH>
-                            <TextT weight="bold" />
+                            <TextTIcon weight="bold" />
                             <p>Name</p>
                         </TH>
                         <TH>
-                            <Heart weight="bold" />
+                            <HeartIcon weight="bold" />
                         </TH>
                         <TH>
-                            <Star weight="bold" />
+                            <StarIcon weight="bold" />
                             <p>Top</p>
                         </TH>
                         <TH>
-                            <City weight="bold" />
+                            <CityIcon weight="bold" />
                             <p>City</p>
                         </TH>
                         <TH>
@@ -43,15 +43,15 @@ export function PlaceTable({allPlace, bookmarks, onToggleBookmark}: PlaceTablePr
                             <p>Image</p>
                         </TH>
                         <TH>
-                            <ForkKnife weight="bold" />
+                            <ForkKnifeIcon weight="bold" />
                             <p>Type</p>
                         </TH>
                         <TH>
-                            <Tag weight="bold" />
+                            <TagIcon weight="bold" />
                             <p>Tags</p>
                         </TH>
                         <TH>
-                            <TextT weight="bold" />
+                            <TextTIcon weight="bold" />
                             <p>Description</p>
                         </TH>
                         <TH>
@@ -69,11 +69,14 @@ export function PlaceTable({allPlace, bookmarks, onToggleBookmark}: PlaceTablePr
 
                             <TD>
                                 <button onClick={() => onToggleBookmark(place.id)} className="active:opacity-60">
-                                    <Heart weight={bookmarks.includes(place.id) ? 'fill' : 'bold'} className={`${bookmarks.includes(place.id) ? 'text-red-500' : 'text-g-500'}`} />
+                                    <HeartIcon
+                                        weight={bookmarks.includes(place.id) ? 'fill' : 'bold'}
+                                        className={`${bookmarks.includes(place.id) ? 'text-red-500' : 'text-g-500'}`}
+                                    />
                                 </button>
                             </TD>
 
-                            <TD>{place.top && <Star weight="fill" className="text-yellow-400" />}</TD>
+                            <TD>{place.top && <StarIcon weight="fill" className="text-yellow-400" />}</TD>
 
                             <TD>
                                 <Badge size="sm" theme="g" border={false}>
@@ -117,13 +120,13 @@ export function PlaceTable({allPlace, bookmarks, onToggleBookmark}: PlaceTablePr
                             <TD>
                                 <Link href={googleMapsUrl({name: place.name, city_name: place.city_name, maps_id: place.maps_id})} target="_blank" className="active:opacity-60">
                                     <Badge size="sm">
-                                        <MapPin weight="bold" />
+                                        <MapPinIcon weight="bold" />
                                         <p>Open in Maps</p>
                                     </Badge>
                                 </Link>
                                 <Link href={notionUrl(place.id)} target="_blank" className="active:opacity-60">
                                     <Badge size="sm">
-                                        <Pencil weight="bold" />
+                                        <PencilIcon weight="bold" />
                                         <p>Edit</p>
                                     </Badge>
                                 </Link>

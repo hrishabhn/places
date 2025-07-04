@@ -2,7 +2,7 @@
 
 import {TagTray, type Tags} from './tags'
 
-import {Heart, type Icon} from '@phosphor-icons/react'
+import {HeartIcon, type Icon} from '@phosphor-icons/react'
 import Link from 'next/link'
 
 import {Heading} from '@/components/layout'
@@ -48,7 +48,7 @@ export function SimpleCard({image, fallbackIcon, title, tags = [], bookmark, onB
 
                     {bookmark !== undefined && (
                         <button className="active:opacity-60" onClick={() => onBookmark?.()}>
-                            <Heart weight={bookmark ? 'fill' : 'bold'} className={`text-lg ${bookmark ? 'text-red-500' : 'text-g-500'}`} />
+                            <HeartIcon weight={bookmark ? 'fill' : 'bold'} className={`text-lg ${bookmark ? 'text-red-500' : 'text-g-500'}`} />
                         </button>
                     )}
                 </div>

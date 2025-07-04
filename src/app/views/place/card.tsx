@@ -3,7 +3,7 @@
 import {getPlaceIcon} from './place-icon'
 import {placeToTags} from './tags'
 
-import {MapPin, Pencil} from '@phosphor-icons/react'
+import {MapPinIcon, PencilIcon} from '@phosphor-icons/react'
 
 import {type Place} from '@/server/types'
 
@@ -29,12 +29,12 @@ export function PlaceCard({place, bookmark, onBookmark}: PlaceCardProps) {
             links={[
                 {
                     url: googleMapsUrl(place),
-                    icon: MapPin,
+                    icon: MapPinIcon,
                     title: 'Open in Maps',
                 },
                 {
                     url: notionUrl(place.id),
-                    icon: Pencil,
+                    icon: PencilIcon,
                     title: 'Edit',
                 },
             ]}

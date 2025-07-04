@@ -1,6 +1,6 @@
 'use client'
 
-import {CaretLeft} from '@phosphor-icons/react'
+import {CaretLeftIcon} from '@phosphor-icons/react'
 import {Fragment, useState} from 'react'
 
 import {Heading} from '@/components/layout'
@@ -29,7 +29,7 @@ export function BarChart({title, data}: BarChartProps) {
                     </Heading>
                     <div className="grow" />
                     <button onClick={() => setShowAll(!showAll)} className="active:opacity-60">
-                        <CaretLeft weight="bold" size={16} className={`transition-transform ${showAll ? '-rotate-90' : ''}`} />
+                        <CaretLeftIcon weight="bold" size={16} className={`transition-transform ${showAll ? '-rotate-90' : ''}`} />
                     </button>
                 </div>
 

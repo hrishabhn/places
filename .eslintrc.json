@@ -5,13 +5,15 @@
         "plugin:tailwindcss/recommended"
     ],
     "plugins": [
-        "react-compiler"
+        "react-compiler",
+        "deprecation"
     ],
     "parser": "@typescript-eslint/parser",
     "parserOptions": {
         "project": "./tsconfig.json"
     },
     "rules": {
+        "deprecation/deprecation": "warn",
         "@typescript-eslint/array-type": [
             "error",
             {

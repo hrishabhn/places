@@ -2,7 +2,7 @@ import {Card} from './card'
 import type {CardTheme, Rounded} from './model'
 
 import {type Icon, type IconWeight} from '@phosphor-icons/react'
-import {Spinner} from '@phosphor-icons/react/dist/ssr'
+import {SpinnerIcon} from '@phosphor-icons/react/dist/ssr'
 
 type ButtonSize = 'xs' | 'sm' | 'md' | 'lg'
 
@@ -46,7 +46,9 @@ export const IconButton = ({icon, weight = 'duotone', pending, size = 'md', ring
     return (
         <div>
             <Card theme={theme} ring={ring} rounded={rounded} active={active} aspect="square">
-                <div className={`flex items-center justify-center ${sizeClass}`}>{pending ? <Spinner weight={weight} className="animate-spin" /> : <Icon weight={weight} />}</div>
+                <div className={`flex items-center justify-center ${sizeClass}`}>
+                    {pending ? <SpinnerIcon weight={weight} className="animate-spin" /> : <Icon weight={weight} />}
+                </div>
             </Card>
         </div>
     )

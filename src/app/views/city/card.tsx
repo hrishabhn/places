@@ -1,6 +1,6 @@
 'use client'
 
-import {City as CityIcon, MapPin} from '@phosphor-icons/react'
+import {CityIcon, MapPinIcon} from '@phosphor-icons/react'
 import {useQueryClient} from '@tanstack/react-query'
 
 import {type City} from '@/server/types'
@@ -49,7 +49,7 @@ export function CityCard({city}: {city: City}) {
                 links={[
                     {
                         url: `/places?city=${city.slug}`,
-                        icon: MapPin,
+                        icon: MapPinIcon,
                         title: 'View Places',
                     },
                 ]}

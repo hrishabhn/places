@@ -4,7 +4,7 @@ import {getRecs, validateKey} from './action'
 import {TextInput} from './input'
 import {Website} from './website'
 
-import {CheckCircle, City, ForkKnife, Info, Key, MapPin, Sparkle, Spinner, WarningCircle} from '@phosphor-icons/react'
+import {CheckCircleIcon, CityIcon, ForkKnifeIcon, InfoIcon, KeyIcon, MapPinIcon, SparkleIcon, SpinnerIcon, WarningCircleIcon} from '@phosphor-icons/react'
 import {useActionState, useState} from 'react'
 import {useLocalStorage} from 'usehooks-ts'
 
@@ -37,7 +37,7 @@ export default function ConciergePage() {
             <form action={validAction}>
                 <DataListItem label="OpenAI API Key">
                     <TextInput
-                        icon={Key}
+                        icon={KeyIcon}
                         placeholder="sk-proj-XXXX"
                         required
                         name="apiKey"
@@ -51,19 +51,19 @@ export default function ConciergePage() {
                     <div className="flex items-center gap-1.5 font-medium">
                         {validPending ? (
                             <>
-                                <Spinner weight="bold" className="animate-spin" />
+                                <SpinnerIcon weight="bold" className="animate-spin" />
                                 <p>Validating</p>
                             </>
                         ) : valid === null ? (
                             '-'
                         ) : valid ? (
                             <>
-                                <CheckCircle weight="fill" className="text-green-500" />
+                                <CheckCircleIcon weight="fill" className="text-green-500" />
                                 <p>Valid</p>
                             </>
                         ) : (
                             <>
-                                <WarningCircle weight="fill" className="text-red-500" />
+                                <WarningCircleIcon weight="fill" className="text-red-500" />
                                 <p>Invalid</p>
                             </>
                         )}
@@ -126,22 +126,22 @@ export default function ConciergePage() {
                         </DataListItem>
 
                         <DataListItem label="City">
-                            <TextInput icon={City} placeholder="City" required name="city" disabled={recsPending} />
+                            <TextInput icon={CityIcon} placeholder="City" required name="city" disabled={recsPending} />
                         </DataListItem>
 
                         <DataListItem label="Type">
-                            <TextInput icon={ForkKnife} placeholder="Type" required name="type" disabled={recsPending} />
+                            <TextInput icon={ForkKnifeIcon} placeholder="Type" required name="type" disabled={recsPending} />
                         </DataListItem>
 
                         <DataListItem label="Additional Information">
-                            <TextInput icon={Info} placeholder="Additional Information" name="info" disabled={recsPending} />
+                            <TextInput icon={InfoIcon} placeholder="Additional Information" name="info" disabled={recsPending} />
                         </DataListItem>
 
                         <ButtonTray>
                             <div className="grow" />
                             <button type="submit" disabled={recsPending} className="active:opacity-60 disabled:cursor-not-allowed disabled:opacity-60">
                                 <Button theme="accent">
-                                    <Sparkle weight="fill" />
+                                    <SparkleIcon weight="fill" />
                                     <p>Get Recommendation</p>
                                 </Button>
                             </button>
@@ -154,7 +154,7 @@ export default function ConciergePage() {
 
                     {recsPending ? (
                         <div className="flex items-center gap-1.5 font-medium">
-                            <Spinner weight="bold" className="animate-spin" />
+                            <SpinnerIcon weight="bold" className="animate-spin" />
                             <p>Thinking</p>
                         </div>
                     ) : (
@@ -173,7 +173,7 @@ export default function ConciergePage() {
                                                     tags={[
                                                         {
                                                             type: 'primary',
-                                                            icon: <MapPin weight="bold" />,
+                                                            icon: <MapPinIcon weight="bold" />,
                                                             text: rec.city,
                                                         },
                                                         rec.type,

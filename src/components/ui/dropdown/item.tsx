@@ -1,6 +1,6 @@
 'use client'
 
-import {Check} from '@phosphor-icons/react'
+import {CheckIcon} from '@phosphor-icons/react'
 
 import {type Label, LabelImage} from '@/components/ui'
 
@@ -18,7 +18,7 @@ export function DropdownItem({image, title, subtitle, active = false, focus = fa
             {image && <LabelImage image={image} size="sm" />}
             <p className="line-clamp-2 text-left text-sm font-medium">{title}</p>
             <div className="grow" />
-            {active ? <Check weight="bold" size={12} /> : null}
+            {active ? <CheckIcon weight="bold" size={12} /> : null}
             {subtitle ? <p className="text-xs font-medium opacity-60">{subtitle}</p> : null}
         </div>
     )
