@@ -35,11 +35,13 @@ export const PlaceSchema = z.object({
     tags: z.array(z.string()),
     image: z.string().nullable(),
     description: z.string().nullable(),
+    // first_visit: z.date().nullable(),
+    // last_visit: z.date().nullable(),
     maps_id: z.string().nullable(),
     lat: z.coerce.number().nullable(),
     lon: z.coerce.number().nullable(),
-    created: z.date(),
-    modified: z.date(),
+    // created: z.date(),
+    // modified: z.date(),
 })
 
 export type Place = z.infer<typeof PlaceSchema>

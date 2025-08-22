@@ -44,7 +44,7 @@ export default function HomeContent({
     const {mutate: toggle} = useMutation({mutationFn: async (id: string) => await queryClient.setQueryData(['bookmarks'], await toggleBookmark(id))})
 
     const {data: allCity} = useQuery(trpc.GetAllCity.queryOptions({sort: 'place_count', limit: 5}, {initialData: initialAllCity}))
-    const {data: allPlaceNew} = useQuery(trpc.GetAllPlace.queryOptions({sort: 'created', limit: 5}, {initialData: initialAllPlaceNew}))
+    const {data: allPlaceNew} = useQuery(trpc.GetAllPlace.queryOptions({sort: 'first_visit', limit: 5}, {initialData: initialAllPlaceNew}))
     const {data: allPlaceRandom} = useQuery(trpc.GetAllPlace.queryOptions({sort: 'random', limit: 5}, {initialData: initialAllPlaceRandom}))
 
     return (

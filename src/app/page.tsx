@@ -44,7 +44,7 @@ async function HomeContentSuspense() {
     const [allPlaceBookmark, allCity, allPlaceNew, allPlaceRandom] = await Promise.all([
         bookmarks.length > 0 ? caller.GetAllPlace({filter: {id: bookmarks}, sort: 'name'}) : [],
         caller.GetAllCity({sort: 'place_count', limit: 5}),
-        caller.GetAllPlace({sort: 'created', limit: 5}),
+        caller.GetAllPlace({sort: 'first_visit', limit: 5}),
         caller.GetAllPlace({sort: 'random', limit: 5}),
     ])
 

@@ -17,7 +17,7 @@ export const GetAllPlaceOptions = z.object({
         })
         .default({}),
     query: z.string().default(''),
-    sort: z.enum(['name', 'country', 'city', 'created', 'modified', 'random']),
+    sort: z.enum(['name', 'country', 'city', 'first_visit', 'random']),
     limit: z.number().optional(),
 })
 
@@ -38,6 +38,7 @@ export const GetAllPlace = publicProcedure.input(GetAllPlaceOptions).query(
             name: sql`lower(place.name)`,
             country: sql`lower(country.name), lower(place.name)`,
             city: sql`lower(city.name), lower(country.name), lower(place.name)`,
+            first_visit: sql`place.first_visit DESC`,
             created: sql`place.created DESC`,
             modified: sql`place.modified DESC`,
             random: sql`random()`,
@@ -60,9 +61,7 @@ export const GetAllPlace = publicProcedure.input(GetAllPlaceOptions).query(
                     place.description,
                     place.maps_id,
                     place.lat,
-                    place.lon,
-                    place.created,
-                    place.modified
+                    place.lon
                     ${
                         query
                             ? sql`,
@@ -104,6 +103,7 @@ export const GetAllPlace = publicProcedure.input(GetAllPlaceOptions).query(
                             ) AND`
                             : sql``
                     }
+                    ${sort === 'first_visit' ? sql`(place.first_visit IS NOT NULL) AND` : sql``}
                     TRUE
                 ORDER BY ${query ? sql`score DESC, lower(place.name)` : orderBy}
                 ${limit ? sql`LIMIT ${limit}` : sql``}
