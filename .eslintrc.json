@@ -14,6 +14,22 @@
     },
     "rules": {
         "deprecation/deprecation": "warn",
+        "no-duplicate-imports": "error",
+        "@typescript-eslint/restrict-template-expressions": [
+            "error",
+            {
+                "allowAny": false,
+                "allowBoolean": false,
+                "allowNever": false,
+                "allowNullish": false
+            }
+        ],
+        "@typescript-eslint/switch-exhaustiveness-check": [
+            "error",
+            {
+                "considerDefaultExhaustiveForUnions": true
+            }
+        ],
         "@typescript-eslint/array-type": [
             "error",
             {

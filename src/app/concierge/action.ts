@@ -64,7 +64,7 @@ export const getRecs = async (currentState: Rec[], formData: FormData): Promise<
     })
 
     // get completion
-    const completion = await openai.beta.chat.completions.parse({
+    const completion = await openai.chat.completions.parse({
         model,
         messages,
         response_format: zodResponseFormat(z.object({recomendations: z.array(RecSchema)}), 'Recomendations'),

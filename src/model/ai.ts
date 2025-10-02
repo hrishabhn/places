@@ -50,7 +50,7 @@ export const RecSchema = z.object({
     city: z.string().describe('City'),
     type: z.string().describe('Type'),
     description: z.string().describe('Additional information'),
-    website: z.string().optional().describe('Related website or source'),
+    website: z.string().url().nullable().describe('Related website or source'),
 })
 
 export type Rec = z.infer<typeof RecSchema>
