@@ -26,8 +26,8 @@
         "next": "15.4.0-canary.30",
         "nuqs": "^2.7.0",
         "openai": "^4.104.0",
-        "react": "19.1.0",
-        "react-dom": "19.1.0",
+        "react": "19.2.0",
+        "react-dom": "19.2.0",
         "react-leaflet": "^5.0.0",
         "react-use": "^17.6.0",
         "server-only": "^0.0.1",
@@ -37,29 +37,23 @@
         "zod": "^3.25.76"
     },
     "devDependencies": {
-        "@trivago/prettier-plugin-sort-imports": "^4.3.0",
+        "@trivago/prettier-plugin-sort-imports": "^5.2.2",
         "@tsconfig/next": "^2.0.3",
         "@types/leaflet": "^1.9.20",
-        "@types/node": "^20.19.19",
-        "@types/react": "19.1.2",
-        "@types/react-dom": "19.1.2",
+        "@types/node": "^24.6.2",
+        "@types/react": "19.2.0",
+        "@types/react-dom": "19.2.0",
         "@typescript-eslint/parser": "^8.45.0",
-        "babel-plugin-react-compiler": "19.0.0-beta-bafa41b-20250307",
+        "babel-plugin-react-compiler": "19.1.0-rc.3",
         "eslint": "^8.57.1",
         "eslint-config-next": "15.3.1",
         "eslint-plugin-deprecation": "^3.0.0",
-        "eslint-plugin-react-compiler": "19.0.0-beta-bafa41b-20250307",
+        "eslint-plugin-react-compiler": "19.1.0-rc.2",
         "eslint-plugin-tailwindcss": "^3.18.2",
         "postcss": "^8.5.6",
         "prettier": "^3.6.2",
         "prettier-plugin-tailwindcss": "^0.6.14",
         "tailwindcss": "^3.4.18",
         "typescript": "^5.9.3"
-    },
-    "pnpm": {
-        "overrides": {
-            "@types/react": "19.1.2",
-            "@types/react-dom": "19.1.2"
-        }
     }
 }
