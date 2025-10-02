@@ -3,13 +3,14 @@
 import {customDivIcon} from './custom-icon'
 import {MapTooltip} from './tooltip'
 
-import {type Icon, MapPinIcon, NavigationArrowIcon} from '@phosphor-icons/react'
+import {ArrowsInSimpleIcon, type Icon, MapPinIcon, NavigationArrowIcon} from '@phosphor-icons/react'
 import 'leaflet-defaulticon-compatibility'
 import 'leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.css'
 import 'leaflet/dist/leaflet.css'
-import {MapContainer, Marker, TileLayer} from 'react-leaflet'
+import {MapContainer, Marker, TileLayer, useMap} from 'react-leaflet'
 import {useMediaQuery} from 'usehooks-ts'
 
+import {type Coordinates} from '@/lib/coordinates'
 import {useCoordinates} from '@/lib/hooks'
 
 // type and assertion
@@ -22,23 +23,19 @@ type MapPin = {
     icon?: Icon
 }
 
+type Bounds = [number, number][]
+
 export function MapViewContent({allPlace: displayPlace}: {allPlace: MapPin[]}) {
     const isDark = useMediaQuery('(prefers-color-scheme: dark)')
     const {data: userCoordinates} = useCoordinates()
 
-    const avgLat = displayPlace.map(({lat}) => lat).reduce((a, b) => a + b, 0) / displayPlace.length
-    const avgLon = displayPlace.map(({lon}) => lon).reduce((a, b) => a + b, 0) / displayPlace.length
+    const bounds: Bounds = displayPlace.length > 0 ? displayPlace.map(({lat, lon}) => [lat, lon]) : [[0, 0]]
 
     return (
-        <MapContainer
-            className="z-0 size-full"
-            zoomControl={false}
-            center={[avgLat, avgLon]}
-            minZoom={2}
-            bounds={displayPlace.length > 0 ? displayPlace.map(({lat, lon}) => [lat, lon]) : undefined}
-            boundsOptions={{padding: [50, 50]}}
-        >
+        <MapContainer className="z-0 size-full" zoomControl={false} minZoom={2} bounds={bounds} boundsOptions={{padding: [50, 50]}}>
             <TileLayer url={`https://tiles.stadiamaps.com/tiles/alidade_smooth${isDark ? '_dark' : ''}/{z}/{x}/{y}{r}.png`} />
+
+            <MapActions bounds={bounds} coordinates={userCoordinates ?? undefined} />
 
             {displayPlace.map(place => (
                 <Marker key={place.id} icon={customDivIcon({theme: 'accent', icon: place.icon || MapPinIcon})} position={[place.lat, place.lon]}>
@@ -52,5 +49,36 @@ export function MapViewContent({allPlace: displayPlace}: {allPlace: MapPin[]}) {
                 </Marker>
             )}
         </MapContainer>
+    )
+}
+
+type MapActionsProps = {
+    bounds: Bounds
+    coordinates: Coordinates | undefined
+}
+
+function MapActions({bounds, coordinates}: MapActionsProps) {
+    const map = useMap()
+
+    return (
+        <div className="absolute right-4 top-4 z-[1000] flex flex-col gap-2">
+            <button onClick={() => map.fitBounds(bounds, {padding: [50, 50]})} className="active:opacity-60">
+                <MapButton icon={ArrowsInSimpleIcon} />
+            </button>
+
+            {coordinates !== undefined && (
+                <button onClick={() => map.setView([coordinates.latitude, coordinates.longitude], 15)} className="active:opacity-60">
+                    <MapButton icon={NavigationArrowIcon} />
+                </button>
+            )}
+        </div>
+    )
+}
+
+function MapButton({icon: Icon}: {icon: Icon}) {
+    return (
+        <div className="flex size-8 items-center justify-center rounded-xl bg-cream text-olive shadow backdrop-blur dark:bg-cream/50 dark:text-olive">
+            <Icon size={20} weight="fill" />
+        </div>
     )
 }
