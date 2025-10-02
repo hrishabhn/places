@@ -7,6 +7,9 @@ const nextConfig: NextConfig = {
         reactCompiler: true,
         ppr: true,
     },
+    images: {
+        domains: ['images.unsplash.com'],
+    },
 }
 
 export default nextConfig
