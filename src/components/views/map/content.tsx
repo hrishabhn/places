@@ -1,29 +1,30 @@
 'use client'
 
-import {DivIcon} from 'leaflet'
+import {customDivIcon} from './custom-icon'
+import {MapTooltip} from './tooltip'
+
+import {type Icon, MapPinIcon, NavigationArrowIcon} from '@phosphor-icons/react'
 import 'leaflet-defaulticon-compatibility'
 import 'leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.css'
 import 'leaflet/dist/leaflet.css'
-import {MapContainer, Marker, TileLayer, Tooltip} from 'react-leaflet'
+import {MapContainer, Marker, TileLayer} from 'react-leaflet'
 import {useMediaQuery} from 'usehooks-ts'
 
 import {useCoordinates} from '@/lib/hooks'
-import {tw} from '@/lib/tailwind'
 
 // type and assertion
 type MapPin = {
     id: string
-    name: string
-    lat: number | null
-    lon: number | null
+    title: string
+    subtitle?: string
+    lat: number
+    lon: number
+    icon?: Icon
 }
-type ValidMapPin = MapPin & {lat: number; lon: number}
-const isValidMapPin = (place: MapPin): place is ValidMapPin => place.lat !== null && place.lon !== null
 
-export function MapViewContent({allPlace}: {allPlace: MapPin[]}) {
+export function MapViewContent({allPlace: displayPlace}: {allPlace: MapPin[]}) {
     const isDark = useMediaQuery('(prefers-color-scheme: dark)')
     const {data: userCoordinates} = useCoordinates()
-    const displayPlace: ValidMapPin[] = allPlace.filter(isValidMapPin)
 
     const avgLat = displayPlace.map(({lat}) => lat).reduce((a, b) => a + b, 0) / displayPlace.length
     const avgLon = displayPlace.map(({lon}) => lon).reduce((a, b) => a + b, 0) / displayPlace.length
@@ -40,25 +41,16 @@ export function MapViewContent({allPlace}: {allPlace: MapPin[]}) {
             <TileLayer url={`https://tiles.stadiamaps.com/tiles/alidade_smooth${isDark ? '_dark' : ''}/{z}/{x}/{y}{r}.png`} />
 
             {displayPlace.map(place => (
-                <Marker key={place.id} icon={customIcon('accent')} position={[place.lat, place.lon]}>
-                    <Tooltip>{place.name}</Tooltip>
+                <Marker key={place.id} icon={customDivIcon({theme: 'accent', icon: place.icon || MapPinIcon})} position={[place.lat, place.lon]}>
+                    <MapTooltip theme="accent" icon={place.icon || MapPinIcon} title={place.title} subtitle={place.subtitle} />
                 </Marker>
             ))}
 
             {userCoordinates && (
-                <Marker icon={customIcon('blue')} zIndexOffset={1} position={[userCoordinates.latitude, userCoordinates.longitude]}>
-                    <Tooltip>Your Location</Tooltip>
+                <Marker icon={customDivIcon({theme: 'blue', icon: NavigationArrowIcon})} zIndexOffset={1} position={[userCoordinates.latitude, userCoordinates.longitude]}>
+                    <MapTooltip theme="blue" icon={NavigationArrowIcon} title="Your Location" />
                 </Marker>
             )}
         </MapContainer>
     )
-}
-
-function customIcon(theme: 'accent' | 'blue') {
-    const themeClass = {
-        accent: tw`bg-olive dark:bg-cream`,
-        blue: tw`bg-blue-500`,
-    }[theme]
-
-    return new DivIcon({className: tw`rounded-full border border-line-dark dark:border-line ${themeClass}`})
 }
