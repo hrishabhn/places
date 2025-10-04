@@ -1,6 +1,6 @@
 'use client'
 
-import {PlacesMap} from './map'
+import {PlacesMap, PlacesMapModal} from './map'
 
 import {CityIcon, FlagIcon, ForkKnifeIcon, HeartIcon, ListIcon, MapTrifoldIcon, PlusIcon, StarIcon, TableIcon, TagIcon, TextTIcon, XIcon} from '@phosphor-icons/react'
 import {useMutation, useQuery, useQueryClient, useSuspenseQuery} from '@tanstack/react-query'
@@ -46,6 +46,7 @@ export default function PlacesPage() {
 
     const [selectedSort, setSelectedSort] = useQueryState('sort', parseAsStringLiteral(allSort).withDefault('name'))
 
+    const [showMap, setShowMap] = useQueryState('map', parseAsBoolean.withDefault(false))
     const [selectedView, setSelectedView] = useQueryState('view', parseAsStringLiteral(allView).withDefault('list'))
 
     // query
@@ -538,9 +539,20 @@ export default function PlacesPage() {
 
                         <SectionHeader title="Places" subtitle={`${allPlace.length > 0 ? allPlace.length : 'No'} results`} />
                         <PlacesStack allPlace={allPlace} view={selectedView} />
+
+                        <PlacesMapModal isOpen={showMap} onClose={() => setShowMap(false)} allPlace={allPlace} />
                     </>
                 )}
             </Section>
+
+            <div className="fixed inset-x-0 bottom-4 z-10 mx-auto w-fit">
+                <button className="active:opacity-60" onClick={() => setShowMap(!showMap)}>
+                    <SearchBarButton active={showMap}>
+                        <MapTrifoldIcon weight="bold" />
+                        <p>Map</p>
+                    </SearchBarButton>
+                </button>
+            </div>
         </>
     )
 }
