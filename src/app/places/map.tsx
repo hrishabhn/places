@@ -49,20 +49,3 @@ export function PlacesMapModal({isOpen, onClose, allPlace}: {isOpen: boolean; on
         </AnimatePresence>
     )
 }
-
-export function PlacesMap({allPlace}: {allPlace: Place[]}) {
-    return (
-        <div className="mb-4 aspect-square max-h-96 w-full overflow-hidden rounded-md ring-1 ring-line sm:aspect-video dark:ring-line-dark">
-            <MapView
-                allPlace={allPlace.filter(isPlaceWithCoordinates).map(place => ({
-                    id: place.id,
-                    title: place.name,
-                    subtitle: place.type.at(0),
-                    lat: place.lat,
-                    lon: place.lon,
-                    icon: getPlaceIcon(place.type.at(0)),
-                }))}
-            />
-        </div>
-    )
-}

@@ -32,12 +32,6 @@ export default {
                 olive: '#292718',
                 cream: '#F4F1DE',
             },
-            height: {
-                screen: '100vh 100dvh',
-            },
-            minHeight: {
-                screen: '100vh 100dvh',
-            },
             keyframes: {
                 blink: {
                     '0%, 100%': {opacity: '1'},

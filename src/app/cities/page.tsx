@@ -6,6 +6,8 @@ import {parseAsString, parseAsStringLiteral, useQueryState} from 'nuqs'
 
 import {CityCard} from '@/app/views/city/card'
 
+import {type City} from '@/server/types'
+
 import {countryFlag} from '@/model/util'
 
 import {useArrayState} from '@/lib/hooks/nuqs'
@@ -148,9 +150,7 @@ export default function CitiesPage() {
 
             <Section>
                 <PageStack>
-                    <div className="pt-6">
-                        <SearchBarFilter query={query} setQuery={setQuery} resultCount={allCity?.length} />
-                    </div>
+                    <SearchBarFilter query={query} setQuery={setQuery} resultCount={allCity?.length} />
 
                     {isPending ? (
                         <Loading />
@@ -202,19 +202,22 @@ export default function CitiesPage() {
                                 </>
                             )}
 
-                            {allCity.length > 0 ? (
-                                <GridStack>
-                                    {allCity.map(city => (
-                                        <CityCard key={city.slug} city={city} />
-                                    ))}
-                                </GridStack>
-                            ) : (
-                                <NoResults title="No cities found." subtitle="Try changing your query." />
-                            )}
+                            <CitiesStack allCity={allCity} />
                         </>
                     )}
                 </PageStack>
             </Section>
         </>
+    )
+}
+
+function CitiesStack({allCity}: {allCity: City[]}) {
+    if (allCity.length === 0) return <NoResults title="No cities found." subtitle="Try changing your query." />
+    return (
+        <GridStack>
+            {allCity.map(city => (
+                <CityCard key={city.slug} city={city} />
+            ))}
+        </GridStack>
     )
 }

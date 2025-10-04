@@ -1,9 +1,9 @@
 'use client'
 
-import {PlacesMap, PlacesMapModal} from './map'
+import {PlacesMapModal} from './map'
 
-import {CityIcon, FlagIcon, ForkKnifeIcon, HeartIcon, ListIcon, MapTrifoldIcon, PlusIcon, StarIcon, TableIcon, TagIcon, TextTIcon, XIcon} from '@phosphor-icons/react'
-import {useMutation, useQuery, useQueryClient, useSuspenseQuery} from '@tanstack/react-query'
+import {CardsThreeIcon, CityIcon, FlagIcon, ForkKnifeIcon, HeartIcon, MapTrifoldIcon, PlusIcon, StarIcon, TableIcon, TagIcon, TextTIcon, XIcon} from '@phosphor-icons/react'
+import {keepPreviousData, useMutation, useQuery, useQueryClient, useSuspenseQuery} from '@tanstack/react-query'
 import {parseAsBoolean, parseAsString, parseAsStringLiteral, useQueryState} from 'nuqs'
 import {useEffect} from 'react'
 
@@ -25,11 +25,13 @@ import {type ActiveFilter} from '@/components/views/filter'
 import {getIcon} from '@/components/views/get-icon'
 import {Loading} from '@/components/views/loading'
 import {MenuBarItem, MenuBarSelect, MenuBarSort, MenuBarTray} from '@/components/views/menu-bar'
+import {NoResults} from '@/components/views/no-results'
+import {PageStack} from '@/components/views/page-stack'
 import {SearchBarButton, SearchBarFilter} from '@/components/views/search'
-import {Section, SectionHeader} from '@/components/views/section'
+import {Section} from '@/components/views/section'
 
 const allSort = ['name', 'country', 'city'] as const
-const allView = ['list', 'table', 'map'] as const
+const allView = ['list', 'table'] as const
 
 type View = (typeof allView)[number]
 
@@ -69,18 +71,23 @@ export default function PlacesPage() {
 
     const {status: searchStatus, data: searchResult} = useQuery(trpc.SearchPlaceFilter.queryOptions({query}))
     const {status: allPlaceStatus, data: allPlace} = useQuery(
-        trpc.GetAllPlace.queryOptions({
-            filter: {
-                id: showBookmarks ? bookmarks : undefined,
-                top,
-                countrySlug: selectedCountrySlug.value,
-                citySlug: selectedCitySlug.value,
-                placeType: selectedPlaceType.value,
-                placeTag: selectedPlaceTag.value,
+        trpc.GetAllPlace.queryOptions(
+            {
+                filter: {
+                    id: showBookmarks ? bookmarks : undefined,
+                    top,
+                    countrySlug: selectedCountrySlug.value,
+                    citySlug: selectedCitySlug.value,
+                    placeType: selectedPlaceType.value,
+                    placeTag: selectedPlaceTag.value,
+                },
+                query,
+                sort: selectedSort,
             },
-            query,
-            sort: selectedSort,
-        })
+            {
+                placeholderData: keepPreviousData,
+            }
+        )
     )
 
     // derived state
@@ -395,161 +402,150 @@ export default function PlacesPage() {
                         )
                     }
                 />
+                <MenuBarSort
+                    selectedSort={selectedView}
+                    allSort={allView}
+                    onSelect={option => setSelectedView(option)}
+                    toIcon={option =>
+                        ({
+                            list: CardsThreeIcon,
+                            table: TableIcon,
+                        })[option]
+                    }
+                    toTitle={option =>
+                        ({
+                            list: 'List',
+                            table: 'Table',
+                        })[option]
+                    }
+                />
             </MenuBarTray>
 
             <Section>
-                <div className="flex flex-col items-start gap-2 pt-6">
-                    <SearchBarFilter query={query} setQuery={setQuery} />
-                </div>
+                <PageStack>
+                    <SearchBarFilter query={query} setQuery={setQuery} resultCount={allPlace?.length} />
 
-                <SectionHeader title="Views" />
-                <ButtonTray>
-                    {allView.map(view => {
-                        const Icon = {
-                            list: ListIcon,
-                            table: TableIcon,
-                            map: MapTrifoldIcon,
-                        }[view]
+                    {isPending ? (
+                        <Loading />
+                    ) : (
+                        <>
+                            {searchResult.length > 0 && (
+                                <>
+                                    <ButtonTray>
+                                        {searchResult.map((result, i) => {
+                                            const active = {
+                                                country: selectedCountrySlug.value.includes(result.id),
+                                                city: selectedCitySlug.value.includes(result.id),
+                                                place_type: selectedPlaceType.value.includes(result.id),
+                                                place_tag: selectedPlaceTag.value.includes(result.id),
+                                            }[result.type]
 
-                        const title = {
-                            list: 'List',
-                            table: 'Table',
-                            map: 'Map',
-                        }[view]
+                                            const onSelect = {
+                                                country: () => selectedCountrySlug.toggle(result.id),
+                                                city: () => selectedCitySlug.toggle(result.id),
+                                                place_type: () => selectedPlaceType.toggle(result.id),
+                                                place_tag: () => selectedPlaceTag.toggle(result.id),
+                                            }[result.type]
 
-                        return (
-                            <button key={view} className="active:opacity-60" onClick={() => setSelectedView(view)}>
-                                <SearchBarButton active={selectedView === view}>
-                                    <Icon weight="bold" />
-                                    <p>{title}</p>
-                                </SearchBarButton>
-                            </button>
-                        )
-                    })}
-                </ButtonTray>
+                                            const Icon = getIcon(result.type)
 
-                {isPending ? (
-                    <Loading />
-                ) : (
-                    <>
-                        {searchResult.length > 0 && (
-                            <>
-                                <SectionHeader title="Filters" subtitle={`${searchResult.length} results`} />
-                                <ButtonTray>
-                                    {searchResult.map((result, i) => {
-                                        const active = {
-                                            country: selectedCountrySlug.value.includes(result.id),
-                                            city: selectedCitySlug.value.includes(result.id),
-                                            place_type: selectedPlaceType.value.includes(result.id),
-                                            place_tag: selectedPlaceTag.value.includes(result.id),
-                                        }[result.type]
+                                            // prefetch
+                                            if (result.type === 'country') {
+                                                queryClient.prefetchQuery(
+                                                    trpc.GetAllPlace.queryOptions({
+                                                        filter: {
+                                                            id: showBookmarks ? bookmarks : undefined,
+                                                            top,
+                                                            countrySlug: selectedCountrySlug.getToggledValue(result.id),
+                                                            citySlug: selectedCitySlug.value,
+                                                            placeType: selectedPlaceType.value,
+                                                            placeTag: selectedPlaceTag.value,
+                                                        },
+                                                        query: '',
+                                                        sort: selectedSort,
+                                                    })
+                                                )
+                                            } else if (result.type === 'city') {
+                                                queryClient.prefetchQuery(
+                                                    trpc.GetAllPlace.queryOptions({
+                                                        filter: {
+                                                            id: showBookmarks ? bookmarks : undefined,
+                                                            top,
+                                                            countrySlug: selectedCountrySlug.value,
+                                                            citySlug: selectedCitySlug.getToggledValue(result.id),
+                                                            placeType: selectedPlaceType.value,
+                                                            placeTag: selectedPlaceTag.value,
+                                                        },
+                                                        query: '',
+                                                        sort: selectedSort,
+                                                    })
+                                                )
+                                            } else if (result.type === 'place_type') {
+                                                queryClient.prefetchQuery(
+                                                    trpc.GetAllPlace.queryOptions({
+                                                        filter: {
+                                                            id: showBookmarks ? bookmarks : undefined,
+                                                            top,
+                                                            countrySlug: selectedCountrySlug.value,
+                                                            citySlug: selectedCitySlug.value,
+                                                            placeType: selectedPlaceType.getToggledValue(result.id),
+                                                            placeTag: selectedPlaceTag.value,
+                                                        },
+                                                        query: '',
+                                                        sort: selectedSort,
+                                                    })
+                                                )
+                                            } else if (result.type === 'place_tag') {
+                                                queryClient.prefetchQuery(
+                                                    trpc.GetAllPlace.queryOptions({
+                                                        filter: {
+                                                            id: showBookmarks ? bookmarks : undefined,
+                                                            top,
+                                                            countrySlug: selectedCountrySlug.value,
+                                                            citySlug: selectedCitySlug.value,
+                                                            placeType: selectedPlaceType.value,
+                                                            placeTag: selectedPlaceTag.getToggledValue(result.id),
+                                                        },
+                                                        query: '',
+                                                        sort: selectedSort,
+                                                    })
+                                                )
+                                            }
 
-                                        const onSelect = {
-                                            country: () => selectedCountrySlug.toggle(result.id),
-                                            city: () => selectedCitySlug.toggle(result.id),
-                                            place_type: () => selectedPlaceType.toggle(result.id),
-                                            place_tag: () => selectedPlaceTag.toggle(result.id),
-                                        }[result.type]
-
-                                        const Icon = getIcon(result.type)
-
-                                        // prefetch
-                                        if (result.type === 'country') {
-                                            queryClient.prefetchQuery(
-                                                trpc.GetAllPlace.queryOptions({
-                                                    filter: {
-                                                        id: showBookmarks ? bookmarks : undefined,
-                                                        top,
-                                                        countrySlug: selectedCountrySlug.getToggledValue(result.id),
-                                                        citySlug: selectedCitySlug.value,
-                                                        placeType: selectedPlaceType.value,
-                                                        placeTag: selectedPlaceTag.value,
-                                                    },
-                                                    query: '',
-                                                    sort: selectedSort,
-                                                })
+                                            return (
+                                                <button
+                                                    key={i}
+                                                    className="active:opacity-60"
+                                                    onClick={() => {
+                                                        onSelect()
+                                                        setQuery('')
+                                                    }}
+                                                >
+                                                    <Badge active={active}>
+                                                        <Icon weight="duotone" />
+                                                        <p>{result.name}</p>
+                                                        {active ? <XIcon weight="bold" /> : <PlusIcon weight="bold" />}
+                                                    </Badge>
+                                                </button>
                                             )
-                                        } else if (result.type === 'city') {
-                                            queryClient.prefetchQuery(
-                                                trpc.GetAllPlace.queryOptions({
-                                                    filter: {
-                                                        id: showBookmarks ? bookmarks : undefined,
-                                                        top,
-                                                        countrySlug: selectedCountrySlug.value,
-                                                        citySlug: selectedCitySlug.getToggledValue(result.id),
-                                                        placeType: selectedPlaceType.value,
-                                                        placeTag: selectedPlaceTag.value,
-                                                    },
-                                                    query: '',
-                                                    sort: selectedSort,
-                                                })
-                                            )
-                                        } else if (result.type === 'place_type') {
-                                            queryClient.prefetchQuery(
-                                                trpc.GetAllPlace.queryOptions({
-                                                    filter: {
-                                                        id: showBookmarks ? bookmarks : undefined,
-                                                        top,
-                                                        countrySlug: selectedCountrySlug.value,
-                                                        citySlug: selectedCitySlug.value,
-                                                        placeType: selectedPlaceType.getToggledValue(result.id),
-                                                        placeTag: selectedPlaceTag.value,
-                                                    },
-                                                    query: '',
-                                                    sort: selectedSort,
-                                                })
-                                            )
-                                        } else if (result.type === 'place_tag') {
-                                            queryClient.prefetchQuery(
-                                                trpc.GetAllPlace.queryOptions({
-                                                    filter: {
-                                                        id: showBookmarks ? bookmarks : undefined,
-                                                        top,
-                                                        countrySlug: selectedCountrySlug.value,
-                                                        citySlug: selectedCitySlug.value,
-                                                        placeType: selectedPlaceType.value,
-                                                        placeTag: selectedPlaceTag.getToggledValue(result.id),
-                                                    },
-                                                    query: '',
-                                                    sort: selectedSort,
-                                                })
-                                            )
-                                        }
+                                        })}
+                                    </ButtonTray>
+                                </>
+                            )}
 
-                                        return (
-                                            <button
-                                                key={i}
-                                                className="active:opacity-60"
-                                                onClick={() => {
-                                                    onSelect()
-                                                    setQuery('')
-                                                }}
-                                            >
-                                                <Badge active={active}>
-                                                    <Icon weight="duotone" />
-                                                    <p>{result.name}</p>
-                                                    {active ? <XIcon weight="bold" /> : <PlusIcon weight="bold" />}
-                                                </Badge>
-                                            </button>
-                                        )
-                                    })}
-                                </ButtonTray>
-                            </>
-                        )}
+                            <PlacesStack allPlace={allPlace} view={selectedView} />
 
-                        <SectionHeader title="Places" subtitle={`${allPlace.length > 0 ? allPlace.length : 'No'} results`} />
-                        <PlacesStack allPlace={allPlace} view={selectedView} />
-
-                        <PlacesMapModal isOpen={showMap} onClose={() => setShowMap(false)} allPlace={allPlace} />
-                    </>
-                )}
+                            <PlacesMapModal isOpen={showMap} onClose={() => setShowMap(false)} allPlace={allPlace} />
+                        </>
+                    )}
+                </PageStack>
             </Section>
 
             <div className="fixed inset-x-0 bottom-4 z-10 mx-auto w-fit">
                 <button className="active:opacity-60" onClick={() => setShowMap(!showMap)}>
-                    <SearchBarButton active={showMap}>
+                    <SearchBarButton active>
                         <MapTrifoldIcon weight="bold" />
-                        <p>Map</p>
+                        <p>View on Map</p>
                     </SearchBarButton>
                 </button>
             </div>
@@ -567,7 +563,7 @@ function PlacesStack({allPlace, view}: {allPlace: Place[]; view: View}) {
 
     const {mutate: toggle} = useMutation({mutationFn: async (id: string) => await queryClient.setQueryData(['bookmarks'], await toggleBookmark(id))})
 
-    if (allPlace.length === 0) return null
+    if (allPlace.length === 0) return <NoResults title="No places found." subtitle="Try changing your query." />
 
     switch (view) {
         case 'list':
@@ -575,8 +571,5 @@ function PlacesStack({allPlace, view}: {allPlace: Place[]; view: View}) {
 
         case 'table':
             return <PlaceTable allPlace={allPlace} bookmarks={bookmarks} onToggleBookmark={id => toggle(id)} />
-
-        case 'map':
-            return <PlacesMap allPlace={allPlace} />
     }
 }
