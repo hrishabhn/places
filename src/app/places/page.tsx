@@ -42,7 +42,7 @@ import {Loading} from '@/components/views/loading'
 import {MenuBarItem, MenuBarSelect, MenuBarTray} from '@/components/views/menu-bar'
 import {NoResults} from '@/components/views/no-results'
 import {PageStack} from '@/components/views/page-stack'
-import {SearchBarButton, SearchBarFilter} from '@/components/views/search'
+import {SearchBarFilter} from '@/components/views/search'
 import {Section} from '@/components/views/section'
 
 const allSort = ['name', 'country', 'city'] as const
@@ -271,7 +271,7 @@ export default function PlacesPage() {
                 {activeFilter.map(filter => {
                     const Icon = getIcon(filter.type)
                     return (
-                        <button key={filter.title} className="shrink-0 active:opacity-60" onClick={() => filter.onRemove()}>
+                        <button key={filter.title} onClick={() => filter.onRemove()} className="shrink-0 active:opacity-60">
                             <MenuBarItem active>
                                 <Icon weight="duotone" />
                                 <p>{filter.title}</p>
@@ -282,14 +282,14 @@ export default function PlacesPage() {
                 })}
 
                 {bookmarks.length > 0 && (
-                    <button className="active:opacity-60" onClick={() => setShowBookmarks(!showBookmarks)}>
+                    <button onClick={() => setShowBookmarks(!showBookmarks)} className="active:opacity-60">
                         <MenuBarItem active={showBookmarks}>
                             <HeartIcon weight="fill" />
                             <p>Bookmarks</p>
                         </MenuBarItem>
                     </button>
                 )}
-                <button className="active:opacity-60" onClick={() => setTop(!top)}>
+                <button onClick={() => setTop(!top)} className="active:opacity-60">
                     <MenuBarItem active={top}>
                         <StarIcon weight="fill" />
                         <p>Top</p>
@@ -569,11 +569,12 @@ export default function PlacesPage() {
             </Section>
 
             <div className="fixed inset-x-0 bottom-4 z-10 mx-auto w-fit">
-                <button className="active:opacity-60" onClick={() => setShowMap(!showMap)}>
-                    <SearchBarButton active>
-                        <MapTrifoldIcon weight="bold" />
-                        <p>View on Map</p>
-                    </SearchBarButton>
+                <button
+                    onClick={() => setShowMap(!showMap)}
+                    className="flex items-center gap-2 rounded-full bg-olive px-3 py-2 text-base font-medium text-cream shadow-md dark:bg-cream dark:text-olive"
+                >
+                    <MapTrifoldIcon weight="bold" />
+                    <p>View on Map</p>
                 </button>
             </div>
         </>
