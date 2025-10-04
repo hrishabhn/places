@@ -4,7 +4,7 @@ import {PlacesMap} from './map'
 
 import {CityIcon, FlagIcon, ForkKnifeIcon, HeartIcon, ListIcon, MapTrifoldIcon, PlusIcon, StarIcon, TableIcon, TagIcon, TextTIcon, XIcon} from '@phosphor-icons/react'
 import {useMutation, useQuery, useQueryClient, useSuspenseQuery} from '@tanstack/react-query'
-import {parseAsString, parseAsStringLiteral, useQueryState} from 'nuqs'
+import {parseAsBoolean, parseAsString, parseAsStringLiteral, useQueryState} from 'nuqs'
 import {useEffect} from 'react'
 
 import {CityImage} from '@/app/views/city/image'
@@ -17,7 +17,7 @@ import {type Place} from '@/server/types'
 import {getBookmarks, toggleBookmark} from '@/model/bookmarks'
 import {countryFlag} from '@/model/util'
 
-import {useArrayState, useBooleanState} from '@/lib/hooks/nuqs'
+import {useArrayState} from '@/lib/hooks/nuqs'
 import {useTRPC} from '@/lib/trpc'
 
 import {Badge, ButtonTray} from '@/components/ui'
@@ -35,8 +35,8 @@ type View = (typeof allView)[number]
 
 export default function PlacesPage() {
     // state
-    const showBookmarks = useBooleanState('bookmarks')
-    const top = useBooleanState('top')
+    const [showBookmarks, setShowBookmarks] = useQueryState('bookmarks', parseAsBoolean.withDefault(false))
+    const [top, setTop] = useQueryState('top', parseAsBoolean.withDefault(false))
     const selectedCountrySlug = useArrayState('country')
     const selectedCitySlug = useArrayState('city')
     const selectedPlaceType = useArrayState('type')
@@ -58,8 +58,8 @@ export default function PlacesPage() {
     })
 
     useEffect(() => {
-        if (bookmarks.length === 0) showBookmarks.setFalse()
-    }, [bookmarks.length, showBookmarks])
+        if (bookmarks.length === 0) setShowBookmarks(false)
+    }, [bookmarks.length, setShowBookmarks])
 
     const {data: allCountry} = useSuspenseQuery(trpc.GetAllCountry.queryOptions({sort: 'place_count'}))
     const {data: allCity} = useSuspenseQuery(trpc.GetAllCity.queryOptions({sort: 'place_count'}))
@@ -70,8 +70,8 @@ export default function PlacesPage() {
     const {status: allPlaceStatus, data: allPlace} = useQuery(
         trpc.GetAllPlace.queryOptions({
             filter: {
-                id: showBookmarks.value ? bookmarks : undefined,
-                top: top.value,
+                id: showBookmarks ? bookmarks : undefined,
+                top,
                 countrySlug: selectedCountrySlug.value,
                 citySlug: selectedCitySlug.value,
                 placeType: selectedPlaceType.value,
@@ -100,8 +100,8 @@ export default function PlacesPage() {
             queryClient.prefetchQuery(
                 trpc.GetAllPlace.queryOptions({
                     filter: {
-                        id: showBookmarks.value ? bookmarks : undefined,
-                        top: top.value,
+                        id: showBookmarks ? bookmarks : undefined,
+                        top,
                         countrySlug: selectedCountrySlug.getToggledValue(countrySlug),
                         citySlug: selectedCitySlug.value,
                         placeType: selectedPlaceType.value,
@@ -122,8 +122,8 @@ export default function PlacesPage() {
             queryClient.prefetchQuery(
                 trpc.GetAllPlace.queryOptions({
                     filter: {
-                        id: showBookmarks.value ? bookmarks : undefined,
-                        top: top.value,
+                        id: showBookmarks ? bookmarks : undefined,
+                        top,
                         countrySlug: selectedCountrySlug.value,
                         citySlug: selectedCitySlug.getToggledValue(citySlug),
                         placeType: selectedPlaceType.value,
@@ -144,8 +144,8 @@ export default function PlacesPage() {
             queryClient.prefetchQuery(
                 trpc.GetAllPlace.queryOptions({
                     filter: {
-                        id: showBookmarks.value ? bookmarks : undefined,
-                        top: top.value,
+                        id: showBookmarks ? bookmarks : undefined,
+                        top,
                         countrySlug: selectedCountrySlug.value,
                         citySlug: selectedCitySlug.value,
                         placeType: selectedPlaceType.getToggledValue(placeType),
@@ -166,8 +166,8 @@ export default function PlacesPage() {
             queryClient.prefetchQuery(
                 trpc.GetAllPlace.queryOptions({
                     filter: {
-                        id: showBookmarks.value ? bookmarks : undefined,
-                        top: top.value,
+                        id: showBookmarks ? bookmarks : undefined,
+                        top,
                         countrySlug: selectedCountrySlug.value,
                         citySlug: selectedCitySlug.value,
                         placeType: selectedPlaceType.value,
@@ -190,8 +190,8 @@ export default function PlacesPage() {
     queryClient.prefetchQuery(
         trpc.GetAllPlace.queryOptions({
             filter: {
-                id: showBookmarks.value ? undefined : bookmarks,
-                top: top.value,
+                id: showBookmarks ? undefined : bookmarks,
+                top,
                 countrySlug: selectedCountrySlug.value,
                 citySlug: selectedCitySlug.value,
                 placeType: selectedPlaceType.value,
@@ -205,8 +205,8 @@ export default function PlacesPage() {
     queryClient.prefetchQuery(
         trpc.GetAllPlace.queryOptions({
             filter: {
-                id: showBookmarks.value ? bookmarks : undefined,
-                top: !top.value,
+                id: showBookmarks ? bookmarks : undefined,
+                top: !top,
                 countrySlug: selectedCountrySlug.value,
                 citySlug: selectedCitySlug.value,
                 placeType: selectedPlaceType.value,
@@ -236,15 +236,15 @@ export default function PlacesPage() {
                 })}
 
                 {bookmarks.length > 0 && (
-                    <button className="active:opacity-60" onClick={() => showBookmarks.toggle()}>
-                        <MenuBarItem active={showBookmarks.value}>
+                    <button className="active:opacity-60" onClick={() => setShowBookmarks(!showBookmarks)}>
+                        <MenuBarItem active={showBookmarks}>
                             <HeartIcon weight="fill" />
                             <p>Bookmarks</p>
                         </MenuBarItem>
                     </button>
                 )}
-                <button className="active:opacity-60" onClick={() => top.toggle()}>
-                    <MenuBarItem active={top.value}>
+                <button className="active:opacity-60" onClick={() => setTop(!top)}>
+                    <MenuBarItem active={top}>
                         <StarIcon weight="fill" />
                         <p>Top</p>
                     </MenuBarItem>
@@ -263,8 +263,8 @@ export default function PlacesPage() {
                         queryClient.prefetchQuery(
                             trpc.GetAllPlace.queryOptions({
                                 filter: {
-                                    id: showBookmarks.value ? bookmarks : undefined,
-                                    top: top.value,
+                                    id: showBookmarks ? bookmarks : undefined,
+                                    top,
                                     countrySlug: selectedCountrySlug.getToggledValue(country.slug),
                                     citySlug: selectedCitySlug.value,
                                     placeType: selectedPlaceType.value,
@@ -290,8 +290,8 @@ export default function PlacesPage() {
                         queryClient.prefetchQuery(
                             trpc.GetAllPlace.queryOptions({
                                 filter: {
-                                    id: showBookmarks.value ? bookmarks : undefined,
-                                    top: top.value,
+                                    id: showBookmarks ? bookmarks : undefined,
+                                    top,
                                     countrySlug: selectedCountrySlug.value,
                                     citySlug: selectedCitySlug.getToggledValue(city.slug),
                                     placeType: selectedPlaceType.value,
@@ -317,8 +317,8 @@ export default function PlacesPage() {
                         queryClient.prefetchQuery(
                             trpc.GetAllPlace.queryOptions({
                                 filter: {
-                                    id: showBookmarks.value ? bookmarks : undefined,
-                                    top: top.value,
+                                    id: showBookmarks ? bookmarks : undefined,
+                                    top,
                                     countrySlug: selectedCountrySlug.value,
                                     citySlug: selectedCitySlug.value,
                                     placeType: selectedPlaceType.getToggledValue(placeType.type_name),
@@ -343,8 +343,8 @@ export default function PlacesPage() {
                         queryClient.prefetchQuery(
                             trpc.GetAllPlace.queryOptions({
                                 filter: {
-                                    id: showBookmarks.value ? bookmarks : undefined,
-                                    top: top.value,
+                                    id: showBookmarks ? bookmarks : undefined,
+                                    top,
                                     countrySlug: selectedCountrySlug.value,
                                     citySlug: selectedCitySlug.value,
                                     placeType: selectedPlaceType.value,
@@ -381,8 +381,8 @@ export default function PlacesPage() {
                         queryClient.prefetchQuery(
                             trpc.GetAllPlace.queryOptions({
                                 filter: {
-                                    id: showBookmarks.value ? bookmarks : undefined,
-                                    top: top.value,
+                                    id: showBookmarks ? bookmarks : undefined,
+                                    top,
                                     countrySlug: selectedCountrySlug.value,
                                     citySlug: selectedCitySlug.value,
                                     placeType: selectedPlaceType.value,
@@ -457,8 +457,8 @@ export default function PlacesPage() {
                                             queryClient.prefetchQuery(
                                                 trpc.GetAllPlace.queryOptions({
                                                     filter: {
-                                                        id: showBookmarks.value ? bookmarks : undefined,
-                                                        top: top.value,
+                                                        id: showBookmarks ? bookmarks : undefined,
+                                                        top,
                                                         countrySlug: selectedCountrySlug.getToggledValue(result.id),
                                                         citySlug: selectedCitySlug.value,
                                                         placeType: selectedPlaceType.value,
@@ -472,8 +472,8 @@ export default function PlacesPage() {
                                             queryClient.prefetchQuery(
                                                 trpc.GetAllPlace.queryOptions({
                                                     filter: {
-                                                        id: showBookmarks.value ? bookmarks : undefined,
-                                                        top: top.value,
+                                                        id: showBookmarks ? bookmarks : undefined,
+                                                        top,
                                                         countrySlug: selectedCountrySlug.value,
                                                         citySlug: selectedCitySlug.getToggledValue(result.id),
                                                         placeType: selectedPlaceType.value,
@@ -487,8 +487,8 @@ export default function PlacesPage() {
                                             queryClient.prefetchQuery(
                                                 trpc.GetAllPlace.queryOptions({
                                                     filter: {
-                                                        id: showBookmarks.value ? bookmarks : undefined,
-                                                        top: top.value,
+                                                        id: showBookmarks ? bookmarks : undefined,
+                                                        top,
                                                         countrySlug: selectedCountrySlug.value,
                                                         citySlug: selectedCitySlug.value,
                                                         placeType: selectedPlaceType.getToggledValue(result.id),
@@ -502,8 +502,8 @@ export default function PlacesPage() {
                                             queryClient.prefetchQuery(
                                                 trpc.GetAllPlace.queryOptions({
                                                     filter: {
-                                                        id: showBookmarks.value ? bookmarks : undefined,
-                                                        top: top.value,
+                                                        id: showBookmarks ? bookmarks : undefined,
+                                                        top,
                                                         countrySlug: selectedCountrySlug.value,
                                                         citySlug: selectedCitySlug.value,
                                                         placeType: selectedPlaceType.value,
