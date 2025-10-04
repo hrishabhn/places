@@ -1,10 +1,12 @@
 'use client'
 
-import {FlagIcon, MapPinIcon, PlusIcon, TextTIcon, XIcon} from '@phosphor-icons/react'
-import {useQuery, useQueryClient, useSuspenseQuery} from '@tanstack/react-query'
+import {ArrowsDownUpIcon, FlagIcon, type Icon, MapPinIcon, PlusIcon, TextTIcon, XIcon} from '@phosphor-icons/react'
+import {keepPreviousData, useQuery, useQueryClient, useSuspenseQuery} from '@tanstack/react-query'
 import {parseAsString, parseAsStringLiteral, useQueryState} from 'nuqs'
 
 import {CityCard} from '@/app/views/city/card'
+
+import {type City, type Country} from '@/server/types'
 
 import {countryFlag} from '@/model/util'
 
@@ -16,11 +18,26 @@ import {type ActiveFilter} from '@/components/views/filter'
 import {getIcon} from '@/components/views/get-icon'
 import {GridStack} from '@/components/views/grid'
 import {Loading} from '@/components/views/loading'
-import {MenuBarItem, MenuBarSelect, MenuBarSort, MenuBarTray} from '@/components/views/menu-bar'
+import {MenuBarItem, MenuBarSelect, MenuBarTray} from '@/components/views/menu-bar'
+import {NoResults} from '@/components/views/no-results'
+import {PageStack} from '@/components/views/page-stack'
 import {SearchBarFilter} from '@/components/views/search'
-import {Section, SectionHeader} from '@/components/views/section'
+import {Section} from '@/components/views/section'
 
 const allSort = ['place_count', 'country', 'name'] as const
+type Sort = (typeof allSort)[number]
+
+const sortTitle: Record<Sort, string> = {
+    place_count: 'Place Count',
+    country: 'Country',
+    name: 'Name',
+}
+
+const sortIcon: Record<Sort, Icon> = {
+    place_count: MapPinIcon,
+    country: FlagIcon,
+    name: TextTIcon,
+}
 
 export default function CitiesPage() {
     // state
@@ -38,11 +55,16 @@ export default function CitiesPage() {
 
     const {status: searchStatus, data: searchResult} = useQuery(trpc.SearchCityFilter.queryOptions({query}))
     const {status: allCityStatus, data: allCity} = useQuery(
-        trpc.GetAllCity.queryOptions({
-            filter: {countrySlug: selectedCountrySlug.value},
-            query,
-            sort: selectedSort,
-        })
+        trpc.GetAllCity.queryOptions(
+            {
+                filter: {countrySlug: selectedCountrySlug.value},
+                query,
+                sort: selectedSort,
+            },
+            {
+                placeholderData: keepPreviousData,
+            }
+        )
     )
 
     // derived state
@@ -86,9 +108,10 @@ export default function CitiesPage() {
                     )
                 })}
 
-                <MenuBarSelect
+                <MenuBarSelect<Country>
                     icon={FlagIcon}
-                    placeholder="Country"
+                    text="Country"
+                    active={selectedCountrySlug.value.length > 0}
                     allItem={allCountry}
                     onSelect={country => selectedCountrySlug.toggle(country.slug)}
                     isActive={country => selectedCountrySlug.value.includes(country.slug)}
@@ -109,24 +132,15 @@ export default function CitiesPage() {
 
                 <div className="grow" />
 
-                <MenuBarSort
-                    selectedSort={selectedSort}
-                    allSort={allSort}
+                <MenuBarSelect<Sort>
+                    icon={ArrowsDownUpIcon}
+                    text={sortTitle[selectedSort]}
+                    allItem={[...allSort]}
                     onSelect={option => setSelectedSort(option)}
-                    toIcon={option =>
-                        ({
-                            place_count: MapPinIcon,
-                            country: FlagIcon,
-                            name: TextTIcon,
-                        })[option]
-                    }
-                    toTitle={option =>
-                        ({
-                            place_count: 'Place Count',
-                            country: 'Country',
-                            name: 'Name',
-                        })[option]
-                    }
+                    isActive={option => option === selectedSort}
+                    toId={option => option}
+                    toImage={option => ({icon: sortIcon[option]})}
+                    toTitle={option => sortTitle[option]}
                     onScreen={sort =>
                         queryClient.prefetchQuery(
                             trpc.GetAllCity.queryOptions({
@@ -140,72 +154,75 @@ export default function CitiesPage() {
             </MenuBarTray>
 
             <Section>
-                <div className="pt-6">
-                    <SearchBarFilter query={query} setQuery={setQuery} />
-                </div>
+                <PageStack>
+                    <SearchBarFilter query={query} setQuery={setQuery} resultCount={allCity?.length} />
 
-                {isPending ? (
-                    <Loading />
-                ) : (
-                    <>
-                        {searchResult.length > 0 && (
-                            <>
-                                <SectionHeader title="Filters" subtitle={`${searchResult.length} results`} />
-                                <ButtonTray>
-                                    {searchResult.map((result, i) => {
-                                        const active = {
-                                            country: selectedCountrySlug.value.includes(result.id),
-                                        }[result.type]
+                    {isPending ? (
+                        <Loading />
+                    ) : (
+                        <>
+                            {searchResult.length > 0 && (
+                                <>
+                                    <ButtonTray>
+                                        {searchResult.map((result, i) => {
+                                            const active = {
+                                                country: selectedCountrySlug.value.includes(result.id),
+                                            }[result.type]
 
-                                        const onSelect = {
-                                            country: () => selectedCountrySlug.toggle(result.id),
-                                        }[result.type]
+                                            const onSelect = {
+                                                country: () => selectedCountrySlug.toggle(result.id),
+                                            }[result.type]
 
-                                        const Icon = getIcon(result.type)
+                                            const Icon = getIcon(result.type)
 
-                                        // prefetch
-                                        if (result.type === 'country') {
-                                            queryClient.prefetchQuery(
-                                                trpc.GetAllCity.queryOptions({
-                                                    filter: {countrySlug: selectedCountrySlug.getToggledValue(result.id)},
-                                                    query: '',
-                                                    sort: selectedSort,
-                                                })
+                                            // prefetch
+                                            if (result.type === 'country') {
+                                                queryClient.prefetchQuery(
+                                                    trpc.GetAllCity.queryOptions({
+                                                        filter: {countrySlug: selectedCountrySlug.getToggledValue(result.id)},
+                                                        query: '',
+                                                        sort: selectedSort,
+                                                    })
+                                                )
+                                            }
+
+                                            return (
+                                                <button
+                                                    key={i}
+                                                    className="active:opacity-60"
+                                                    onClick={() => {
+                                                        onSelect()
+                                                        setQuery('')
+                                                    }}
+                                                >
+                                                    <Badge active={active}>
+                                                        <Icon weight="duotone" />
+                                                        <p>{result.name}</p>
+                                                        {active ? <XIcon weight="bold" /> : <PlusIcon weight="bold" />}
+                                                    </Badge>
+                                                </button>
                                             )
-                                        }
+                                        })}
+                                    </ButtonTray>
+                                </>
+                            )}
 
-                                        return (
-                                            <button
-                                                key={i}
-                                                className="active:opacity-60"
-                                                onClick={() => {
-                                                    onSelect()
-                                                    setQuery('')
-                                                }}
-                                            >
-                                                <Badge active={active}>
-                                                    <Icon weight="duotone" />
-                                                    <p>{result.name}</p>
-                                                    {active ? <XIcon weight="bold" /> : <PlusIcon weight="bold" />}
-                                                </Badge>
-                                            </button>
-                                        )
-                                    })}
-                                </ButtonTray>
-                            </>
-                        )}
-
-                        <SectionHeader title="Cities" subtitle={`${allCity.length > 0 ? allCity.length : 'No'} results`} />
-                        {allCity.length > 0 && (
-                            <GridStack>
-                                {allCity.map(city => (
-                                    <CityCard key={city.slug} city={city} />
-                                ))}
-                            </GridStack>
-                        )}
-                    </>
-                )}
+                            <CitiesStack allCity={allCity} />
+                        </>
+                    )}
+                </PageStack>
             </Section>
         </>
+    )
+}
+
+function CitiesStack({allCity}: {allCity: City[]}) {
+    if (allCity.length === 0) return <NoResults title="No cities found." subtitle="Try changing your query." />
+    return (
+        <GridStack>
+            {allCity.map(city => (
+                <CityCard key={city.slug} city={city} />
+            ))}
+        </GridStack>
     )
 }

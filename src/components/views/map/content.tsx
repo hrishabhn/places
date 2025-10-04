@@ -3,7 +3,7 @@
 import {customDivIcon} from './custom-icon'
 import {MapTooltip} from './tooltip'
 
-import {ArrowsInSimpleIcon, type Icon, MapPinIcon, NavigationArrowIcon} from '@phosphor-icons/react'
+import {ArrowsInSimpleIcon, type Icon, MapPinIcon, NavigationArrowIcon, XIcon} from '@phosphor-icons/react'
 import 'leaflet-defaulticon-compatibility'
 import 'leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.css'
 import 'leaflet/dist/leaflet.css'
@@ -25,7 +25,12 @@ type MapPin = {
 
 type Bounds = [number, number][]
 
-export function MapViewContent({allPlace: displayPlace}: {allPlace: MapPin[]}) {
+type MapViewContentProps = {
+    onClose?: () => void
+    allPlace: MapPin[]
+}
+
+export function MapViewContent({onClose, allPlace: displayPlace}: MapViewContentProps) {
     const isDark = useMediaQuery('(prefers-color-scheme: dark)')
     const {data: userCoordinates} = useCoordinates()
 
@@ -35,7 +40,7 @@ export function MapViewContent({allPlace: displayPlace}: {allPlace: MapPin[]}) {
         <MapContainer className="z-0 size-full" zoomControl={false} minZoom={2} bounds={bounds} boundsOptions={{padding: [50, 50]}}>
             <TileLayer url={`https://tiles.stadiamaps.com/tiles/alidade_smooth${isDark ? '_dark' : ''}/{z}/{x}/{y}{r}.png`} />
 
-            <MapActions bounds={bounds} coordinates={userCoordinates ?? undefined} />
+            <MapActions onClose={onClose} bounds={bounds} coordinates={userCoordinates ?? undefined} />
 
             {displayPlace.map(place => (
                 <Marker key={place.id} icon={customDivIcon({theme: 'accent', icon: place.icon || MapPinIcon})} position={[place.lat, place.lon]}>
@@ -53,15 +58,22 @@ export function MapViewContent({allPlace: displayPlace}: {allPlace: MapPin[]}) {
 }
 
 type MapActionsProps = {
+    onClose?: () => void
     bounds: Bounds
     coordinates: Coordinates | undefined
 }
 
-function MapActions({bounds, coordinates}: MapActionsProps) {
+function MapActions({onClose, bounds, coordinates}: MapActionsProps) {
     const map = useMap()
 
     return (
-        <div className="absolute right-4 top-4 z-[1000] flex flex-col gap-2">
+        <div className="absolute right-4 top-4 z-[1000] grid auto-cols-auto grid-flow-row gap-1.5">
+            {onClose && (
+                <button onClick={onClose} className="active:opacity-60">
+                    <MapButton icon={XIcon} />
+                </button>
+            )}
+
             <button onClick={() => map.fitBounds(bounds, {padding: [50, 50]})} className="active:opacity-60">
                 <MapButton icon={ArrowsInSimpleIcon} />
             </button>
@@ -78,7 +90,7 @@ function MapActions({bounds, coordinates}: MapActionsProps) {
 function MapButton({icon: Icon}: {icon: Icon}) {
     return (
         <div className="flex size-8 items-center justify-center rounded-xl bg-cream text-olive shadow backdrop-blur dark:bg-cream/50 dark:text-olive">
-            <Icon size={20} weight="fill" />
+            <Icon size={20} weight="bold" />
         </div>
     )
 }

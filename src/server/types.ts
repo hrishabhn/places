@@ -46,6 +46,21 @@ export const PlaceSchema = z.object({
 
 export type Place = z.infer<typeof PlaceSchema>
 
+// place filters
+export const PlaceTypeSchema = z.object({
+    type_name: z.string(),
+    place_count: z.coerce.number(),
+})
+
+export type PlaceType = z.infer<typeof PlaceTypeSchema>
+
+export const PlaceTagSchema = z.object({
+    tag_name: z.string(),
+    place_count: z.coerce.number(),
+})
+
+export type PlaceTag = z.infer<typeof PlaceTagSchema>
+
 // input
 export const SearchInputSchema = z.object({
     query: z.string(),

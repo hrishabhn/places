@@ -14,29 +14,23 @@ export default {
                 serif: ['var(--font-serif)', 'serif'],
             },
             colors: {
-                g: colors.zinc,
+                g: colors.stone,
                 line: {
-                    DEFAULT: colors.zinc[200],
-                    dark: colors.zinc[800],
+                    DEFAULT: colors.stone[200],
+                    dark: colors.stone[800],
                 },
                 layer: {
                     0: {
-                        DEFAULT: colors.zinc[100],
-                        dark: colors.zinc[950],
+                        DEFAULT: colors.stone[100],
+                        dark: colors.stone[950],
                     },
                     1: {
                         DEFAULT: colors.white,
-                        dark: colors.zinc[900],
+                        dark: colors.stone[900],
                     },
                 },
                 olive: '#292718',
                 cream: '#F4F1DE',
-            },
-            height: {
-                screen: '100vh 100dvh',
-            },
-            minHeight: {
-                screen: '100vh 100dvh',
             },
             keyframes: {
                 blink: {
