@@ -4,6 +4,7 @@ import {TagTray, type Tags} from './tags'
 
 import {HeartIcon, type Icon} from '@phosphor-icons/react'
 import Link from 'next/link'
+import {useState} from 'react'
 
 import {Heading} from '@/components/layout'
 import {Badge, Card, SimpleImage} from '@/components/ui'
@@ -20,18 +21,9 @@ type SimpleCardProps = {
 }
 
 export function SimpleCard({image, fallbackIcon, title, tags = [], bookmark, onBookmark, links = [], description}: SimpleCardProps) {
-    const Icon = fallbackIcon
     return (
         <Card rounded="md" ring>
-            {image ? (
-                <Card aspect="video">
-                    <SimpleImage url={image} alt="maps" />
-                </Card>
-            ) : (
-                <div className="flex aspect-video items-center justify-center bg-olive/20 text-olive dark:bg-cream/10 dark:text-cream">
-                    <Icon size={24} weight="bold" />
-                </div>
-            )}
+            <CardImage image={image} fallbackIcon={fallbackIcon} />
 
             <div className="h-px w-full bg-line dark:bg-line-dark" />
 
@@ -68,6 +60,28 @@ export function SimpleCard({image, fallbackIcon, title, tags = [], bookmark, onB
                 )}
             </div>
         </Card>
+    )
+}
+
+type CardImageProps = {
+    image?: string | null
+    fallbackIcon: Icon
+}
+
+function CardImage({image, fallbackIcon: Icon}: CardImageProps) {
+    const [error, setError] = useState<boolean>(false)
+
+    if (image && !error)
+        return (
+            <Card aspect="video">
+                <SimpleImage url={image} alt="maps" onError={() => setError(true)} />
+            </Card>
+        )
+
+    return (
+        <div className="flex aspect-video items-center justify-center bg-olive/20 text-olive dark:bg-cream/10 dark:text-cream">
+            <Icon size={24} weight="bold" />
+        </div>
     )
 }
 

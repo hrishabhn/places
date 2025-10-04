@@ -1,18 +1,20 @@
 import Image from 'next/image'
+import {type ReactEventHandler} from 'react'
 
 import {Heading} from '@/components/layout'
 
-type SipmleImageProps = {
+type SimpleImageProps = {
     url?: string
     alt?: string
     verticalAlign?: 'top' | 'center' | 'bottom'
+    onError?: ReactEventHandler<HTMLImageElement>
 }
 
 function Container({children}: {children?: React.ReactNode}) {
     return <div className="relative flex size-full items-center justify-center">{children}</div>
 }
 
-export function SimpleImage({url, alt = 'Simple Image', verticalAlign = 'center'}: SipmleImageProps) {
+export function SimpleImage({url, alt = 'Simple Image', verticalAlign = 'center', onError}: SimpleImageProps) {
     if (url) {
         const verticalAlignClass = {
             top: 'object-top',
@@ -22,7 +24,7 @@ export function SimpleImage({url, alt = 'Simple Image', verticalAlign = 'center'
 
         return (
             <Container>
-                <Image className={`size-full object-cover ${verticalAlignClass}`} src={url} alt={alt} fill={true} unoptimized />
+                <Image className={`size-full object-cover ${verticalAlignClass}`} src={url} alt={alt} fill={true} unoptimized onError={onError} />
             </Container>
         )
     }
