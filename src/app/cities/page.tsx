@@ -1,12 +1,12 @@
 'use client'
 
-import {FlagIcon, MapPinIcon, PlusIcon, TextTIcon, XIcon} from '@phosphor-icons/react'
+import {ArrowsDownUpIcon, FlagIcon, type Icon, MapPinIcon, PlusIcon, TextTIcon, XIcon} from '@phosphor-icons/react'
 import {keepPreviousData, useQuery, useQueryClient, useSuspenseQuery} from '@tanstack/react-query'
 import {parseAsString, parseAsStringLiteral, useQueryState} from 'nuqs'
 
 import {CityCard} from '@/app/views/city/card'
 
-import {type City} from '@/server/types'
+import {type City, type Country} from '@/server/types'
 
 import {countryFlag} from '@/model/util'
 
@@ -18,13 +18,26 @@ import {type ActiveFilter} from '@/components/views/filter'
 import {getIcon} from '@/components/views/get-icon'
 import {GridStack} from '@/components/views/grid'
 import {Loading} from '@/components/views/loading'
-import {MenuBarItem, MenuBarSelect, MenuBarSort, MenuBarTray} from '@/components/views/menu-bar'
+import {MenuBarItem, MenuBarSelect, MenuBarTray} from '@/components/views/menu-bar'
 import {NoResults} from '@/components/views/no-results'
 import {PageStack} from '@/components/views/page-stack'
 import {SearchBarFilter} from '@/components/views/search'
 import {Section} from '@/components/views/section'
 
 const allSort = ['place_count', 'country', 'name'] as const
+type Sort = (typeof allSort)[number]
+
+const sortTitle: Record<Sort, string> = {
+    place_count: 'Place Count',
+    country: 'Country',
+    name: 'Name',
+}
+
+const sortIcon: Record<Sort, Icon> = {
+    place_count: MapPinIcon,
+    country: FlagIcon,
+    name: TextTIcon,
+}
 
 export default function CitiesPage() {
     // state
@@ -95,9 +108,10 @@ export default function CitiesPage() {
                     )
                 })}
 
-                <MenuBarSelect
+                <MenuBarSelect<Country>
                     icon={FlagIcon}
-                    placeholder="Country"
+                    text="Country"
+                    active={selectedCountrySlug.value.length > 0}
                     allItem={allCountry}
                     onSelect={country => selectedCountrySlug.toggle(country.slug)}
                     isActive={country => selectedCountrySlug.value.includes(country.slug)}
@@ -118,24 +132,15 @@ export default function CitiesPage() {
 
                 <div className="grow" />
 
-                <MenuBarSort
-                    selectedSort={selectedSort}
-                    allSort={allSort}
+                <MenuBarSelect<Sort>
+                    icon={ArrowsDownUpIcon}
+                    text={sortTitle[selectedSort]}
+                    allItem={[...allSort]}
                     onSelect={option => setSelectedSort(option)}
-                    toIcon={option =>
-                        ({
-                            place_count: MapPinIcon,
-                            country: FlagIcon,
-                            name: TextTIcon,
-                        })[option]
-                    }
-                    toTitle={option =>
-                        ({
-                            place_count: 'Place Count',
-                            country: 'Country',
-                            name: 'Name',
-                        })[option]
-                    }
+                    isActive={option => option === selectedSort}
+                    toId={option => option}
+                    toImage={option => ({icon: sortIcon[option]})}
+                    toTitle={option => sortTitle[option]}
                     onScreen={sort =>
                         queryClient.prefetchQuery(
                             trpc.GetAllCity.queryOptions({

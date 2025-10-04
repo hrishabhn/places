@@ -2,7 +2,22 @@
 
 import {PlacesMapModal} from './map'
 
-import {CardsThreeIcon, CityIcon, FlagIcon, ForkKnifeIcon, HeartIcon, MapTrifoldIcon, PlusIcon, StarIcon, TableIcon, TagIcon, TextTIcon, XIcon} from '@phosphor-icons/react'
+import {
+    ArrowsDownUpIcon,
+    CardsThreeIcon,
+    CityIcon,
+    FlagIcon,
+    ForkKnifeIcon,
+    HeartIcon,
+    type Icon,
+    MapTrifoldIcon,
+    PlusIcon,
+    StarIcon,
+    TableIcon,
+    TagIcon,
+    TextTIcon,
+    XIcon,
+} from '@phosphor-icons/react'
 import {keepPreviousData, useMutation, useQuery, useQueryClient, useSuspenseQuery} from '@tanstack/react-query'
 import {parseAsBoolean, parseAsString, parseAsStringLiteral, useQueryState} from 'nuqs'
 import {useEffect} from 'react'
@@ -12,7 +27,7 @@ import {PlaceGrid} from '@/app/views/place/grid'
 import {getPlaceIcon} from '@/app/views/place/place-icon'
 import {PlaceTable} from '@/app/views/place/table'
 
-import {type Place} from '@/server/types'
+import {type City, type Country, type Place, type PlaceTag, type PlaceType} from '@/server/types'
 
 import {getBookmarks, toggleBookmark} from '@/model/bookmarks'
 import {countryFlag} from '@/model/util'
@@ -24,16 +39,39 @@ import {Badge, ButtonTray} from '@/components/ui'
 import {type ActiveFilter} from '@/components/views/filter'
 import {getIcon} from '@/components/views/get-icon'
 import {Loading} from '@/components/views/loading'
-import {MenuBarItem, MenuBarSelect, MenuBarSort, MenuBarTray} from '@/components/views/menu-bar'
+import {MenuBarItem, MenuBarSelect, MenuBarTray} from '@/components/views/menu-bar'
 import {NoResults} from '@/components/views/no-results'
 import {PageStack} from '@/components/views/page-stack'
 import {SearchBarButton, SearchBarFilter} from '@/components/views/search'
 import {Section} from '@/components/views/section'
 
 const allSort = ['name', 'country', 'city'] as const
-const allView = ['list', 'table'] as const
+type Sort = (typeof allSort)[number]
 
+const sortTitle: Record<Sort, string> = {
+    name: 'Name',
+    country: 'Country',
+    city: 'City',
+}
+
+const sortIcon: Record<Sort, Icon> = {
+    name: TextTIcon,
+    country: FlagIcon,
+    city: CityIcon,
+}
+
+const allView = ['list', 'table'] as const
 type View = (typeof allView)[number]
+
+const viewTitle: Record<View, string> = {
+    list: 'List',
+    table: 'Table',
+}
+
+const viewIcon: Record<View, Icon> = {
+    list: CardsThreeIcon,
+    table: TableIcon,
+}
 
 export default function PlacesPage() {
     // state
@@ -257,9 +295,10 @@ export default function PlacesPage() {
                         <p>Top</p>
                     </MenuBarItem>
                 </button>
-                <MenuBarSelect
+                <MenuBarSelect<Country>
                     icon={FlagIcon}
-                    placeholder="Country"
+                    text="Country"
+                    active={selectedCountrySlug.value.length > 0}
                     allItem={allCountry}
                     onSelect={country => selectedCountrySlug.toggle(country.slug)}
                     isActive={country => selectedCountrySlug.value.includes(country.slug)}
@@ -284,9 +323,10 @@ export default function PlacesPage() {
                         )
                     }
                 />
-                <MenuBarSelect
+                <MenuBarSelect<City>
                     icon={CityIcon}
-                    placeholder="City"
+                    text="City"
+                    active={selectedCitySlug.value.length > 0}
                     allItem={allCity}
                     onSelect={city => selectedCitySlug.toggle(city.slug)}
                     isActive={city => selectedCitySlug.value.includes(city.slug)}
@@ -311,9 +351,10 @@ export default function PlacesPage() {
                         )
                     }
                 />
-                <MenuBarSelect
+                <MenuBarSelect<PlaceType>
                     icon={ForkKnifeIcon}
-                    placeholder="Type"
+                    text="Type"
+                    active={selectedPlaceType.value.length > 0}
                     allItem={allPlaceType}
                     onSelect={placeType => selectedPlaceType.toggle(placeType.type_name)}
                     isActive={placeType => selectedPlaceType.value.includes(placeType.type_name)}
@@ -338,9 +379,10 @@ export default function PlacesPage() {
                         )
                     }
                 />
-                <MenuBarSelect
+                <MenuBarSelect<PlaceTag>
                     icon={TagIcon}
-                    placeholder="Tag"
+                    text="Tag"
+                    active={selectedPlaceTag.value.length > 0}
                     allItem={allPlaceTag}
                     onSelect={placeTag => selectedPlaceTag.toggle(placeTag.tag_name)}
                     isActive={placeTag => selectedPlaceTag.value.includes(placeTag.tag_name)}
@@ -367,24 +409,15 @@ export default function PlacesPage() {
 
                 <div className="grow" />
 
-                <MenuBarSort
-                    selectedSort={selectedSort}
-                    allSort={allSort}
+                <MenuBarSelect<Sort>
+                    icon={ArrowsDownUpIcon}
+                    text={sortTitle[selectedSort]}
+                    allItem={[...allSort]}
                     onSelect={option => setSelectedSort(option)}
-                    toIcon={option =>
-                        ({
-                            name: TextTIcon,
-                            country: FlagIcon,
-                            city: CityIcon,
-                        })[option]
-                    }
-                    toTitle={option =>
-                        ({
-                            name: 'Name',
-                            country: 'Country',
-                            city: 'City',
-                        })[option]
-                    }
+                    isActive={option => option === selectedSort}
+                    toId={option => option}
+                    toImage={option => ({icon: sortIcon[option]})}
+                    toTitle={option => sortTitle[option]}
                     onScreen={sort =>
                         queryClient.prefetchQuery(
                             trpc.GetAllPlace.queryOptions({
@@ -402,22 +435,16 @@ export default function PlacesPage() {
                         )
                     }
                 />
-                <MenuBarSort
-                    selectedSort={selectedView}
-                    allSort={allView}
-                    onSelect={option => setSelectedView(option)}
-                    toIcon={option =>
-                        ({
-                            list: CardsThreeIcon,
-                            table: TableIcon,
-                        })[option]
-                    }
-                    toTitle={option =>
-                        ({
-                            list: 'List',
-                            table: 'Table',
-                        })[option]
-                    }
+
+                <MenuBarSelect<View>
+                    icon={CardsThreeIcon}
+                    text={viewTitle[selectedView]}
+                    allItem={[...allView]}
+                    onSelect={view => setSelectedView(view)}
+                    isActive={view => view === selectedView}
+                    toId={view => view}
+                    toImage={view => ({icon: viewIcon[view]})}
+                    toTitle={view => viewTitle[view]}
                 />
             </MenuBarTray>
 
