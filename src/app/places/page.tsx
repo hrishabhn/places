@@ -412,6 +412,7 @@ export default function PlacesPage() {
                 <MenuBarSelect<Sort>
                     icon={ArrowsDownUpIcon}
                     text={sortTitle[selectedSort]}
+                    anchor="bottom end"
                     allItem={[...allSort]}
                     onSelect={option => setSelectedSort(option)}
                     isActive={option => option === selectedSort}
@@ -439,6 +440,7 @@ export default function PlacesPage() {
                 <MenuBarSelect<View>
                     icon={CardsThreeIcon}
                     text={viewTitle[selectedView]}
+                    anchor="bottom end"
                     allItem={[...allView]}
                     onSelect={view => setSelectedView(view)}
                     isActive={view => view === selectedView}

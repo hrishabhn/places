@@ -6,12 +6,14 @@ import {type Icon} from '@phosphor-icons/react'
 
 import {useOnScreen} from '@/lib/hooks'
 
-import {DropdownMenuItem, DropdownMenuItems, type LabelImageType, Menu, MenuButton} from '@/components/ui'
+import {type DropdownAnchor, DropdownMenuItem, DropdownMenuItems, type LabelImageType, Menu, MenuButton} from '@/components/ui'
 
 type MenuBarSelectProps<T> = {
     icon: Icon
     text: string
     active?: boolean
+
+    anchor?: DropdownAnchor
 
     allItem: T[]
     onSelect: (item: T) => void
@@ -25,7 +27,7 @@ type MenuBarSelectProps<T> = {
     onScreen?: (item: T) => void
 }
 
-export function MenuBarSelect<T>({icon: Icon, text, active = false, allItem, onSelect, isActive, toId, toImage, toTitle, toSubtitle, onScreen}: MenuBarSelectProps<T>) {
+export function MenuBarSelect<T>({icon: Icon, text, active = false, anchor, allItem, onSelect, isActive, toId, toImage, toTitle, toSubtitle, onScreen}: MenuBarSelectProps<T>) {
     return (
         <Menu>
             <MenuButton className="active:opacity-60">
@@ -34,7 +36,7 @@ export function MenuBarSelect<T>({icon: Icon, text, active = false, allItem, onS
                     <p>{text}</p>
                 </MenuBarItem>
             </MenuButton>
-            <DropdownMenuItems>
+            <DropdownMenuItems anchor={anchor}>
                 {allItem.map(item => (
                     <Item
                         key={toId(item)}

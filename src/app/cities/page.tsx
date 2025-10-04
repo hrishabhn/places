@@ -135,6 +135,7 @@ export default function CitiesPage() {
                 <MenuBarSelect<Sort>
                     icon={ArrowsDownUpIcon}
                     text={sortTitle[selectedSort]}
+                    anchor="bottom end"
                     allItem={[...allSort]}
                     onSelect={option => setSelectedSort(option)}
                     isActive={option => option === selectedSort}
