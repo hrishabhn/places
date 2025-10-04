@@ -16,7 +16,7 @@ type SearchBarFilterProps = {
 
 export function SearchBarFilter({query, setQuery, resultCount}: SearchBarFilterProps) {
     return (
-        <div className="grid grid-cols-[1fr_auto] gap-2">
+        <div className="grid grid-cols-[1fr_auto] gap-3">
             <Container>
                 <div className="grid size-full auto-cols-auto grid-flow-col grid-cols-[auto_1fr] items-center gap-2">
                     <MagnifyingGlassIcon weight="bold" />
