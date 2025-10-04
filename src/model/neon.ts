@@ -1,5 +1,5 @@
 import {neon} from '@neondatabase/serverless'
 
-import {neonDatabaseUrl} from '@/model/config'
-
-export const sql = neon(neonDatabaseUrl)
+const connectionString = process.env.NEON_DATABASE_URL
+if (connectionString === undefined) throw new Error('NEON_DATABASE_URL is not set')
+export const sql = neon(connectionString)

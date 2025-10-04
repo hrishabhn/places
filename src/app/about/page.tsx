@@ -2,11 +2,13 @@ import {DatabaseIcon, GithubLogoIcon, MapPinIcon, SparkleIcon, TriangleIcon} fro
 import Link from 'next/link'
 
 import {appDescription, appDetails} from '@/model/app'
-import {notionDatabaseId} from '@/model/config'
+import {notionUrl} from '@/model/util'
 
 import {Heading} from '@/components/layout'
 import {Button, ButtonTray} from '@/components/ui'
 import {Section, SectionHeader} from '@/components/views/section'
+
+const notionDatabaseId = process.env.NOTION_DATABASE_ID
 
 export default function About() {
     return (
@@ -30,12 +32,14 @@ export default function About() {
                 Links
             </Heading>
             <ButtonTray>
-                <Link href={`https://notion.so/${notionDatabaseId}`} target="_blank" className="active:opacity-60">
-                    <Button>
-                        <DatabaseIcon weight="duotone" />
-                        <p>Database</p>
-                    </Button>
-                </Link>
+                {notionDatabaseId ? (
+                    <Link href={notionUrl(notionDatabaseId)} target="_blank" className="active:opacity-60">
+                        <Button>
+                            <DatabaseIcon weight="duotone" />
+                            <p>Database</p>
+                        </Button>
+                    </Link>
+                ) : null}
                 <Link href="https://developers.google.com/maps/documentation/places/web-service/place-id" target="_blank" className="active:opacity-60">
                     <Button>
                         <MapPinIcon weight="duotone" />
