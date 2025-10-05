@@ -1,4 +1,4 @@
-import {createMcpHandler} from '@vercel/mcp-adapter'
+import {createMcpHandler} from 'mcp-handler'
 
 import {appRouter} from '@/server'
 import {GetAllCityOptions} from '@/server/procedures/get-all-city'
