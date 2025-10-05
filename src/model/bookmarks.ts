@@ -1,11 +1,11 @@
 import {type CookiesFn, getCookie, setCookie} from 'cookies-next'
-import {z} from 'zod/v3'
+import {z} from 'zod/v4'
 
 const BookmarksSchema = z
     .string()
     .optional()
     .transform(value => (value ? JSON.parse(value) : []))
-    .pipe(z.array(z.string().uuid()).catch([]))
+    .pipe(z.array(z.uuid()).catch([]))
 
 export type Bookmarks = z.infer<typeof BookmarksSchema>
 

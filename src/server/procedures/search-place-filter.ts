@@ -1,11 +1,11 @@
 import {publicProcedure} from '../trpc'
 import {SearchInputSchema} from '../types'
 
-import {z} from 'zod/v3'
+import {z} from 'zod/v4'
 
 import {sql} from '@/model/neon'
 
-export const PlaceFilterSchema = z.object({
+const PlaceFilterSchema = z.object({
     name: z.string(),
     id: z.string(),
     type: z.enum(['country', 'city', 'place_type', 'place_tag']),
