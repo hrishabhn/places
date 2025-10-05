@@ -1,4 +1,4 @@
-import {z} from 'zod'
+import {z} from 'zod/v3'
 
 // enums
 export const allModel = ['gpt-4o-mini-search-preview', 'gpt-4o-search-preview'] as const

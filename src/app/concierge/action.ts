@@ -3,7 +3,7 @@
 import OpenAI from 'openai'
 import {zodResponseFormat} from 'openai/helpers/zod'
 import {type ChatCompletionMessageParam} from 'openai/resources'
-import {z} from 'zod'
+import {z} from 'zod/v3'
 
 import {GetRecsFormSchema, type Rec, RecSchema, ValidateKeyFormSchema} from '@/model/ai'
 

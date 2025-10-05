@@ -1,5 +1,5 @@
 import {type CookiesFn, getCookie, setCookie} from 'cookies-next'
-import {z} from 'zod'
+import {z} from 'zod/v3'
 
 const BookmarksSchema = z
     .string()
