@@ -1,6 +1,6 @@
 'use client'
 
-import {BeerSteinIcon, BookOpenIcon, CoffeeIcon, DiscoBallIcon, ForkKnifeIcon, IceCreamIcon, type Icon, MapPinIcon, TreeIcon} from '@phosphor-icons/react'
+import {BeerSteinIcon, BookOpenIcon, BreadIcon, CoffeeIcon, DiscoBallIcon, ForkKnifeIcon, IceCreamIcon, type Icon, MapPinIcon, TreeIcon} from '@phosphor-icons/react'
 
 export function getPlaceIcon(placeType: string | undefined): Icon {
     switch (placeType) {
@@ -17,6 +17,9 @@ export function getPlaceIcon(placeType: string | undefined): Icon {
         // coffee
         case 'Coffee Shop':
             return CoffeeIcon
+
+        case 'Bakery':
+            return BreadIcon
 
         // book
         case 'Book Shop':
