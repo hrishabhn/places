@@ -38,7 +38,7 @@ export const GetAllPlace = publicProcedure.input(GetAllPlaceOptions).query(
             name: sql`lower(place.name)`,
             country: sql`lower(country.name), lower(place.name)`,
             city: sql`lower(city.name), lower(country.name), lower(place.name)`,
-            first_visit: sql`place.first_visit DESC`,
+            first_visit: sql`case when place.first_visit is null then 1 else 0 end, place.first_visit DESC, lower(place.name)`,
             created: sql`place.created DESC`,
             modified: sql`place.modified DESC`,
             random: sql`random()`,
@@ -103,7 +103,6 @@ export const GetAllPlace = publicProcedure.input(GetAllPlaceOptions).query(
                             ) AND`
                             : sql``
                     }
-                    ${sort === 'first_visit' ? sql`(place.first_visit IS NOT NULL) AND` : sql``}
                     TRUE
                 ORDER BY ${query ? sql`score DESC, lower(place.name)` : orderBy}
                 ${limit ? sql`LIMIT ${limit}` : sql``}
