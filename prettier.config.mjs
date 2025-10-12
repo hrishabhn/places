@@ -1,8 +1,8 @@
 /**
- * @see https://prettier.io/docs/en/configuration.html
+ * @see https://prettier.io/docs/configuration
  * @type {import("prettier").Config}
  */
-const config = {
+export default {
     trailingComma: 'es5',
     tabWidth: 4,
     semi: false,
@@ -32,5 +32,3 @@ const config = {
     importOrderSeparation: true,
     importOrderSortSpecifiers: true,
 }
-
-module.exports = config
