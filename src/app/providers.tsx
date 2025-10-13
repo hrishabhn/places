@@ -1,7 +1,7 @@
 'use client'
 
 import {QueryClient, QueryClientProvider, defaultShouldDehydrateQuery} from '@tanstack/react-query'
-import {createTRPCClient, httpBatchLink} from '@trpc/client'
+import {createTRPCClient, httpBatchStreamLink} from '@trpc/client'
 import {NuqsAdapter} from 'nuqs/adapters/next/app'
 import {useState} from 'react'
 import superjson from 'superjson'
@@ -43,7 +43,7 @@ export function Providers({children}: {children: React.ReactNode}) {
     const [trpcClient] = useState(() =>
         createTRPCClient<AppRouter>({
             links: [
-                httpBatchLink({
+                httpBatchStreamLink({
                     url: getUrl(),
                     transformer: superjson,
                 }),

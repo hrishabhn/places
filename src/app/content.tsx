@@ -4,12 +4,12 @@ import {CityCard} from './views/city/card'
 import {PlaceCard} from './views/place/card'
 
 import {ArrowRightIcon} from '@phosphor-icons/react'
-import {keepPreviousData, useMutation, useQuery, useQueryClient} from '@tanstack/react-query'
+import {keepPreviousData, useQuery} from '@tanstack/react-query'
 import Link from 'next/link'
 
 import {type City, type Place} from '@/server/types'
 
-import {type Bookmarks, getBookmarks, toggleBookmark} from '@/model/bookmarks'
+import {type Bookmarks, getBookmarks} from '@/model/bookmarks'
 import {setsEqual} from '@/model/util'
 
 import {useTRPC} from '@/lib/trpc'
@@ -33,7 +33,6 @@ export default function HomeContent({
 }) {
     // query
     const trpc = useTRPC()
-    const queryClient = useQueryClient()
 
     const {data: bookmarks} = useQuery({
         queryKey: ['bookmarks'],
@@ -41,7 +40,7 @@ export default function HomeContent({
         initialData: initialBookmarks,
     })
 
-    const {mutate: toggle} = useMutation({mutationFn: async (id: string) => await queryClient.setQueryData(['bookmarks'], await toggleBookmark(id))})
+    // const {mutate: toggle} = useMutation({mutationFn: async (id: string) => await queryClient.setQueryData(['bookmarks'], await toggleBookmark(id))})
 
     const {data: allCity} = useQuery(trpc.GetAllCity.queryOptions({sort: 'place_count', limit: 5}, {initialData: initialAllCity}))
     const {data: allPlaceNew} = useQuery(trpc.GetAllPlace.queryOptions({sort: 'first_visit', limit: 5}, {initialData: initialAllPlaceNew}))
@@ -69,7 +68,7 @@ export default function HomeContent({
             </Section>
             <ScrollStack>
                 {allPlaceNew.map(place => (
-                    <PlaceCard key={place.id} place={place} bookmark={bookmarks.includes(place.id)} onBookmark={() => toggle(place.id)} />
+                    <PlaceCard key={place.id} place={place} />
                 ))}
             </ScrollStack>
 
@@ -80,7 +79,7 @@ export default function HomeContent({
             </Section>
             <ScrollStack>
                 {allPlaceRandom.map(place => (
-                    <PlaceCard key={place.id} place={place} bookmark={bookmarks.includes(place.id)} onBookmark={() => toggle(place.id)} />
+                    <PlaceCard key={place.id} place={place} />
                 ))}
             </ScrollStack>
         </>
@@ -89,9 +88,8 @@ export default function HomeContent({
 
 function HomeContentBookmark({bookmarks, initialAllPlaceBookmark}: {bookmarks: Bookmarks; initialAllPlaceBookmark: Place[]}) {
     const trpc = useTRPC()
-    const queryClient = useQueryClient()
 
-    const {mutate: toggle} = useMutation({mutationFn: async (id: string) => await queryClient.setQueryData(['bookmarks'], await toggleBookmark(id))})
+    // const {mutate: toggle} = useMutation({mutationFn: async (id: string) => await queryClient.setQueryData(['bookmarks'], await toggleBookmark(id))})
 
     const {data: allPlaceBookmark} = useQuery(
         trpc.GetAllPlace.queryOptions(
@@ -115,7 +113,7 @@ function HomeContentBookmark({bookmarks, initialAllPlaceBookmark}: {bookmarks: B
             </Section>
             <ScrollStack>
                 {allPlaceBookmark.map(place => (
-                    <PlaceCard key={place.id} place={place} bookmark={bookmarks.includes(place.id)} onBookmark={() => toggle(place.id)} />
+                    <PlaceCard key={place.id} place={place} />
                 ))}
             </ScrollStack>
         </>

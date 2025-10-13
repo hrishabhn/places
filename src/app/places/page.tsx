@@ -22,7 +22,7 @@ import {keepPreviousData, useMutation, useQuery, useQueryClient, useSuspenseQuer
 import {parseAsBoolean, parseAsString, parseAsStringLiteral, useQueryState} from 'nuqs'
 import {useEffect} from 'react'
 
-import {PlaceGrid} from '@/app/views/place/grid'
+import {PlaceCard} from '@/app/views/place/card'
 import {getPlaceIcon} from '@/app/views/place/place-icon'
 import {PlaceTable} from '@/app/views/place/table'
 
@@ -37,6 +37,7 @@ import {useTRPC} from '@/lib/trpc'
 import {Badge, ButtonTray} from '@/components/ui'
 import {type ActiveFilter} from '@/components/views/filter'
 import {getIcon} from '@/components/views/get-icon'
+import {GridStack} from '@/components/views/grid'
 import {Loading} from '@/components/views/loading'
 import {MenuBarItem, MenuBarSelect, MenuBarTray} from '@/components/views/menu-bar'
 import {NoResults} from '@/components/views/no-results'
@@ -599,7 +600,13 @@ function PlacesStack({allPlace, view}: {allPlace: Place[]; view: View}) {
 
     switch (view) {
         case 'list':
-            return <PlaceGrid allPlace={allPlace} bookmarks={bookmarks} onToggleBookmark={id => toggle(id)} />
+            return (
+                <GridStack>
+                    {allPlace.map(place => (
+                        <PlaceCard key={place.id} place={place} />
+                    ))}
+                </GridStack>
+            )
 
         case 'table':
             return <PlaceTable allPlace={allPlace} bookmarks={bookmarks} onToggleBookmark={id => toggle(id)} />
