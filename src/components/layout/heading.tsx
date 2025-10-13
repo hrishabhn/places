@@ -14,12 +14,12 @@ type HeadingProps = {
 
 export function Heading({size, theme = 'default', withoutPadding = false, serif = false, children}: HeadingProps) {
     const sizeClass = {
-        h1: tw`text-3xl font-bold`,
-        h2: tw`text-2xl font-bold`,
-        h3: tw`text-xl font-semibold`,
-        h4: tw`text-lg font-semibold`,
-        h5: tw`text-sm font-semibold`,
-        h6: tw`text-xs font-semibold`,
+        h1: tw`text-3xl font-semibold`,
+        h2: tw`text-2xl font-semibold`,
+        h3: tw`text-xl font-medium`,
+        h4: tw`text-lg font-medium`,
+        h5: tw`text-sm font-medium`,
+        h6: tw`text-xs font-medium`,
         base: tw`text-base`,
     }[size]
 

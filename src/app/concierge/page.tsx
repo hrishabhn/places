@@ -13,7 +13,8 @@ import {type Dataset, type Model, allDataset, allModel, datasetName, modelName} 
 import {Heading} from '@/components/layout'
 import {Button, ButtonTray, Card} from '@/components/ui'
 import {DataListItem} from '@/components/views/data-list'
-import {Section, SectionHeader} from '@/components/views/section'
+import {HLine} from '@/components/views/h-line'
+import {Section} from '@/components/views/section'
 import {TagTray} from '@/components/views/tags'
 
 export default function ConciergePage() {
@@ -28,7 +29,11 @@ export default function ConciergePage() {
 
     return (
         <Section>
-            <SectionHeader size="lg" title="AI Concierge" subtitle="Use the curated list of places to get your next recommendation." />
+            <HLine />
+            <Heading size="h1" serif>
+                AI Concierge
+            </Heading>
+            <Heading size="h4">Use the curated list of places to get your next recommendation.</Heading>
 
             <Heading size="h2" serif>
                 API Key

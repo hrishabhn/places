@@ -4,6 +4,7 @@ import {ArrowRightIcon, type Icon} from '@phosphor-icons/react'
 import {useState} from 'react'
 
 import {Card, SimpleImage} from '@/components/ui'
+import {HLine} from '@/components/views/h-line'
 
 type SimpleCardProps = {
     image?: string | null
@@ -30,7 +31,7 @@ export function SimpleCard({image, fallbackIcon, title, subtitle, tags = []}: Si
                 </div>
             </div>
 
-            <div className="h-0.5 w-full bg-current opacity-60" />
+            <HLine />
         </div>
     )
 }

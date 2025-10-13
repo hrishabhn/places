@@ -13,7 +13,6 @@ import {countryFlag} from '@/model/util'
 import {useArrayState} from '@/lib/hooks/nuqs'
 import {useTRPC} from '@/lib/trpc'
 
-import {Badge, ButtonTray} from '@/components/ui'
 import {type ActiveFilter} from '@/components/views/filter'
 import {getIcon} from '@/components/views/get-icon'
 import {GridStack} from '@/components/views/grid'
@@ -22,7 +21,7 @@ import {MenuBarItem, MenuBarSelect, MenuBarTray} from '@/components/views/menu-b
 import {NoResults} from '@/components/views/no-results'
 import {SearchBarFilter} from '@/components/views/search'
 import {Section} from '@/components/views/section'
-import {DetailStack, PageStack} from '@/components/views/stack'
+import {PageStack} from '@/components/views/stack'
 
 const allSort = ['place_count', 'country', 'name'] as const
 type Sort = (typeof allSort)[number]
@@ -93,7 +92,7 @@ export default function CitiesPage() {
     ]
 
     return (
-        <DetailStack padding>
+        <PageStack>
             <MenuBarTray>
                 {activeFilter.map(filter => {
                     const Icon = getIcon(filter.type)
@@ -154,78 +153,72 @@ export default function CitiesPage() {
                 />
             </MenuBarTray>
 
-            <Section>
-                <SearchBarFilter query={query} setQuery={setQuery} resultCount={allCity?.length} />
-            </Section>
+            <SearchBarFilter query={query} setQuery={setQuery} resultCount={allCity?.length} />
 
-            <Section>
-                <PageStack>
-                    {isPending ? (
-                        <Loading />
-                    ) : (
-                        <>
-                            {searchResult.length > 0 && (
-                                <>
-                                    <ButtonTray>
-                                        {searchResult.map((result, i) => {
-                                            const active = {
-                                                country: selectedCountrySlug.value.includes(result.id),
-                                            }[result.type]
+            {isPending ? (
+                <Loading />
+            ) : (
+                <>
+                    {searchResult.length > 0 && (
+                        <MenuBarTray>
+                            {searchResult.map((result, i) => {
+                                const active = {
+                                    country: selectedCountrySlug.value.includes(result.id),
+                                }[result.type]
 
-                                            const onSelect = {
-                                                country: () => selectedCountrySlug.toggle(result.id),
-                                            }[result.type]
+                                const onSelect = {
+                                    country: () => selectedCountrySlug.toggle(result.id),
+                                }[result.type]
 
-                                            const Icon = getIcon(result.type)
+                                const Icon = getIcon(result.type)
 
-                                            // prefetch
-                                            if (result.type === 'country') {
-                                                queryClient.prefetchQuery(
-                                                    trpc.GetAllCity.queryOptions({
-                                                        filter: {countrySlug: selectedCountrySlug.getToggledValue(result.id)},
-                                                        query: '',
-                                                        sort: selectedSort,
-                                                    })
-                                                )
-                                            }
+                                // prefetch
+                                if (result.type === 'country') {
+                                    queryClient.prefetchQuery(
+                                        trpc.GetAllCity.queryOptions({
+                                            filter: {countrySlug: selectedCountrySlug.getToggledValue(result.id)},
+                                            query: '',
+                                            sort: selectedSort,
+                                        })
+                                    )
+                                }
 
-                                            return (
-                                                <button
-                                                    key={i}
-                                                    className="active:opacity-60"
-                                                    onClick={() => {
-                                                        onSelect()
-                                                        setQuery('')
-                                                    }}
-                                                >
-                                                    <Badge active={active}>
-                                                        <Icon weight="duotone" />
-                                                        <p>{result.name}</p>
-                                                        {active ? <XIcon weight="bold" /> : <PlusIcon weight="bold" />}
-                                                    </Badge>
-                                                </button>
-                                            )
-                                        })}
-                                    </ButtonTray>
-                                </>
-                            )}
-
-                            <CitiesStack allCity={allCity} />
-                        </>
+                                return (
+                                    <button
+                                        key={i}
+                                        className="active:opacity-60"
+                                        onClick={() => {
+                                            onSelect()
+                                            setQuery('')
+                                        }}
+                                    >
+                                        <MenuBarItem active={active}>
+                                            <Icon weight="duotone" />
+                                            <p>{result.name}</p>
+                                            {active ? <XIcon weight="bold" /> : <PlusIcon weight="bold" />}
+                                        </MenuBarItem>
+                                    </button>
+                                )
+                            })}
+                        </MenuBarTray>
                     )}
-                </PageStack>
-            </Section>
-        </DetailStack>
+
+                    <CitiesStack allCity={allCity} />
+                </>
+            )}
+        </PageStack>
     )
 }
 
 function CitiesStack({allCity}: {allCity: City[]}) {
     if (allCity.length === 0) return <NoResults title="No cities found." subtitle="Try changing your query." />
     return (
-        <GridStack>
-            {allCity.map(city => (
-                <CityCard key={city.slug} city={city} />
-            ))}
-        </GridStack>
+        <Section>
+            <GridStack>
+                {allCity.map(city => (
+                    <CityCard key={city.slug} city={city} />
+                ))}
+            </GridStack>
+        </Section>
     )
 }

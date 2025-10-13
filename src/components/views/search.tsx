@@ -2,10 +2,13 @@
 
 import {MagnifyingGlassIcon, XIcon} from '@phosphor-icons/react'
 
+import {HLine} from '@/components/views/h-line'
+import {Section} from '@/components/views/section'
+
 function Container({children}: {children?: React.ReactNode}) {
     return (
         <div className="grid size-full grid-rows-[auto_1fr] gap-2">
-            <div className="h-0.5 w-full bg-current opacity-60" />
+            <HLine />
             {children}
         </div>
     )
@@ -19,25 +22,33 @@ type SearchBarFilterProps = {
 
 export function SearchBarFilter({query, setQuery, resultCount}: SearchBarFilterProps) {
     return (
-        <div className="grid grid-cols-[1fr_auto] gap-3">
-            <Container>
-                <div className="grid size-full auto-cols-auto grid-flow-col grid-cols-[auto_1fr] items-center gap-2">
-                    <MagnifyingGlassIcon weight="bold" />
-                    <input type="text" value={query} onChange={e => setQuery(e.target.value)} placeholder="Search" className="w-full text-balance bg-transparent outline-none" />
-                    {query.length > 0 && (
-                        <button type="button" onClick={() => setQuery('')} className="active:opacity-60">
-                            <XIcon weight="bold" />
-                        </button>
-                    )}
-                </div>
-            </Container>
-            {resultCount ? (
+        <Section>
+            <div className="grid grid-cols-[1fr_auto] gap-3">
                 <Container>
-                    <div className="flex size-full items-center justify-center text-sm font-medium text-g-500">
-                        <p className="">{`${resultCount} results`}</p>
+                    <div className="grid size-full auto-cols-auto grid-flow-col grid-cols-[auto_1fr] items-center gap-2">
+                        <MagnifyingGlassIcon weight="bold" />
+                        <input
+                            type="text"
+                            value={query}
+                            onChange={e => setQuery(e.target.value)}
+                            placeholder="Search"
+                            className="w-full text-balance bg-transparent outline-none"
+                        />
+                        {query.length > 0 && (
+                            <button type="button" onClick={() => setQuery('')} className="active:opacity-60">
+                                <XIcon weight="bold" />
+                            </button>
+                        )}
                     </div>
                 </Container>
-            ) : null}
-        </div>
+                {resultCount ? (
+                    <Container>
+                        <div className="flex size-full items-center justify-center text-sm font-medium text-g-500">
+                            <p className="">{`${resultCount} results`}</p>
+                        </div>
+                    </Container>
+                ) : null}
+            </div>
+        </Section>
     )
 }

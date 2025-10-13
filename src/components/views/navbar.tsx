@@ -59,15 +59,14 @@ export function Navbar() {
 
     return (
         <>
-            <div className="px-4 sm:px-10">
-                <div className="flex w-full items-center py-6">
-                    <AppTitle />
-                    <div className="grow" />
-                    <button onClick={() => setOpen(!open)} className="active:opacity-60">
-                        <ListIcon weight="bold" className="text-lg" />
-                    </button>
-                </div>
-                <div className="h-0.5 w-full bg-current opacity-60" />
+            <div className="flex w-full items-center px-4 py-6 sm:px-10">
+                <Link href="/" className="line-clamp-1 font-serif text-3xl font-semibold active:opacity-60">
+                    {appTitle}
+                </Link>
+                <div className="grow" />
+                <button onClick={() => setOpen(!open)} className="active:opacity-60">
+                    <ListIcon weight="bold" className="text-lg" />
+                </button>
             </div>
 
             <AnimatePresence>
@@ -103,14 +102,6 @@ export function Navbar() {
                 )}
             </AnimatePresence>
         </>
-    )
-}
-
-function AppTitle() {
-    return (
-        <Link href="/" className="line-clamp-1 font-serif text-3xl active:opacity-60">
-            {appTitle}
-        </Link>
     )
 }
 

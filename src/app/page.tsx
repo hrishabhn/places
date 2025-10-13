@@ -8,33 +8,48 @@ import {Suspense} from 'react'
 
 import {appRouter} from '@/server'
 
-import {appDescription, appSubtitle} from '@/model/app'
+import {appSubtitle, appTitle} from '@/model/app'
 import {getBookmarks} from '@/model/bookmarks'
 
+import {HLine} from '@/components/views/h-line'
 import {Loading} from '@/components/views/loading'
+import {Section} from '@/components/views/section'
+import {SplashTextbox} from '@/components/views/splash'
+import {PageStack} from '@/components/views/stack'
 
-const backdrop = 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1920&h=1080&fit=crop&crop=center'
+const backdrop = new URL('https://images.unsplash.com/photo-1549106765-3d312a9425e1')
 
 export default function Home() {
     return (
-        <>
-            <div className="relative bg-layer-0-dark text-white">
-                <Image src={backdrop} alt="Earth from space background" fill className="object-cover opacity-50" priority sizes="100vw" quality={85} />
+        <PageStack>
+            <Section>
+                <HLine />
+            </Section>
 
-                <div className="relative flex w-full flex-col items-center justify-center gap-6 px-10 py-36 text-center sm:py-64">
-                    <p className="text-4xl font-bold sm:text-5xl md:text-6xl lg:text-7xl">{appSubtitle}</p>
-                    <p className="text-lg font-medium md:text-xl">{appDescription}</p>
+            <Section>
+                <div className="relative text-black">
+                    <Image src={backdrop.toString()} alt="Earth from space background" fill className="object-cover object-right-bottom" priority sizes="100vw" quality={85} />
 
-                    <Link href="/places" className="flex items-center gap-4 rounded-xl bg-olive px-3.5 py-2.5 font-medium text-cream active:opacity-60">
-                        <p>Explore Places</p>
-                        <ArrowRightIcon weight="bold" />
-                    </Link>
+                    <div className="relative flex h-96 w-full flex-col items-start justify-start p-4 text-start sm:h-[32rem] sm:p-10">
+                        <SplashTextbox title={appTitle} subtitle={appSubtitle} />
+
+                        <div className="grow" />
+
+                        <Link
+                            href="/places"
+                            className="flex items-center gap-4 rounded-full border-2 border-current px-3 py-1.5 font-serif text-lg font-semibold active:opacity-60"
+                        >
+                            <p>Discover</p>
+                            <ArrowRightIcon weight="bold" />
+                        </Link>
+                    </div>
                 </div>
-            </div>
+            </Section>
+
             <Suspense fallback={<Loading />}>
                 <HomeContentSuspense />
             </Suspense>
-        </>
+        </PageStack>
     )
 }
 

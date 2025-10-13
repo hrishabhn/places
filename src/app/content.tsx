@@ -14,9 +14,11 @@ import {setsEqual} from '@/model/util'
 
 import {useTRPC} from '@/lib/trpc'
 
+import {Heading} from '@/components/layout'
 import {Button} from '@/components/ui'
+import {HLine} from '@/components/views/h-line'
 import {ScrollStack} from '@/components/views/scroll'
-import {Section, SectionHeader} from '@/components/views/section'
+import {Section} from '@/components/views/section'
 
 export default function HomeContent({
     initialBookmarks,
@@ -51,9 +53,7 @@ export default function HomeContent({
             {bookmarks.length > 0 && <HomeContentBookmark bookmarks={bookmarks} initialAllPlaceBookmark={initialAllPlaceBookmark} />}
 
             <Section>
-                <SectionHeader title="Top Cities" subtitle="Most popular cities">
-                    <ViewAll href="/cities" />
-                </SectionHeader>
+                <SectionHeader title="Top Cities" subtitle="Most popular cities" href="/cities" />
             </Section>
             <ScrollStack>
                 {allCity.map(city => (
@@ -62,9 +62,7 @@ export default function HomeContent({
             </ScrollStack>
 
             <Section>
-                <SectionHeader title="Recently Added" subtitle="New additions to the collection">
-                    <ViewAll href="/places" />
-                </SectionHeader>
+                <SectionHeader title="Recently Added" subtitle="New additions to the collection" href="/places" />
             </Section>
             <ScrollStack>
                 {allPlaceNew.map(place => (
@@ -73,9 +71,7 @@ export default function HomeContent({
             </ScrollStack>
 
             <Section>
-                <SectionHeader title="Random Picks" subtitle="Discover hidden gems">
-                    <ViewAll href="/places" />
-                </SectionHeader>
+                <SectionHeader title="Random Picks" subtitle="Discover hidden gems" href="/places" />
             </Section>
             <ScrollStack>
                 {allPlaceRandom.map(place => (
@@ -107,9 +103,7 @@ function HomeContentBookmark({bookmarks, initialAllPlaceBookmark}: {bookmarks: B
     return (
         <>
             <Section>
-                <SectionHeader title="Your Bookmarks" subtitle="Saved places">
-                    <ViewAll href="/places?bookmarks=true" />
-                </SectionHeader>
+                <SectionHeader title="Your Bookmarks" subtitle="Saved places" href="/places?bookmarks=true" />
             </Section>
             <ScrollStack>
                 {allPlaceBookmark.map(place => (
@@ -128,5 +122,33 @@ export function ViewAll({href}: {href: string}) {
                 <ArrowRightIcon weight="bold" />
             </Button>
         </Link>
+    )
+}
+
+type SectionHeaderProps = {
+    title: string
+    subtitle?: string
+    href: string
+}
+
+function SectionHeader({title, subtitle, href}: SectionHeaderProps) {
+    return (
+        <>
+            <div className="pt-12">
+                <HLine />
+                <Link href={href} className="group flex w-full items-center py-2 hover:underline">
+                    <div>
+                        <Heading size="h2" serif withoutPadding>
+                            {title}
+                        </Heading>
+                        <p className="line-clamp-1 font-medium opacity-80">{subtitle}</p>
+                    </div>
+
+                    <div className="grow" />
+
+                    <ArrowRightIcon weight="bold" className="text-xl opacity-0 transition group-hover:opacity-100" />
+                </Link>
+            </div>
+        </>
     )
 }

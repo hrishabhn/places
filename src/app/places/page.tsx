@@ -34,7 +34,6 @@ import {countryFlag} from '@/model/util'
 import {useArrayState} from '@/lib/hooks/nuqs'
 import {useTRPC} from '@/lib/trpc'
 
-import {Badge, ButtonTray} from '@/components/ui'
 import {type ActiveFilter} from '@/components/views/filter'
 import {getIcon} from '@/components/views/get-icon'
 import {GridStack} from '@/components/views/grid'
@@ -44,7 +43,7 @@ import {NoResults} from '@/components/views/no-results'
 import {SearchBarFilter} from '@/components/views/search'
 import {Section} from '@/components/views/section'
 import {Splash} from '@/components/views/splash'
-import {DetailStack, PageStack} from '@/components/views/stack'
+import {PageStack} from '@/components/views/stack'
 
 const allSort = ['name', 'country', 'city'] as const
 type Sort = (typeof allSort)[number]
@@ -265,7 +264,7 @@ export default function PlacesPage() {
     )
 
     return (
-        <DetailStack padding>
+        <PageStack>
             {singleCity ? <Splash title={singleCity.name} subtitle={singleCity.country_name} image={singleCity.image ?? undefined} /> : null}
 
             <MenuBarTray>
@@ -437,7 +436,6 @@ export default function PlacesPage() {
                         )
                     }
                 />
-
                 <MenuBarSelect<View>
                     icon={CardsThreeIcon}
                     text={viewTitle[selectedView]}
@@ -451,127 +449,119 @@ export default function PlacesPage() {
                 />
             </MenuBarTray>
 
-            <Section>
-                <SearchBarFilter query={query} setQuery={setQuery} resultCount={allPlace?.length} />
-            </Section>
+            <SearchBarFilter query={query} setQuery={setQuery} resultCount={allPlace?.length} />
 
-            <Section>
-                <PageStack>
-                    {isPending ? (
-                        <Loading />
-                    ) : (
-                        <>
-                            {searchResult.length > 0 && (
-                                <>
-                                    <ButtonTray>
-                                        {searchResult.map((result, i) => {
-                                            const active = {
-                                                country: selectedCountrySlug.value.includes(result.id),
-                                                city: selectedCitySlug.value.includes(result.id),
-                                                place_type: selectedPlaceType.value.includes(result.id),
-                                                place_tag: selectedPlaceTag.value.includes(result.id),
-                                            }[result.type]
+            {isPending ? (
+                <Loading />
+            ) : (
+                <>
+                    {searchResult.length > 0 && (
+                        <MenuBarTray>
+                            {searchResult.map((result, i) => {
+                                const active = {
+                                    country: selectedCountrySlug.value.includes(result.id),
+                                    city: selectedCitySlug.value.includes(result.id),
+                                    place_type: selectedPlaceType.value.includes(result.id),
+                                    place_tag: selectedPlaceTag.value.includes(result.id),
+                                }[result.type]
 
-                                            const onSelect = {
-                                                country: () => selectedCountrySlug.toggle(result.id),
-                                                city: () => selectedCitySlug.toggle(result.id),
-                                                place_type: () => selectedPlaceType.toggle(result.id),
-                                                place_tag: () => selectedPlaceTag.toggle(result.id),
-                                            }[result.type]
+                                const onSelect = {
+                                    country: () => selectedCountrySlug.toggle(result.id),
+                                    city: () => selectedCitySlug.toggle(result.id),
+                                    place_type: () => selectedPlaceType.toggle(result.id),
+                                    place_tag: () => selectedPlaceTag.toggle(result.id),
+                                }[result.type]
 
-                                            const Icon = getIcon(result.type)
+                                const Icon = getIcon(result.type)
 
-                                            // prefetch
-                                            if (result.type === 'country') {
-                                                queryClient.prefetchQuery(
-                                                    trpc.GetAllPlace.queryOptions({
-                                                        filter: {
-                                                            id: showBookmarks ? bookmarks : undefined,
-                                                            top,
-                                                            countrySlug: selectedCountrySlug.getToggledValue(result.id),
-                                                            citySlug: selectedCitySlug.value,
-                                                            placeType: selectedPlaceType.value,
-                                                            placeTag: selectedPlaceTag.value,
-                                                        },
-                                                        query: '',
-                                                        sort: selectedSort,
-                                                    })
-                                                )
-                                            } else if (result.type === 'city') {
-                                                queryClient.prefetchQuery(
-                                                    trpc.GetAllPlace.queryOptions({
-                                                        filter: {
-                                                            id: showBookmarks ? bookmarks : undefined,
-                                                            top,
-                                                            countrySlug: selectedCountrySlug.value,
-                                                            citySlug: selectedCitySlug.getToggledValue(result.id),
-                                                            placeType: selectedPlaceType.value,
-                                                            placeTag: selectedPlaceTag.value,
-                                                        },
-                                                        query: '',
-                                                        sort: selectedSort,
-                                                    })
-                                                )
-                                            } else if (result.type === 'place_type') {
-                                                queryClient.prefetchQuery(
-                                                    trpc.GetAllPlace.queryOptions({
-                                                        filter: {
-                                                            id: showBookmarks ? bookmarks : undefined,
-                                                            top,
-                                                            countrySlug: selectedCountrySlug.value,
-                                                            citySlug: selectedCitySlug.value,
-                                                            placeType: selectedPlaceType.getToggledValue(result.id),
-                                                            placeTag: selectedPlaceTag.value,
-                                                        },
-                                                        query: '',
-                                                        sort: selectedSort,
-                                                    })
-                                                )
-                                            } else if (result.type === 'place_tag') {
-                                                queryClient.prefetchQuery(
-                                                    trpc.GetAllPlace.queryOptions({
-                                                        filter: {
-                                                            id: showBookmarks ? bookmarks : undefined,
-                                                            top,
-                                                            countrySlug: selectedCountrySlug.value,
-                                                            citySlug: selectedCitySlug.value,
-                                                            placeType: selectedPlaceType.value,
-                                                            placeTag: selectedPlaceTag.getToggledValue(result.id),
-                                                        },
-                                                        query: '',
-                                                        sort: selectedSort,
-                                                    })
-                                                )
-                                            }
+                                // prefetch
+                                if (result.type === 'country') {
+                                    queryClient.prefetchQuery(
+                                        trpc.GetAllPlace.queryOptions({
+                                            filter: {
+                                                id: showBookmarks ? bookmarks : undefined,
+                                                top,
+                                                countrySlug: selectedCountrySlug.getToggledValue(result.id),
+                                                citySlug: selectedCitySlug.value,
+                                                placeType: selectedPlaceType.value,
+                                                placeTag: selectedPlaceTag.value,
+                                            },
+                                            query: '',
+                                            sort: selectedSort,
+                                        })
+                                    )
+                                } else if (result.type === 'city') {
+                                    queryClient.prefetchQuery(
+                                        trpc.GetAllPlace.queryOptions({
+                                            filter: {
+                                                id: showBookmarks ? bookmarks : undefined,
+                                                top,
+                                                countrySlug: selectedCountrySlug.value,
+                                                citySlug: selectedCitySlug.getToggledValue(result.id),
+                                                placeType: selectedPlaceType.value,
+                                                placeTag: selectedPlaceTag.value,
+                                            },
+                                            query: '',
+                                            sort: selectedSort,
+                                        })
+                                    )
+                                } else if (result.type === 'place_type') {
+                                    queryClient.prefetchQuery(
+                                        trpc.GetAllPlace.queryOptions({
+                                            filter: {
+                                                id: showBookmarks ? bookmarks : undefined,
+                                                top,
+                                                countrySlug: selectedCountrySlug.value,
+                                                citySlug: selectedCitySlug.value,
+                                                placeType: selectedPlaceType.getToggledValue(result.id),
+                                                placeTag: selectedPlaceTag.value,
+                                            },
+                                            query: '',
+                                            sort: selectedSort,
+                                        })
+                                    )
+                                } else if (result.type === 'place_tag') {
+                                    queryClient.prefetchQuery(
+                                        trpc.GetAllPlace.queryOptions({
+                                            filter: {
+                                                id: showBookmarks ? bookmarks : undefined,
+                                                top,
+                                                countrySlug: selectedCountrySlug.value,
+                                                citySlug: selectedCitySlug.value,
+                                                placeType: selectedPlaceType.value,
+                                                placeTag: selectedPlaceTag.getToggledValue(result.id),
+                                            },
+                                            query: '',
+                                            sort: selectedSort,
+                                        })
+                                    )
+                                }
 
-                                            return (
-                                                <button
-                                                    key={i}
-                                                    className="active:opacity-60"
-                                                    onClick={() => {
-                                                        onSelect()
-                                                        setQuery('')
-                                                    }}
-                                                >
-                                                    <Badge active={active}>
-                                                        <Icon weight="duotone" />
-                                                        <p>{result.name}</p>
-                                                        {active ? <XIcon weight="bold" /> : <PlusIcon weight="bold" />}
-                                                    </Badge>
-                                                </button>
-                                            )
-                                        })}
-                                    </ButtonTray>
-                                </>
-                            )}
-
-                            <PlacesStack allPlace={allPlace} view={selectedView} />
-
-                            <PlacesMapModal isOpen={showMap} onClose={() => setShowMap(false)} allPlace={allPlace} />
-                        </>
+                                return (
+                                    <button
+                                        key={i}
+                                        className="active:opacity-60"
+                                        onClick={() => {
+                                            onSelect()
+                                            setQuery('')
+                                        }}
+                                    >
+                                        <MenuBarItem active={active}>
+                                            <Icon weight="duotone" />
+                                            <p>{result.name}</p>
+                                            {active ? <XIcon weight="bold" /> : <PlusIcon weight="bold" />}
+                                        </MenuBarItem>
+                                    </button>
+                                )
+                            })}
+                        </MenuBarTray>
                     )}
-                </PageStack>
-            </Section>
+
+                    <PlacesStack allPlace={allPlace} view={selectedView} />
+
+                    <PlacesMapModal isOpen={showMap} onClose={() => setShowMap(false)} allPlace={allPlace} />
+                </>
+            )}
 
             <div className="fixed inset-x-0 bottom-4 z-10 mx-auto w-fit">
                 <button
@@ -582,7 +572,7 @@ export default function PlacesPage() {
                     <p>View on Map</p>
                 </button>
             </div>
-        </DetailStack>
+        </PageStack>
     )
 }
 
@@ -601,14 +591,20 @@ function PlacesStack({allPlace, view}: {allPlace: Place[]; view: View}) {
     switch (view) {
         case 'list':
             return (
-                <GridStack>
-                    {allPlace.map(place => (
-                        <PlaceCard key={place.id} place={place} />
-                    ))}
-                </GridStack>
+                <Section>
+                    <GridStack>
+                        {allPlace.map(place => (
+                            <PlaceCard key={place.id} place={place} />
+                        ))}
+                    </GridStack>
+                </Section>
             )
 
         case 'table':
-            return <PlaceTable allPlace={allPlace} bookmarks={bookmarks} onToggleBookmark={id => toggle(id)} />
+            return (
+                <Section>
+                    <PlaceTable allPlace={allPlace} bookmarks={bookmarks} onToggleBookmark={id => toggle(id)} />
+                </Section>
+            )
     }
 }

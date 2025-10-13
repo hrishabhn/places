@@ -1,9 +1,0 @@
-:root {
-    --px: theme('padding.4');
-}
-
-@screen sm {
-    :root {
-        --px: theme('padding.10');
-    }
-}
