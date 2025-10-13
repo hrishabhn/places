@@ -60,9 +60,7 @@ export function Navbar() {
     return (
         <>
             <div className="flex w-full items-center px-4 py-6 sm:px-10">
-                <Link href="/" className="line-clamp-1 font-serif text-3xl font-semibold active:opacity-60">
-                    {appTitle}
-                </Link>
+                <AppTitle />
                 <div className="grow" />
                 <button onClick={() => setOpen(!open)} className="active:opacity-60">
                     <ListIcon weight="bold" className="text-lg" />
@@ -88,7 +86,7 @@ export function Navbar() {
                             className="fixed inset-y-0 right-0 z-50 flex w-full flex-col overflow-y-auto bg-layer-0 p-6 sm:w-96 dark:bg-layer-1-dark"
                         >
                             <div className="mb-4 flex items-center justify-between">
-                                <h2 className="font-serif text-3xl">{appTitle}</h2>
+                                <AppTitle />
                                 <button onClick={() => setOpen(false)} className="active:opacity-60">
                                     <XIcon size={24} weight="bold" />
                                 </button>
@@ -105,6 +103,14 @@ export function Navbar() {
     )
 }
 
+function AppTitle() {
+    return (
+        <Link href="/" className="line-clamp-1 font-heading text-3xl font-medium active:opacity-60">
+            {appTitle}
+        </Link>
+    )
+}
+
 // shared
 type NavbarItemProps = {
     href: string
@@ -113,7 +119,7 @@ type NavbarItemProps = {
 
 function NavbarItem({href, title}: NavbarItemProps) {
     return (
-        <Link href={href} className="line-clamp-1 flex w-full items-center border-t border-g-500 py-2 font-serif text-2xl font-light active:opacity-60">
+        <Link href={href} className="line-clamp-1 flex w-full items-center border-t border-g-500 py-4 font-serif text-2xl active:opacity-60">
             {title}
         </Link>
     )

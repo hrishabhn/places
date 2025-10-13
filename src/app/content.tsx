@@ -15,7 +15,6 @@ import {setsEqual} from '@/model/util'
 import {useTRPC} from '@/lib/trpc'
 
 import {Heading} from '@/components/layout'
-import {Button} from '@/components/ui'
 import {HLine} from '@/components/views/h-line'
 import {ScrollStack} from '@/components/views/scroll'
 import {Section} from '@/components/views/section'
@@ -114,17 +113,6 @@ function HomeContentBookmark({bookmarks, initialAllPlaceBookmark}: {bookmarks: B
     )
 }
 
-export function ViewAll({href}: {href: string}) {
-    return (
-        <Link href={href} className="flex items-center gap-2 rounded-xl active:opacity-60">
-            <Button theme="layer-1" ring>
-                <p>View All</p>
-                <ArrowRightIcon weight="bold" />
-            </Button>
-        </Link>
-    )
-}
-
 type SectionHeaderProps = {
     title: string
     subtitle?: string
@@ -136,7 +124,7 @@ function SectionHeader({title, subtitle, href}: SectionHeaderProps) {
         <>
             <div className="pt-12">
                 <HLine />
-                <Link href={href} className="group flex w-full items-center py-2 hover:underline">
+                <Link href={href} className="group flex w-full items-center py-2 hover:underline active:opacity-60">
                     <div>
                         <Heading size="h2" serif withoutPadding>
                             {title}
@@ -146,7 +134,10 @@ function SectionHeader({title, subtitle, href}: SectionHeaderProps) {
 
                     <div className="grow" />
 
-                    <ArrowRightIcon weight="bold" className="text-xl opacity-0 transition group-hover:opacity-100" />
+                    <ArrowRightIcon
+                        weight="bold"
+                        className="-translate-x-1 scale-95 text-xl opacity-0 transition group-hover:translate-x-0 group-hover:scale-100 group-hover:opacity-100"
+                    />
                 </Link>
             </div>
         </>
