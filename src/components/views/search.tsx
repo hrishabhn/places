@@ -2,10 +2,13 @@
 
 import {MagnifyingGlassIcon, XIcon} from '@phosphor-icons/react'
 
-import {Button} from '@/components/ui'
-
 function Container({children}: {children?: React.ReactNode}) {
-    return <div className="rounded-xl bg-layer-1 px-3 py-2 ring-1 ring-line dark:bg-layer-1-dark dark:ring-line-dark">{children}</div>
+    return (
+        <div className="grid size-full grid-rows-[auto_1fr] gap-2">
+            <div className="h-0.5 w-full bg-current opacity-60" />
+            {children}
+        </div>
+    )
 }
 
 type SearchBarFilterProps = {
@@ -36,13 +39,5 @@ export function SearchBarFilter({query, setQuery, resultCount}: SearchBarFilterP
                 </Container>
             ) : null}
         </div>
-    )
-}
-
-export function SearchBarButton({active = false, children}: {active?: boolean; children?: React.ReactNode}) {
-    return (
-        <Button ring={!active} rounded="xl" theme={active ? 'accent' : 'layer-1'}>
-            {children}
-        </Button>
     )
 }

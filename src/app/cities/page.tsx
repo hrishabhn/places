@@ -20,9 +20,9 @@ import {GridStack} from '@/components/views/grid'
 import {Loading} from '@/components/views/loading'
 import {MenuBarItem, MenuBarSelect, MenuBarTray} from '@/components/views/menu-bar'
 import {NoResults} from '@/components/views/no-results'
-import {PageStack} from '@/components/views/page-stack'
 import {SearchBarFilter} from '@/components/views/search'
 import {Section} from '@/components/views/section'
+import {DetailStack, PageStack} from '@/components/views/stack'
 
 const allSort = ['place_count', 'country', 'name'] as const
 type Sort = (typeof allSort)[number]
@@ -93,7 +93,7 @@ export default function CitiesPage() {
     ]
 
     return (
-        <>
+        <DetailStack padding>
             <MenuBarTray>
                 {activeFilter.map(filter => {
                     const Icon = getIcon(filter.type)
@@ -155,9 +155,11 @@ export default function CitiesPage() {
             </MenuBarTray>
 
             <Section>
-                <PageStack>
-                    <SearchBarFilter query={query} setQuery={setQuery} resultCount={allCity?.length} />
+                <SearchBarFilter query={query} setQuery={setQuery} resultCount={allCity?.length} />
+            </Section>
 
+            <Section>
+                <PageStack>
                     {isPending ? (
                         <Loading />
                     ) : (
@@ -213,7 +215,7 @@ export default function CitiesPage() {
                     )}
                 </PageStack>
             </Section>
-        </>
+        </DetailStack>
     )
 }
 

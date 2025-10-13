@@ -22,7 +22,6 @@ import {keepPreviousData, useMutation, useQuery, useQueryClient, useSuspenseQuer
 import {parseAsBoolean, parseAsString, parseAsStringLiteral, useQueryState} from 'nuqs'
 import {useEffect} from 'react'
 
-import {CityImage} from '@/app/views/city/image'
 import {PlaceGrid} from '@/app/views/place/grid'
 import {getPlaceIcon} from '@/app/views/place/place-icon'
 import {PlaceTable} from '@/app/views/place/table'
@@ -41,9 +40,10 @@ import {getIcon} from '@/components/views/get-icon'
 import {Loading} from '@/components/views/loading'
 import {MenuBarItem, MenuBarSelect, MenuBarTray} from '@/components/views/menu-bar'
 import {NoResults} from '@/components/views/no-results'
-import {PageStack} from '@/components/views/page-stack'
 import {SearchBarFilter} from '@/components/views/search'
 import {Section} from '@/components/views/section'
+import {Splash} from '@/components/views/splash'
+import {DetailStack, PageStack} from '@/components/views/stack'
 
 const allSort = ['name', 'country', 'city'] as const
 type Sort = (typeof allSort)[number]
@@ -135,7 +135,7 @@ export default function PlacesPage() {
     if (isError) throw new Error('Failed to load data')
 
     // single city for image
-    const singleCity = (() => {
+    const singleCity: City | undefined = (() => {
         if (selectedCountrySlug.value.length > 0) return undefined
         if (selectedCitySlug.value.length === 1) return allCity.find(city => city.slug === selectedCitySlug.value[0])
     })()
@@ -264,8 +264,8 @@ export default function PlacesPage() {
     )
 
     return (
-        <>
-            {singleCity && <CityImage city={singleCity} />}
+        <DetailStack padding>
+            {singleCity ? <Splash title={singleCity.name} subtitle={singleCity.country_name} image={singleCity.image ?? undefined} /> : null}
 
             <MenuBarTray>
                 {activeFilter.map(filter => {
@@ -451,9 +451,11 @@ export default function PlacesPage() {
             </MenuBarTray>
 
             <Section>
-                <PageStack>
-                    <SearchBarFilter query={query} setQuery={setQuery} resultCount={allPlace?.length} />
+                <SearchBarFilter query={query} setQuery={setQuery} resultCount={allPlace?.length} />
+            </Section>
 
+            <Section>
+                <PageStack>
                     {isPending ? (
                         <Loading />
                     ) : (
@@ -579,7 +581,7 @@ export default function PlacesPage() {
                     <p>View on Map</p>
                 </button>
             </div>
-        </>
+        </DetailStack>
     )
 }
 

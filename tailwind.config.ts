@@ -12,6 +12,7 @@ export default {
         extend: {
             fontFamily: {
                 serif: ['var(--font-serif)', 'serif'],
+                heading: ['var(--font-heading)', 'sans-serif'],
             },
             colors: {
                 g: colors.stone,
@@ -21,16 +22,20 @@ export default {
                 },
                 layer: {
                     0: {
-                        DEFAULT: colors.stone[100],
-                        dark: colors.stone[950],
+                        DEFAULT: colors.white,
+                        dark: colors.zinc[950],
                     },
                     1: {
-                        DEFAULT: colors.white,
-                        dark: colors.stone[900],
+                        DEFAULT: colors.zinc[100],
+                        dark: colors.zinc[900],
                     },
                 },
                 olive: '#292718',
                 cream: '#F4F1DE',
+                accent: {
+                    dark: '#292718',
+                    light: '#F4F1DE',
+                },
             },
             keyframes: {
                 blink: {

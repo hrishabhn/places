@@ -1,9 +1,12 @@
 'use client'
 
-import {CityIcon, HouseIcon, type Icon, InfoIcon, ListIcon, MapPinIcon, XIcon} from '@phosphor-icons/react'
+import {Dialog} from '@headlessui/react'
+import {ListIcon, XIcon} from '@phosphor-icons/react'
 import {usePrefetchQuery} from '@tanstack/react-query'
+import {AnimatePresence, motion} from 'motion/react'
 import Link from 'next/link'
-import {useState} from 'react'
+import {usePathname} from 'next/navigation'
+import {useEffect, useState} from 'react'
 
 import {appTitle} from '@/model/app'
 
@@ -11,6 +14,11 @@ import {useTRPC} from '@/lib/trpc'
 
 export function Navbar() {
     const [open, setOpen] = useState<boolean>(false)
+    const pathname = usePathname()
+
+    useEffect(() => {
+        setOpen(false)
+    }, [pathname])
 
     // prefetch
     const trpc = useTRPC()
@@ -51,70 +59,71 @@ export function Navbar() {
 
     return (
         <>
-            <div className="hidden w-full items-center gap-4 border-b border-cream/10 bg-olive p-4 text-cream sm:grid sm:grid-cols-[1fr,auto,1fr] sm:px-10">
-                <div className="flex items-center justify-start">
-                    <Link href="/" className="active:opacity-60">
-                        <p className="font-serif text-2xl font-bold">{appTitle}</p>
-                    </Link>
-                </div>
-                <div className="flex items-center justify-center gap-4">
-                    <NavbarItemDesktop href="/" icon={HouseIcon} title="Home" />
-                    <NavbarItemDesktop href="/cities" icon={CityIcon} title="Cities" />
-                    <NavbarItemDesktop href="/places" icon={MapPinIcon} title="Places" />
-                </div>
-                <div className="flex items-center justify-end">
-                    <NavbarItemDesktop href="/about" icon={InfoIcon} title="About" />
-                </div>
-            </div>
-
-            <div className="w-full border-b border-cream/10 bg-olive py-4 text-cream sm:hidden">
-                <div className="flex w-full items-center px-4 text-2xl">
-                    <Link href="/" className="active:opacity-60">
-                        <p className="font-serif text-2xl font-bold">{appTitle}</p>
-                    </Link>
+            <div className="px-4 sm:px-10">
+                <div className="flex w-full items-center py-6">
+                    <AppTitle />
                     <div className="grow" />
                     <button onClick={() => setOpen(!open)} className="active:opacity-60">
-                        {open ? <XIcon weight="bold" /> : <ListIcon weight="bold" />}
+                        <ListIcon weight="bold" className="text-lg" />
                     </button>
                 </div>
-                {open && (
-                    <div className="flex w-full flex-col px-4 pt-4">
-                        <NavbarItemMobile href="/" icon={HouseIcon} title="Home" onClick={() => setOpen(false)} />
-                        <NavbarItemMobile href="/cities" icon={CityIcon} title="Cities" onClick={() => setOpen(false)} />
-                        <NavbarItemMobile href="/places" icon={MapPinIcon} title="Places" onClick={() => setOpen(false)} />
-                        <NavbarItemMobile href="/about" icon={InfoIcon} title="About" onClick={() => setOpen(false)} />
-                    </div>
-                )}
+                <div className="h-0.5 w-full bg-current opacity-60" />
             </div>
+
+            <AnimatePresence>
+                {open && (
+                    <Dialog static open={open} onClose={() => setOpen(false)} className="relative z-50">
+                        <motion.button
+                            initial={{opacity: 0}}
+                            animate={{opacity: 1}}
+                            // exit={{opacity: 0, transition: {duration: 0.1}}}
+                            transition={{ease: 'easeInOut', duration: 0.2}}
+                            className="fixed inset-0 size-full bg-black/40 backdrop-blur"
+                            onClick={() => setOpen(false)}
+                        />
+                        <motion.div
+                            initial={{translateX: 100, opacity: 0}}
+                            animate={{translateX: 0, opacity: 1}}
+                            // exit={{translateX: 100, opacity: 0, transition: {duration: 0.1}}}
+                            transition={{ease: 'easeInOut', duration: 0.2}}
+                            className="fixed inset-y-0 right-0 z-50 flex w-full flex-col overflow-y-auto bg-layer-0 p-6 sm:w-96 dark:bg-layer-1-dark"
+                        >
+                            <div className="mb-4 flex items-center justify-between">
+                                <h2 className="font-serif text-3xl">{appTitle}</h2>
+                                <button onClick={() => setOpen(false)} className="active:opacity-60">
+                                    <XIcon size={24} weight="bold" />
+                                </button>
+                            </div>
+                            <NavbarItem href="/" title="Home" />
+                            <NavbarItem href="/cities" title="Cities" />
+                            <NavbarItem href="/places" title="Places" />
+                            <NavbarItem href="/about" title="About" />
+                        </motion.div>
+                    </Dialog>
+                )}
+            </AnimatePresence>
         </>
+    )
+}
+
+function AppTitle() {
+    return (
+        <Link href="/" className="line-clamp-1 font-serif text-3xl active:opacity-60">
+            {appTitle}
+        </Link>
     )
 }
 
 // shared
 type NavbarItemProps = {
     href: string
-    icon: Icon
     title: string
-    onClick?: () => void
 }
 
-function NavbarItemDesktop({href, icon, title, onClick}: NavbarItemProps) {
-    const Icon = icon
+function NavbarItem({href, title}: NavbarItemProps) {
     return (
-        <Link href={href} onClick={onClick} className="flex items-center gap-1 text-sm font-semibold active:opacity-60">
-            <Icon weight="bold" />
-            <p className="line-clamp-1">{title}</p>
-        </Link>
-    )
-}
-
-function NavbarItemMobile({href, icon, title, onClick}: NavbarItemProps) {
-    const Icon = icon
-    return (
-        <Link href={href} onClick={onClick} className="flex w-full items-center py-2 font-semibold active:opacity-60">
-            <p>{title}</p>
-            <div className="grow" />
-            <Icon weight="bold" />
+        <Link href={href} className="line-clamp-1 flex w-full items-center border-t border-g-500 py-2 font-serif text-2xl font-light active:opacity-60">
+            {title}
         </Link>
     )
 }
