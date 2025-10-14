@@ -11,6 +11,19 @@ export default {
     theme: {
         extend: {
             fontFamily: {
+                sans: [
+                    'var(--font-sans)',
+                    '-apple-system',
+                    'BlinkMacSystemFont',
+                    '"Apple Color Emoji"',
+                    'Inter',
+                    'Roboto',
+                    'Segoe UI',
+                    'Helvetica Neue',
+                    'Arial',
+                    'Noto Sans',
+                    'sans-serif',
+                ],
                 serif: ['var(--font-serif)', 'serif'],
                 heading: ['var(--font-heading)', 'serif'],
             },

@@ -110,7 +110,7 @@ export function Navbar() {
 
 function AppTitle() {
     return (
-        <Link href="/" className="line-clamp-1 font-heading text-3xl font-medium active:opacity-60">
+        <Link href="/" className="line-clamp-1 font-heading text-4xl font-medium active:opacity-60">
             {appTitle}
         </Link>
     )

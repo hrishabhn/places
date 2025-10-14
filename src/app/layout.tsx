@@ -11,7 +11,7 @@ import {appDescription, appTitle} from '@/model/app'
 import {Navbar} from '@/components/views/navbar'
 
 // fonts
-const inter = Inter({subsets: ['latin']})
+const inter = Inter({subsets: ['latin'], variable: '--font-sans'})
 const serif = Lora({subsets: ['latin'], variable: '--font-serif'})
 const heading = Gupter({
     subsets: ['latin'],
@@ -37,7 +37,7 @@ export default function RootLayout({
             <SpeedInsights />
             <Providers>
                 <body
-                    className={`${inter.className} ${serif.variable} ${heading.variable} flex min-h-screen w-full flex-col bg-layer-0 text-black antialiased dark:bg-layer-0-dark dark:text-white`}
+                    className={`${inter.variable} ${serif.variable} ${heading.variable} flex min-h-screen w-full flex-col bg-layer-0 font-sans text-black antialiased dark:bg-layer-0-dark dark:text-white`}
                 >
                     <Navbar />
                     {children}
