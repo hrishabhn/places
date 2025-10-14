@@ -1,15 +1,11 @@
-import HomeContent from './content'
+import {HomeContentBookmarks, HomeContentCities, HomeContentPlaces} from './content'
 
 import {ArrowRightIcon} from '@phosphor-icons/react/dist/ssr'
-import {cookies} from 'next/headers'
 import Image from 'next/image'
 import Link from 'next/link'
 import {Suspense} from 'react'
 
-import {appRouter} from '@/server'
-
 import {appSubtitle, appTitle} from '@/model/app'
-import {getBookmarks} from '@/model/bookmarks'
 
 import {Loading} from '@/components/views/loading'
 import {SplashTextbox} from '@/components/views/splash'
@@ -36,32 +32,11 @@ export default function Home() {
             </div>
             <PageStack padding>
                 <Suspense fallback={<Loading />}>
-                    <HomeContentSuspense />
+                    <HomeContentBookmarks />
+                    <HomeContentCities />
+                    <HomeContentPlaces />
                 </Suspense>
             </PageStack>
         </>
-    )
-}
-
-const caller = appRouter.createCaller({})
-
-async function HomeContentSuspense() {
-    const bookmarks = await getBookmarks({cookies})
-
-    const [allPlaceBookmark, allCity, allPlaceNew, allPlaceRandom] = await Promise.all([
-        bookmarks.length > 0 ? caller.GetAllPlace({filter: {id: bookmarks}, sort: 'name'}) : [],
-        caller.GetAllCity({sort: 'place_count', limit: 5}),
-        caller.GetAllPlace({sort: 'first_visit', limit: 5}),
-        caller.GetAllPlace({sort: 'random', limit: 5}),
-    ])
-
-    return (
-        <HomeContent
-            initialBookmarks={bookmarks}
-            initialAllPlaceBookmark={allPlaceBookmark}
-            initialAllCity={allCity}
-            initialAllPlaceNew={allPlaceNew}
-            initialAllPlaceRandom={allPlaceRandom}
-        />
     )
 }

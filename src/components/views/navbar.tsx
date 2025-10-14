@@ -59,7 +59,7 @@ export function Navbar() {
 
     return (
         <>
-            <div className="sticky top-0 z-50 flex w-full items-center border-b-4 border-current bg-layer-0 text-accent-dark dark:bg-layer-0-dark dark:text-accent-light">
+            <div className="sticky top-0 z-50 flex w-full items-center border-b border-accent-light/20 bg-accent-dark text-accent-light">
                 <div className="flex w-full items-center p-4 sm:px-6">
                     <AppTitle />
                     <div className="grow" />

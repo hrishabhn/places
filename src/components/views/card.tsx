@@ -18,7 +18,7 @@ type SimpleCardProps = {
 export function SimpleCard({image, fallbackIcon, title, subtitle, tags = []}: SimpleCardProps) {
     return (
         <div className="group">
-            <HLine />
+            <CardImage image={image} fallbackIcon={fallbackIcon} />
 
             <div className="grid grid-cols-[1fr_auto] items-center py-2">
                 <div>
@@ -31,7 +31,7 @@ export function SimpleCard({image, fallbackIcon, title, subtitle, tags = []}: Si
                 </div>
             </div>
 
-            <CardImage image={image} fallbackIcon={fallbackIcon} />
+            <HLine />
         </div>
     )
 }
