@@ -59,8 +59,8 @@ export function Navbar() {
 
     return (
         <>
-            <div className="sticky top-0 z-50 flex w-full items-center border-b-4 border-current bg-layer-0 dark:bg-layer-0-dark">
-                <div className="flex w-full items-center p-4 sm:px-10">
+            <div className="sticky top-0 z-50 flex w-full items-center border-b-4 border-current bg-layer-0 text-accent-dark dark:bg-layer-0-dark dark:text-accent-light">
+                <div className="flex w-full items-center p-4 sm:px-6">
                     <AppTitle />
                     <div className="grow" />
                     <button onClick={() => setOpen(!open)} className="active:opacity-60">
@@ -71,7 +71,7 @@ export function Navbar() {
 
             <AnimatePresence>
                 {open && (
-                    <Dialog static open={open} onClose={() => setOpen(false)} className="relative z-50">
+                    <Dialog static open={open} onClose={() => setOpen(false)} className="relative z-50 text-accent-dark dark:text-accent-light">
                         <motion.button
                             initial={{opacity: 0}}
                             animate={{opacity: 1}}

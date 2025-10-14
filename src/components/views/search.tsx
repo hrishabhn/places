@@ -23,7 +23,7 @@ type SearchBarFilterProps = {
 export function SearchBarFilter({query, setQuery, resultCount}: SearchBarFilterProps) {
     return (
         <Section>
-            <div className="grid grid-cols-[1fr_auto] gap-3">
+            <div className="grid grid-cols-[1fr_auto] gap-3 text-accent-dark dark:text-accent-light">
                 <Container>
                     <div className="grid size-full auto-cols-auto grid-flow-col grid-cols-[auto_1fr] items-center gap-2">
                         <MagnifyingGlassIcon weight="bold" />
@@ -32,7 +32,7 @@ export function SearchBarFilter({query, setQuery, resultCount}: SearchBarFilterP
                             value={query}
                             onChange={e => setQuery(e.target.value)}
                             placeholder="Search"
-                            className="w-full text-balance bg-transparent outline-none"
+                            className="w-full text-balance bg-transparent text-base font-medium outline-none placeholder:text-accent-dark/80 dark:placeholder:text-accent-light/80"
                         />
                         {query.length > 0 && (
                             <button type="button" onClick={() => setQuery('')} className="active:opacity-60">
@@ -43,9 +43,7 @@ export function SearchBarFilter({query, setQuery, resultCount}: SearchBarFilterP
                 </Container>
                 {resultCount ? (
                     <Container>
-                        <div className="flex size-full items-center justify-center text-sm font-medium text-g-500">
-                            <p className="">{`${resultCount} results`}</p>
-                        </div>
+                        <p className="flex size-full items-center justify-center text-sm font-medium text-accent-dark/80 dark:text-accent-light/80">{resultCount}</p>
                     </Container>
                 ) : null}
             </div>

@@ -22,7 +22,7 @@ export default function Home() {
     return (
         <PageStack padding>
             <Section>
-                <div className="relative text-black">
+                <div className="relative text-accent-dark">
                     <Image src={backdrop.toString()} alt="Earth from space background" fill className="object-cover object-right-bottom" priority sizes="100vw" quality={85} />
 
                     <div className="relative flex h-96 w-full flex-col items-start justify-start p-4 text-start sm:h-[32rem] sm:p-10">
