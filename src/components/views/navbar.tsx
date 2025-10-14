@@ -59,12 +59,14 @@ export function Navbar() {
 
     return (
         <>
-            <div className="flex w-full items-center px-4 py-6 sm:px-10">
-                <AppTitle />
-                <div className="grow" />
-                <button onClick={() => setOpen(!open)} className="active:opacity-60">
-                    <ListIcon weight="bold" className="text-lg" />
-                </button>
+            <div className="sticky top-0 z-50 flex w-full items-center border-b-4 border-current bg-layer-0 dark:bg-layer-0-dark">
+                <div className="flex w-full items-center p-4 sm:px-10">
+                    <AppTitle />
+                    <div className="grow" />
+                    <button onClick={() => setOpen(!open)} className="active:opacity-60">
+                        <ListIcon weight="bold" className="text-lg" />
+                    </button>
+                </div>
             </div>
 
             <AnimatePresence>
@@ -83,18 +85,21 @@ export function Navbar() {
                             animate={{translateX: 0, opacity: 1}}
                             // exit={{translateX: 100, opacity: 0, transition: {duration: 0.1}}}
                             transition={{ease: 'easeInOut', duration: 0.2}}
-                            className="fixed inset-y-0 right-0 z-50 flex w-full flex-col overflow-y-auto bg-layer-0 p-6 sm:w-96 dark:bg-layer-1-dark"
+                            className="fixed inset-y-0 right-0 z-50 flex w-full flex-col overflow-y-auto bg-layer-0 sm:w-96 dark:bg-layer-1-dark"
                         >
-                            <div className="mb-4 flex items-center justify-between">
+                            <div className="flex items-center border-b-4 border-current p-4 sm:px-6">
                                 <AppTitle />
+                                <div className="grow" />
                                 <button onClick={() => setOpen(false)} className="active:opacity-60">
                                     <XIcon size={24} weight="bold" />
                                 </button>
                             </div>
-                            <NavbarItem href="/" title="Home" />
-                            <NavbarItem href="/cities" title="Cities" />
-                            <NavbarItem href="/places" title="Places" />
-                            <NavbarItem href="/about" title="About" />
+                            <div className="flex flex-col p-4 sm:px-6">
+                                <NavbarItem href="/" title="Home" />
+                                <NavbarItem href="/cities" title="Cities" />
+                                <NavbarItem href="/places" title="Places" />
+                                <NavbarItem href="/about" title="About" />
+                            </div>
                         </motion.div>
                     </Dialog>
                 )}
@@ -119,7 +124,7 @@ type NavbarItemProps = {
 
 function NavbarItem({href, title}: NavbarItemProps) {
     return (
-        <Link href={href} className="line-clamp-1 flex w-full items-center border-t border-g-500 py-4 font-serif text-2xl active:opacity-60">
+        <Link href={href} className="line-clamp-1 flex w-full items-center py-1 text-lg font-semibold uppercase tracking-widest active:opacity-60">
             {title}
         </Link>
     )

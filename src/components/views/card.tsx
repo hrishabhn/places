@@ -18,20 +18,20 @@ type SimpleCardProps = {
 export function SimpleCard({image, fallbackIcon, title, subtitle, tags = []}: SimpleCardProps) {
     return (
         <div className="group">
-            <CardImage image={image} fallbackIcon={fallbackIcon} />
+            <HLine />
 
-            <div className="grid grid-cols-[1fr_auto] items-center py-4">
+            <div className="grid grid-cols-[1fr_auto] items-center py-2">
                 <div>
-                    {subtitle ? <p className="font-serif text-sm font-bold uppercase opacity-60">{subtitle}</p> : null}
-                    <p className="font-serif text-xl font-medium">{title}</p>
-                    <div className="line-clamp-1 text-xs font-semibold uppercase opacity-60">{tags.join(' • ')}</div>
+                    {subtitle ? <p className="line-clamp-1 font-serif text-sm font-semibold uppercase opacity-60">{subtitle}</p> : null}
+                    <p className="line-clamp-1 font-serif text-xl font-medium">{title}</p>
+                    <p className="line-clamp-1 text-xs font-semibold uppercase opacity-60">{tags.join(' • ')}</p>
                 </div>
                 <div className="-translate-x-1 scale-95 p-2 opacity-0 transition group-hover:translate-x-0 group-hover:scale-100 group-hover:opacity-100">
                     <ArrowRightIcon weight="bold" className="text-xl" />
                 </div>
             </div>
 
-            <HLine />
+            <CardImage image={image} fallbackIcon={fallbackIcon} />
         </div>
     )
 }

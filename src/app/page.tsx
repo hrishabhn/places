@@ -11,7 +11,6 @@ import {appRouter} from '@/server'
 import {appSubtitle, appTitle} from '@/model/app'
 import {getBookmarks} from '@/model/bookmarks'
 
-import {HLine} from '@/components/views/h-line'
 import {Loading} from '@/components/views/loading'
 import {Section} from '@/components/views/section'
 import {SplashTextbox} from '@/components/views/splash'
@@ -21,11 +20,7 @@ const backdrop = new URL('https://images.unsplash.com/photo-1549106765-3d312a942
 
 export default function Home() {
     return (
-        <PageStack>
-            <Section>
-                <HLine />
-            </Section>
-
+        <PageStack padding>
             <Section>
                 <div className="relative text-black">
                     <Image src={backdrop.toString()} alt="Earth from space background" fill className="object-cover object-right-bottom" priority sizes="100vw" quality={85} />

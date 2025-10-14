@@ -31,7 +31,7 @@ export function PlacePageContent({id}: {id: string}) {
     if (place === null) return notFound()
 
     return (
-        <PageStack>
+        <PageStack padding>
             <Splash title={place.name} subtitle={place.city_name} description={place.description ?? undefined} image={place.image ?? undefined} />
 
             <Section>

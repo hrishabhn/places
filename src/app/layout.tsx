@@ -3,7 +3,7 @@ import {Providers} from './providers'
 
 import {Analytics} from '@vercel/analytics/next'
 import {SpeedInsights} from '@vercel/speed-insights/next'
-import type {Metadata, Viewport} from 'next'
+import type {Metadata} from 'next'
 import {Gupter, Inter, Lora} from 'next/font/google'
 
 import {appDescription, appTitle} from '@/model/app'
@@ -25,8 +25,6 @@ export const metadata: Metadata = {
     description: appDescription,
     robots: {index: false},
 }
-
-export const viewport: Viewport = {themeColor: '#292718'}
 
 export default function RootLayout({
     children,

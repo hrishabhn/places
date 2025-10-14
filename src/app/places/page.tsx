@@ -264,7 +264,7 @@ export default function PlacesPage() {
     )
 
     return (
-        <PageStack>
+        <PageStack padding>
             {singleCity ? <Splash title={singleCity.name} subtitle={singleCity.country_name} image={singleCity.image ?? undefined} /> : null}
 
             <MenuBarTray>

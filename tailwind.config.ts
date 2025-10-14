@@ -12,7 +12,7 @@ export default {
         extend: {
             fontFamily: {
                 serif: ['var(--font-serif)', 'serif'],
-                heading: ['var(--font-heading)', 'sans-serif'],
+                heading: ['var(--font-heading)', 'serif'],
             },
             colors: {
                 g: colors.stone,

@@ -122,7 +122,7 @@ type SectionHeaderProps = {
 function SectionHeader({title, subtitle, href}: SectionHeaderProps) {
     return (
         <>
-            <div className="pt-12">
+            <div className="pt-16">
                 <HLine />
                 <Link href={href} className="group flex w-full items-center py-2 hover:underline active:opacity-60">
                     <div>

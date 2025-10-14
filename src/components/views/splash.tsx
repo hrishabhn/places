@@ -1,22 +1,17 @@
 import {SimpleImage} from '@/components/ui'
-import {HLine} from '@/components/views/h-line'
 import {Section} from '@/components/views/section'
-import {PageStack} from '@/components/views/stack'
 
 export function Splash({title, subtitle, description, image}: {title: string; subtitle?: string; description?: string; image?: string}) {
     return (
         <Section>
-            <PageStack>
-                <HLine />
-                <div className="grid auto-cols-fr grid-flow-row gap-6 lg:grid-flow-col">
-                    <div className="size-full">
-                        <SplashTextbox title={title} subtitle={subtitle} description={description} />
-                    </div>
-                    <div className="aspect-video w-full">
-                        <SimpleImage url={image} alt={title} />
-                    </div>
+            <div className="grid auto-cols-fr grid-flow-row gap-6 lg:grid-flow-col">
+                <div className="size-full">
+                    <SplashTextbox title={title} subtitle={subtitle} description={description} />
                 </div>
-            </PageStack>
+                <div className="aspect-video w-full">
+                    <SimpleImage url={image} alt={title} />
+                </div>
+            </div>
         </Section>
     )
 }
