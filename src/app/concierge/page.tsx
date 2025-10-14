@@ -13,7 +13,6 @@ import {type Dataset, type Model, allDataset, allModel, datasetName, modelName} 
 import {Heading} from '@/components/layout'
 import {Button, ButtonTray, Card} from '@/components/ui'
 import {DataListItem} from '@/components/views/data-list'
-import {HLine} from '@/components/views/h-line'
 import {Section} from '@/components/views/section'
 import {TagTray} from '@/components/views/tags'
 
@@ -29,7 +28,6 @@ export default function ConciergePage() {
 
     return (
         <Section>
-            <HLine />
             <Heading size="h1" serif>
                 AI Concierge
             </Heading>

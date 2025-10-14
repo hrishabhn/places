@@ -6,7 +6,6 @@ import {notionUrl} from '@/model/util'
 
 import {Heading} from '@/components/layout'
 import {Button, ButtonTray} from '@/components/ui'
-import {HLine} from '@/components/views/h-line'
 import {Section} from '@/components/views/section'
 
 const notionDatabaseId = process.env.NOTION_DATABASE_ID
@@ -14,7 +13,6 @@ const notionDatabaseId = process.env.NOTION_DATABASE_ID
 export default function About() {
     return (
         <Section>
-            <HLine />
             <Heading size="h1" serif>
                 About
             </Heading>

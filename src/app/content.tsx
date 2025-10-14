@@ -14,7 +14,6 @@ import {setsEqual} from '@/model/util'
 
 import {useTRPC} from '@/lib/trpc'
 
-import {Heading} from '@/components/layout'
 import {HLine} from '@/components/views/h-line'
 import {ScrollStack} from '@/components/views/scroll'
 import {Section} from '@/components/views/section'
@@ -52,7 +51,7 @@ export default function HomeContent({
             {bookmarks.length > 0 && <HomeContentBookmark bookmarks={bookmarks} initialAllPlaceBookmark={initialAllPlaceBookmark} />}
 
             <Section>
-                <SectionHeader title="Top Cities" subtitle="Most popular cities" href="/cities" />
+                <SectionHeader title="Top Cities" href="/cities" />
             </Section>
             <ScrollStack>
                 {allCity.map(city => (
@@ -61,7 +60,7 @@ export default function HomeContent({
             </ScrollStack>
 
             <Section>
-                <SectionHeader title="Recently Added" subtitle="New additions to the collection" href="/places" />
+                <SectionHeader title="Recently Added" href="/places" />
             </Section>
             <ScrollStack>
                 {allPlaceNew.map(place => (
@@ -70,7 +69,7 @@ export default function HomeContent({
             </ScrollStack>
 
             <Section>
-                <SectionHeader title="Random Picks" subtitle="Discover hidden gems" href="/places" />
+                <SectionHeader title="Random Picks" href="/places" />
             </Section>
             <ScrollStack>
                 {allPlaceRandom.map(place => (
@@ -102,7 +101,7 @@ function HomeContentBookmark({bookmarks, initialAllPlaceBookmark}: {bookmarks: B
     return (
         <>
             <Section>
-                <SectionHeader title="Your Bookmarks" subtitle="Saved places" href="/places?bookmarks=true" />
+                <SectionHeader title="Your Bookmarks" href="/places?bookmarks=true" />
             </Section>
             <ScrollStack>
                 {allPlaceBookmark.map(place => (
@@ -115,24 +114,16 @@ function HomeContentBookmark({bookmarks, initialAllPlaceBookmark}: {bookmarks: B
 
 type SectionHeaderProps = {
     title: string
-    subtitle?: string
     href: string
 }
 
-function SectionHeader({title, subtitle, href}: SectionHeaderProps) {
+function SectionHeader({title, href}: SectionHeaderProps) {
     return (
         <>
-            <div className="pt-16">
-                <HLine />
-                <Link href={href} className="group flex w-full items-center py-2 hover:underline active:opacity-60">
-                    <div>
-                        <Heading size="h2" serif withoutPadding>
-                            {title}
-                        </Heading>
-                        <p className="line-clamp-1 font-medium opacity-80">{subtitle}</p>
-                    </div>
-
-                    <div className="grow" />
+            <div className="pt-4">
+                <HLine size="md" />
+                <Link href={href} className="group grid w-full grid-cols-[1fr_auto] items-center py-2 hover:underline active:opacity-60">
+                    <p className="line-clamp-1 font-serif text-2xl font-semibold">{title}</p>
 
                     <ArrowRightIcon
                         weight="bold"

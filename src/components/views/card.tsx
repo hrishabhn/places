@@ -3,7 +3,7 @@
 import {ArrowRightIcon, type Icon} from '@phosphor-icons/react'
 import {useState} from 'react'
 
-import {Card, SimpleImage} from '@/components/ui'
+import {SimpleImage} from '@/components/ui'
 import {HLine} from '@/components/views/h-line'
 
 type SimpleCardProps = {
@@ -22,8 +22,8 @@ export function SimpleCard({image, fallbackIcon, title, subtitle, tags = []}: Si
 
             <div className="grid grid-cols-[1fr_auto] items-center py-2">
                 <div>
-                    {subtitle ? <p className="line-clamp-1 font-serif text-sm font-semibold uppercase opacity-60">{subtitle}</p> : null}
-                    <p className="line-clamp-1 font-serif text-xl font-medium">{title}</p>
+                    {subtitle ? <p className="line-clamp-1 font-serif text-sm font-bold uppercase opacity-60">{subtitle}</p> : null}
+                    <p className="line-clamp-1 font-serif text-xl font-semibold">{title}</p>
                     <p className="line-clamp-1 text-xs font-semibold uppercase opacity-60">{tags.join(' • ')}</p>
                 </div>
                 <div className="-translate-x-1 scale-95 p-2 opacity-0 transition group-hover:translate-x-0 group-hover:scale-100 group-hover:opacity-100">
@@ -46,9 +46,9 @@ function CardImage({image, fallbackIcon: Icon}: CardImageProps) {
 
     if (image && !error)
         return (
-            <Card aspect="video">
+            <div className="aspect-video">
                 <SimpleImage url={image} alt="maps" onError={() => setError(true)} />
-            </Card>
+            </div>
         )
 
     return (
