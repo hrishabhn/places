@@ -1,6 +1,6 @@
 'use client'
 
-import {CityCard} from './views/city/card'
+import {CityListItem} from './views/city/list-item'
 import {PlaceCard} from './views/place/card'
 
 import {ArrowRightIcon} from '@phosphor-icons/react'
@@ -52,12 +52,13 @@ export default function HomeContent({
 
             <Section>
                 <SectionHeader title="Top Cities" href="/cities" />
+
+                <div className="grid auto-cols-auto grid-flow-row gap-3 py-3">
+                    {allCity.map(city => (
+                        <CityListItem key={city.slug} city={city} />
+                    ))}
+                </div>
             </Section>
-            <ScrollStack>
-                {allCity.map(city => (
-                    <CityCard key={city.slug} city={city} />
-                ))}
-            </ScrollStack>
 
             <Section>
                 <SectionHeader title="Recently Added" href="/places" />

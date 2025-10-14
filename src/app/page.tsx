@@ -43,10 +43,11 @@ export default function Home() {
     )
 }
 
+const caller = appRouter.createCaller({})
+
 async function HomeContentSuspense() {
     const bookmarks = await getBookmarks({cookies})
 
-    const caller = appRouter.createCaller({})
     const [allPlaceBookmark, allCity, allPlaceNew, allPlaceRandom] = await Promise.all([
         bookmarks.length > 0 ? caller.GetAllPlace({filter: {id: bookmarks}, sort: 'name'}) : [],
         caller.GetAllCity({sort: 'place_count', limit: 5}),
