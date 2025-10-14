@@ -1,11 +1,11 @@
 'use client'
 
 import {HeartIcon, MapTrifoldIcon, PencilIcon} from '@phosphor-icons/react'
-import {useMutation, useQueryClient, useSuspenseQuery} from '@tanstack/react-query'
+import {useSuspenseQuery} from '@tanstack/react-query'
 import Link from 'next/link'
 import {notFound} from 'next/navigation'
 
-import {getBookmarks, toggleBookmark} from '@/model/bookmarks'
+import {useBookmarks} from '@/model/bookmarks'
 import {googleMapsUrl, notionUrl} from '@/model/util'
 
 import {useTRPC} from '@/lib/trpc'
@@ -18,15 +18,10 @@ import {PageStack} from '@/components/views/stack'
 
 export function PlacePageContent({id}: {id: string}) {
     const trpc = useTRPC()
-    const queryClient = useQueryClient()
 
     const {data: place} = useSuspenseQuery(trpc.GetPlace.queryOptions({id}))
 
-    const {data: bookmarks} = useSuspenseQuery({
-        queryKey: ['bookmarks'],
-        queryFn: async () => await getBookmarks(),
-    })
-    const {mutate: toggle} = useMutation({mutationFn: async (id: string) => await queryClient.setQueryData(['bookmarks'], await toggleBookmark(id))})
+    const {bookmarks, toggleBookmark} = useBookmarks()
 
     if (place === null) return notFound()
 
@@ -61,7 +56,7 @@ export function PlacePageContent({id}: {id: string}) {
                 </Heading>
             </Section>
             <MenuBarTray>
-                <button onClick={() => toggle(place.id)} className="active:opacity-60">
+                <button onClick={() => toggleBookmark(place.id)} className="active:opacity-60">
                     <MenuBarItem active={bookmarks.includes(place.id)}>
                         <HeartIcon weight={bookmarks.includes(place.id) ? 'fill' : 'bold'} />
                         <p>Bookmark</p>

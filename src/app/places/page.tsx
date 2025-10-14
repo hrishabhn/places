@@ -18,7 +18,7 @@ import {
     TextTIcon,
     XIcon,
 } from '@phosphor-icons/react'
-import {keepPreviousData, useMutation, useQuery, useQueryClient, useSuspenseQuery} from '@tanstack/react-query'
+import {keepPreviousData, useQuery, useQueryClient, useSuspenseQuery} from '@tanstack/react-query'
 import {parseAsBoolean, parseAsString, parseAsStringLiteral, useQueryState} from 'nuqs'
 import {useEffect} from 'react'
 
@@ -28,7 +28,7 @@ import {PlaceTable} from '@/app/views/place/table'
 
 import {type City, type Country, type Place, type PlaceTag, type PlaceType} from '@/server/types'
 
-import {getBookmarks, toggleBookmark} from '@/model/bookmarks'
+import {useBookmarks} from '@/model/bookmarks'
 import {countryFlag} from '@/model/util'
 
 import {useArrayState} from '@/lib/hooks/nuqs'
@@ -93,10 +93,7 @@ export default function PlacesPage() {
     const trpc = useTRPC()
     const queryClient = useQueryClient()
 
-    const {data: bookmarks} = useSuspenseQuery({
-        queryKey: ['bookmarks'],
-        queryFn: async () => await getBookmarks(),
-    })
+    const {bookmarks} = useBookmarks()
 
     useEffect(() => {
         if (bookmarks.length === 0) setShowBookmarks(false)
@@ -577,14 +574,7 @@ export default function PlacesPage() {
 }
 
 function PlacesStack({allPlace, view}: {allPlace: Place[]; view: View}) {
-    const queryClient = useQueryClient()
-
-    const {data: bookmarks} = useSuspenseQuery({
-        queryKey: ['bookmarks'],
-        queryFn: async () => await getBookmarks(),
-    })
-
-    const {mutate: toggle} = useMutation({mutationFn: async (id: string) => await queryClient.setQueryData(['bookmarks'], await toggleBookmark(id))})
+    const {bookmarks, toggleBookmark} = useBookmarks()
 
     if (allPlace.length === 0) return <NoResults title="No places found." subtitle="Try changing your query." />
 
@@ -603,7 +593,7 @@ function PlacesStack({allPlace, view}: {allPlace: Place[]; view: View}) {
         case 'table':
             return (
                 <Section>
-                    <PlaceTable allPlace={allPlace} bookmarks={bookmarks} onToggleBookmark={id => toggle(id)} />
+                    <PlaceTable allPlace={allPlace} bookmarks={bookmarks} onToggleBookmark={id => toggleBookmark(id)} />
                 </Section>
             )
     }

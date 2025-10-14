@@ -5,7 +5,7 @@ import {SectionHeader} from './section-header'
 
 import {useSuspenseQuery} from '@tanstack/react-query'
 
-import {type Bookmarks, getBookmarks} from '@/model/bookmarks'
+import {type Bookmarks, useBookmarks} from '@/model/bookmarks'
 
 import {useTRPC} from '@/lib/trpc'
 
@@ -13,11 +13,7 @@ import {ScrollStack} from '@/components/views/scroll'
 import {Section} from '@/components/views/section'
 
 export function HomeContentBookmarks() {
-    const {data: bookmarks} = useSuspenseQuery({
-        queryKey: ['bookmarks'],
-        queryFn: async () => await getBookmarks(),
-    })
-
+    const {bookmarks} = useBookmarks()
     if (bookmarks.length === 0) return null
     return <Items bookmarks={bookmarks} />
 }
