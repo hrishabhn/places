@@ -1,3 +1,4 @@
+import {getSeed} from '../seed'
 import {publicProcedure} from '../trpc'
 import {type Place, PlaceSchema} from '../types'
 
@@ -32,6 +33,9 @@ export const GetAllPlace = publicProcedure.input(GetAllPlaceOptions).query(
     }): Promise<Place[]> => {
         // set limit for similarity
         await sql`select set_limit(0.3)`
+
+        // set random seed
+        await sql`select setseed(${getSeed()})`
 
         // order by
         const orderBy = {
