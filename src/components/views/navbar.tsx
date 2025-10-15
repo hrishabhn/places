@@ -1,6 +1,6 @@
 'use client'
 
-import {CityIcon, HouseIcon, type Icon, InfoIcon, ListIcon, MapPinIcon, XIcon} from '@phosphor-icons/react'
+import {CityIcon, HouseIcon, type Icon, InfoIcon, MapPinIcon} from '@phosphor-icons/react'
 import {usePrefetchQuery} from '@tanstack/react-query'
 import {AnimatePresence, motion} from 'motion/react'
 import Link from 'next/link'
@@ -56,16 +56,14 @@ export function Navbar() {
         })
     )
 
-    const Icon: Icon = open ? XIcon : ListIcon
-
     return (
         <>
             <div className="sticky top-0 z-50">
                 <div className="flex w-full items-center border-b border-accent-light/20 bg-accent-dark p-4 text-accent-light sm:px-6">
                     <AppTitle />
                     <div className="grow" />
-                    <button onClick={() => setOpen(!open)} className="active:opacity-60">
-                        <Icon size={24} weight="bold" />
+                    <button onClick={() => setOpen(!open)} className="active:opacity-60" aria-label="Toggle menu">
+                        <HamburgerIcon open={open} />
                     </button>
                 </div>
 
@@ -97,6 +95,23 @@ function AppTitle() {
         <Link href="/" className="line-clamp-1 font-heading text-4xl font-medium active:opacity-60">
             {appTitle}
         </Link>
+    )
+}
+
+function HamburgerIconLine({open, type}: {open: boolean; type: 'top' | 'bottom'}) {
+    return (
+        <div
+            className={`absolute h-0.5 w-full bg-current transition-all duration-300 ease-in-out ${open ? {top: 'rotate-45', bottom: '-rotate-45'}[type] : {top: 'translate-y-[-3px]', bottom: 'translate-y-[3px]'}[type]}`}
+        />
+    )
+}
+
+function HamburgerIcon({open}: {open: boolean}) {
+    return (
+        <div className="relative flex size-6 items-center justify-center">
+            <HamburgerIconLine open={open} type="top" />
+            <HamburgerIconLine open={open} type="bottom" />
+        </div>
     )
 }
 
