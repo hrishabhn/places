@@ -1,12 +1,10 @@
-import {HomeContentBookmarks, HomeContentCities, HomeContentPlaces} from './content'
+import {HomeContent} from './content'
 
 import {CityIcon, MapPinIcon} from '@phosphor-icons/react/ssr'
 import Link from 'next/link'
 
 import {appSubtitle, appTitle} from '@/model/app'
 
-import {Section} from '@/components/views/section'
-import {SectionHeader, SectionHeaderStack} from '@/components/views/section-header'
 import {Splash, SplashIcon} from '@/components/views/splash'
 import {PageStack} from '@/components/views/stack'
 
@@ -32,21 +30,7 @@ export default function Home() {
             />
 
             <PageStack>
-                <HomeContentBookmarks />
-
-                <SectionHeaderStack>
-                    <Section>
-                        <SectionHeader title="Cities" href="/cities" />
-                    </Section>
-                    <HomeContentCities />
-                </SectionHeaderStack>
-
-                <SectionHeaderStack>
-                    <Section>
-                        <SectionHeader title="Suggested Places" href="/places" />
-                    </Section>
-                    <HomeContentPlaces />
-                </SectionHeaderStack>
+                <HomeContent />
             </PageStack>
         </>
     )
