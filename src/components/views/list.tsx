@@ -1,11 +1,7 @@
 import {type Icon} from '@phosphor-icons/react'
 
 export function ListGridStack({children}: {children?: React.ReactNode}) {
-    return (
-        <div className="grid auto-cols-auto grid-flow-row grid-cols-[repeat(auto-fill,minmax(170px,1fr))] gap-3 sm:grid-cols-[repeat(auto-fill,minmax(200px,1fr))] lg:grid-cols-[repeat(auto-fill,minmax(240px,1fr))]">
-            {children}
-        </div>
-    )
+    return <div className="grid auto-cols-auto grid-flow-row grid-cols-[repeat(auto-fill,minmax(240px,1fr))] gap-3">{children}</div>
 }
 
 export function ListScrollStack({children}: {children?: React.ReactNode}) {
