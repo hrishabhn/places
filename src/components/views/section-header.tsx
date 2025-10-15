@@ -11,12 +11,9 @@ type SectionHeaderProps = {
 export function SectionHeader({title, href}: SectionHeaderProps) {
     if (href === undefined) return <p className="line-clamp-1 font-serif text-2xl font-semibold">{title}</p>
     return (
-        <Link href={href} className="group grid w-full grid-cols-[1fr_auto] items-center pt-4 hover:underline active:opacity-60">
+        <Link href={href} className="grid w-full grid-cols-[1fr_auto] items-center pt-4 hover:underline active:opacity-60">
             <SectionHeader title={title} />
-            <ArrowRightIcon
-                weight="bold"
-                className="-translate-x-1 scale-95 text-xl opacity-0 transition group-hover:translate-x-0 group-hover:scale-100 group-hover:opacity-100"
-            />
+            <ArrowRightIcon weight="bold" className="text-lg" />
         </Link>
     )
 }

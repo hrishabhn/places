@@ -41,7 +41,7 @@ function CityListItemImage({url}: {url: string | null}) {
     if (url !== null && !error)
         return (
             <ListItemImageContainer>
-                <Image src={url} alt="City Icon" width={40} height={40} className="brightness-0 contrast-200 grayscale dark:brightness-200" onError={() => setError(true)} />
+                <Image src={url} alt="City Icon" width={40} height={40} className="brightness-200 contrast-200 grayscale" onError={() => setError(true)} />
             </ListItemImageContainer>
         )
 

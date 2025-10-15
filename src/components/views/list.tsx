@@ -24,10 +24,10 @@ type ListItemProps = {
 
 export function ListItem({image, title, subtitle}: ListItemProps) {
     return (
-        <div className="grid grid-cols-[auto_1fr] items-center gap-3">
+        <div className="group grid grid-cols-[auto_1fr] items-center gap-3">
             <div>{image}</div>
             <div>
-                <p className="line-clamp-1 font-serif text-base font-semibold">{title}</p>
+                <p className="line-clamp-1 font-serif text-base font-semibold group-hover:underline">{title}</p>
                 {subtitle ? <p className="line-clamp-1 text-xs font-semibold uppercase opacity-60">{subtitle}</p> : null}
             </div>
         </div>
@@ -35,7 +35,7 @@ export function ListItem({image, title, subtitle}: ListItemProps) {
 }
 
 export function ListItemImageContainer({children}: {children?: React.ReactNode}) {
-    return <div className="rounded-full bg-layer-1 dark:bg-layer-1-dark">{children}</div>
+    return <div className="rounded-full bg-accent-dark text-white">{children}</div>
 }
 
 export function ListItemIcon({icon: Icon}: {icon: Icon}) {

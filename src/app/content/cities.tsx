@@ -18,7 +18,7 @@ export function HomeContentCities() {
     return (
         <SectionHeaderStack>
             <Section>
-                <SectionHeader title="Top Cities" href="/cities" />
+                <SectionHeader title="Cities" href="/cities" />
             </Section>
             <ListScrollStack>
                 {allCity.map(city => (
