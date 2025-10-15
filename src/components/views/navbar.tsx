@@ -87,7 +87,7 @@ export function Navbar() {
                             transition={{ease: 'easeInOut', duration: 0.2}}
                             className="fixed inset-y-0 right-0 z-50 flex w-full flex-col overflow-y-auto bg-layer-0 sm:w-96 dark:bg-layer-1-dark"
                         >
-                            <div className="flex items-center border-b-4 border-current p-4 sm:px-6">
+                            <div className="flex items-center border-b border-accent-light/20 bg-accent-dark p-4 text-accent-light sm:px-6">
                                 <AppTitle />
                                 <div className="grow" />
                                 <button onClick={() => setOpen(false)} className="active:opacity-60">
@@ -124,7 +124,7 @@ type NavbarItemProps = {
 
 function NavbarItem({href, title}: NavbarItemProps) {
     return (
-        <Link href={href} className="line-clamp-1 flex w-full items-center py-1 text-lg font-semibold uppercase tracking-widest active:opacity-60">
+        <Link href={href} className="line-clamp-1 flex w-full items-center py-1 font-serif text-2xl font-semibold active:opacity-60">
             {title}
         </Link>
     )
