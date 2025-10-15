@@ -84,10 +84,10 @@ export default function PlacesPage() {
 
     const [query, setQuery] = useQueryState('q', parseAsString.withDefault(''))
 
-    const [selectedSort, setSelectedSort] = useQueryState('sort', parseAsStringLiteral(allSort).withDefault('name'))
+    const [selectedSort, setSelectedSort] = useQueryState('sort', parseAsStringLiteral(allSort).withDefault(allSort[0]))
+    const [selectedView, setSelectedView] = useQueryState('view', parseAsStringLiteral(allView).withDefault(allView[0]))
 
     const [showMap, setShowMap] = useQueryState('map', parseAsBoolean.withDefault(false))
-    const [selectedView, setSelectedView] = useQueryState('view', parseAsStringLiteral(allView).withDefault('list'))
 
     // query
     const trpc = useTRPC()

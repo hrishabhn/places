@@ -1,10 +1,11 @@
 'use client'
 
-import {ArrowsDownUpIcon, FlagIcon, type Icon, MapPinIcon, PlusIcon, TextTIcon, XIcon} from '@phosphor-icons/react'
+import {ArrowsDownUpIcon, CardsThreeIcon, FlagIcon, type Icon, MapPinIcon, PlusIcon, SquaresFourIcon, TextTIcon, XIcon} from '@phosphor-icons/react'
 import {keepPreviousData, useQuery, useQueryClient, useSuspenseQuery} from '@tanstack/react-query'
 import {parseAsString, parseAsStringLiteral, useQueryState} from 'nuqs'
 
 import {CityCard} from '@/app/views/city/card'
+import {CityListItem} from '@/app/views/city/list-item'
 
 import {type City, type Country} from '@/server/types'
 
@@ -16,6 +17,7 @@ import {useTRPC} from '@/lib/trpc'
 import {type ActiveFilter} from '@/components/views/filter'
 import {getIcon} from '@/components/views/get-icon'
 import {GridStack} from '@/components/views/grid'
+import {ListGrid} from '@/components/views/list'
 import {Loading} from '@/components/views/loading'
 import {MenuBarItem, MenuBarSelect, MenuBarTray} from '@/components/views/menu-bar'
 import {NoResults} from '@/components/views/no-results'
@@ -38,13 +40,27 @@ const sortIcon: Record<Sort, Icon> = {
     name: TextTIcon,
 }
 
+const allView = ['list', 'grid'] as const
+type View = (typeof allView)[number]
+
+const viewTitle: Record<View, string> = {
+    list: 'List',
+    grid: 'Grid',
+}
+
+const viewIcon: Record<View, Icon> = {
+    list: CardsThreeIcon,
+    grid: SquaresFourIcon,
+}
+
 export default function CitiesPage() {
     // state
     const selectedCountrySlug = useArrayState('country')
 
     const [query, setQuery] = useQueryState('q', parseAsString.withDefault(''))
 
-    const [selectedSort, setSelectedSort] = useQueryState('sort', parseAsStringLiteral(allSort).withDefault('place_count'))
+    const [selectedSort, setSelectedSort] = useQueryState('sort', parseAsStringLiteral(allSort).withDefault(allSort[0]))
+    const [selectedView, setSelectedView] = useQueryState('view', parseAsStringLiteral(allView).withDefault(allView[0]))
 
     // query
     const trpc = useTRPC()
@@ -151,6 +167,18 @@ export default function CitiesPage() {
                         )
                     }
                 />
+
+                <MenuBarSelect<View>
+                    icon={CardsThreeIcon}
+                    text={viewTitle[selectedView]}
+                    anchor="bottom end"
+                    allItem={[...allView]}
+                    onSelect={view => setSelectedView(view)}
+                    isActive={view => view === selectedView}
+                    toId={view => view}
+                    toImage={view => ({icon: viewIcon[view]})}
+                    toTitle={view => viewTitle[view]}
+                />
             </MenuBarTray>
 
             <SearchBarFilter query={query} setQuery={setQuery} resultCount={allCity?.length} />
@@ -203,22 +231,35 @@ export default function CitiesPage() {
                         </MenuBarTray>
                     )}
 
-                    <CitiesStack allCity={allCity} />
+                    <CitiesStack allCity={allCity} view={selectedView} />
                 </>
             )}
         </PageStack>
     )
 }
 
-function CitiesStack({allCity}: {allCity: City[]}) {
+function CitiesStack({allCity, view}: {allCity: City[]; view: View}) {
     if (allCity.length === 0) return <NoResults title="No cities found." subtitle="Try changing your query." />
-    return (
-        <Section>
-            <GridStack>
-                {allCity.map(city => (
-                    <CityCard key={city.slug} city={city} />
-                ))}
-            </GridStack>
-        </Section>
-    )
+    switch (view) {
+        case 'list':
+            return (
+                <Section>
+                    <GridStack>
+                        {allCity.map(city => (
+                            <CityCard key={city.slug} city={city} />
+                        ))}
+                    </GridStack>
+                </Section>
+            )
+        case 'grid':
+            return (
+                <Section>
+                    <ListGrid>
+                        {allCity.map(city => (
+                            <CityListItem key={city.slug} city={city} />
+                        ))}
+                    </ListGrid>
+                </Section>
+            )
+    }
 }

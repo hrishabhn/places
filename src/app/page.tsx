@@ -1,35 +1,20 @@
 import {HomeContentBookmarks, HomeContentCities, HomeContentPlaces} from './content'
 
-import {ArrowRightIcon} from '@phosphor-icons/react/dist/ssr'
-import Image from 'next/image'
-import Link from 'next/link'
 import {Suspense} from 'react'
 
 import {appSubtitle, appTitle} from '@/model/app'
 
 import {Loading} from '@/components/views/loading'
-import {SplashTextbox} from '@/components/views/splash'
+import {Splash} from '@/components/views/splash'
 import {PageStack} from '@/components/views/stack'
 
-const backdrop = new URL('https://images.unsplash.com/photo-1549106765-3d312a9425e1')
+const backdrop = new URL('https://images.unsplash.com/photo-1675757275576-c387423d1391')
 
 export default function Home() {
     return (
         <>
-            <div className="relative text-accent-dark">
-                <Image src={backdrop.toString()} alt="Earth from space background" fill className="object-cover object-right-bottom" priority sizes="100vw" quality={85} />
+            <Splash title={appTitle} subtitle={appSubtitle} image={backdrop.toString()} />
 
-                <div className="relative flex h-96 w-full flex-col items-start justify-start px-4 py-6 text-start sm:h-[32rem] sm:p-10">
-                    <SplashTextbox title={appTitle} subtitle={appSubtitle} />
-
-                    <div className="grow" />
-
-                    <Link href="/places" className="flex items-center gap-4 rounded-full border-2 border-current px-3 py-1.5 font-serif text-lg font-semibold active:opacity-60">
-                        <p>Discover</p>
-                        <ArrowRightIcon weight="bold" />
-                    </Link>
-                </div>
-            </div>
             <PageStack padding>
                 <Suspense fallback={<Loading />}>
                     <HomeContentBookmarks />
