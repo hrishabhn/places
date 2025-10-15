@@ -5,7 +5,8 @@ import {appDescription, appDetails} from '@/model/app'
 import {notionUrl} from '@/model/util'
 
 import {Heading} from '@/components/layout'
-import {Button, ButtonTray} from '@/components/ui'
+import {ButtonTray} from '@/components/ui'
+import {MenuBarItem} from '@/components/views/menu-bar'
 import {Section} from '@/components/views/section'
 import {SectionHeader, SectionHeaderStack} from '@/components/views/section-header'
 import {PageStack} from '@/components/views/stack'
@@ -30,10 +31,10 @@ export default function About() {
                 <Section>
                     <ButtonTray>
                         <Link href="/concierge" className="active:opacity-60">
-                            <Button>
+                            <MenuBarItem active>
                                 <SparkleIcon weight="duotone" />
                                 <p>AI Concierge</p>
-                            </Button>
+                            </MenuBarItem>
                         </Link>
                     </ButtonTray>
                 </Section>
@@ -47,29 +48,29 @@ export default function About() {
                     <ButtonTray>
                         {notionDatabaseId ? (
                             <Link href={notionUrl(notionDatabaseId)} target="_blank" className="active:opacity-60">
-                                <Button>
+                                <MenuBarItem active>
                                     <DatabaseIcon weight="duotone" />
                                     <p>Database</p>
-                                </Button>
+                                </MenuBarItem>
                             </Link>
                         ) : null}
                         <Link href="https://developers.google.com/maps/documentation/places/web-service/place-id" target="_blank" className="active:opacity-60">
-                            <Button>
+                            <MenuBarItem active>
                                 <MapPinIcon weight="duotone" />
                                 <p>Place IDs</p>
-                            </Button>
+                            </MenuBarItem>
                         </Link>
                         <Link href="https://github.com/hrishabhn/places" target="_blank" className="active:opacity-60">
-                            <Button>
+                            <MenuBarItem active>
                                 <GithubLogoIcon weight="duotone" />
                                 <p>Source Code</p>
-                            </Button>
+                            </MenuBarItem>
                         </Link>
                         <Link href="https://vercel.com/hrishabhns/places" target="_blank" className="active:opacity-60">
-                            <Button>
+                            <MenuBarItem active>
                                 <TriangleIcon weight="duotone" />
                                 <p>Preview</p>
-                            </Button>
+                            </MenuBarItem>
                         </Link>
                     </ButtonTray>
                 </Section>
