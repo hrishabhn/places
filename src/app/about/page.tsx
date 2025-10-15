@@ -1,4 +1,4 @@
-import {DatabaseIcon, GithubLogoIcon, MapPinIcon, SparkleIcon, TriangleIcon} from '@phosphor-icons/react/dist/ssr'
+import {DatabaseIcon, GithubLogoIcon, MapPinIcon, TriangleIcon} from '@phosphor-icons/react/dist/ssr'
 import Link from 'next/link'
 
 import {appDescription, appDetails} from '@/model/app'
@@ -23,22 +23,6 @@ export default function About() {
                 <Heading size="h4">{appDescription}</Heading>
                 <p>{appDetails}</p>
             </Section>
-
-            <SectionHeaderStack>
-                <Section>
-                    <SectionHeader title="Pages" />
-                </Section>
-                <Section>
-                    <ButtonTray>
-                        <Link href="/concierge" className="active:opacity-60">
-                            <MenuBarItem active>
-                                <SparkleIcon weight="duotone" />
-                                <p>AI Concierge</p>
-                            </MenuBarItem>
-                        </Link>
-                    </ButtonTray>
-                </Section>
-            </SectionHeaderStack>
 
             <SectionHeaderStack>
                 <Section>
