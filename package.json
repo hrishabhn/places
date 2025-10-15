@@ -24,7 +24,7 @@
         "leaflet-defaulticon-compatibility": "^0.1.2",
         "mcp-handler": "^1.0.2",
         "motion": "^12.23.22",
-        "next": "15.5.4",
+        "next": "15.5.1-canary.39",
         "nuqs": "^2.7.0",
         "react": "19.2.0",
         "react-dom": "19.2.0",
