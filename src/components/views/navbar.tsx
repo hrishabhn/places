@@ -1,15 +1,12 @@
 'use client'
 
 import {CityIcon, HouseIcon, type Icon, InfoIcon, MapPinIcon} from '@phosphor-icons/react'
-import {usePrefetchQuery} from '@tanstack/react-query'
 import {AnimatePresence, motion} from 'motion/react'
 import Link from 'next/link'
 import {usePathname} from 'next/navigation'
 import {useEffect, useState} from 'react'
 
 import {appTitle} from '@/model/app'
-
-import {useTRPC} from '@/lib/trpc'
 
 export function Navbar() {
     const [open, setOpen] = useState<boolean>(false)
@@ -18,43 +15,6 @@ export function Navbar() {
     useEffect(() => {
         setOpen(false)
     }, [pathname])
-
-    // prefetch
-    const trpc = useTRPC()
-
-    // cities page
-    usePrefetchQuery(trpc.GetAllCountry.queryOptions({sort: 'city_count'}))
-
-    usePrefetchQuery(trpc.SearchCityFilter.queryOptions({query: ''}))
-    usePrefetchQuery(
-        trpc.GetAllCity.queryOptions({
-            filter: {countrySlug: []},
-            query: '',
-            sort: 'place_count',
-        })
-    )
-
-    // places page
-    usePrefetchQuery(trpc.GetAllCountry.queryOptions({sort: 'place_count'}))
-    usePrefetchQuery(trpc.GetAllCity.queryOptions({sort: 'place_count'}))
-    usePrefetchQuery(trpc.GetAllPlaceType.queryOptions())
-    usePrefetchQuery(trpc.GetAllPlaceTag.queryOptions())
-
-    usePrefetchQuery(trpc.SearchPlaceFilter.queryOptions({query: ''}))
-    usePrefetchQuery(
-        trpc.GetAllPlace.queryOptions({
-            filter: {
-                id: undefined,
-                top: false,
-                countrySlug: [],
-                citySlug: [],
-                placeType: [],
-                placeTag: [],
-            },
-            query: '',
-            sort: 'name',
-        })
-    )
 
     return (
         <>

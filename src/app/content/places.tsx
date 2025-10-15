@@ -2,7 +2,7 @@
 
 import {PlaceCard} from '../views/place/card'
 
-import {useQuery, useQueryClient} from '@tanstack/react-query'
+import {useQuery} from '@tanstack/react-query'
 import {parseAsStringLiteral, useQueryState} from 'nuqs'
 
 import {useTRPC} from '@/lib/trpc'
@@ -37,14 +37,11 @@ export function HomeContentPlaces() {
 
 function Items({view}: {view: PlacesView}) {
     const trpc = useTRPC()
-    const queryClient = useQueryClient()
 
     const {status: allPlaceStatus, data: allPlace} = useQuery(trpc.GetAllPlace.queryOptions({sort: placesViewSort[view], limit}))
 
     if (allPlaceStatus === 'pending') return <LoadingView />
     if (allPlaceStatus === 'error') return <ErrorView />
-
-    allPlace.forEach(place => queryClient.prefetchQuery(trpc.GetPlace.queryOptions({id: place.id})))
 
     return (
         <ScrollStack>
