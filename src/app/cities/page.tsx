@@ -18,12 +18,12 @@ import {type ActiveFilter} from '@/components/views/filter'
 import {getIcon} from '@/components/views/get-icon'
 import {GridStack} from '@/components/views/grid'
 import {ListGridStack} from '@/components/views/list'
-import {Loading} from '@/components/views/loading'
 import {MenuBarItem, MenuBarSelect, MenuBarTray} from '@/components/views/menu-bar'
 import {NoResults} from '@/components/views/no-results'
 import {SearchBarFilter} from '@/components/views/search'
 import {Section} from '@/components/views/section'
 import {PageStack} from '@/components/views/stack'
+import {LoadingView} from '@/components/views/state'
 
 const allSort = ['place_count', 'country', 'name'] as const
 type Sort = (typeof allSort)[number]
@@ -184,7 +184,7 @@ export default function CitiesPage() {
             <SearchBarFilter query={query} setQuery={setQuery} resultCount={allCity?.length} />
 
             {isPending ? (
-                <Loading />
+                <LoadingView />
             ) : (
                 <>
                     {searchResult.length > 0 && (
