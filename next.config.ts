@@ -8,7 +8,10 @@ const nextConfig: NextConfig = {
         // ppr: true,
     },
     images: {
-        domains: ['images.unsplash.com', 'images.lumacdn.com'],
+        remotePatterns: ['images.unsplash.com', 'images.lumacdn.com'].map(hostname => ({
+            protocol: 'https',
+            hostname,
+        })),
     },
 }
 
