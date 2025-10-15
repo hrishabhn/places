@@ -1,7 +1,7 @@
 'use client'
 
 import {ArrowsDownUpIcon, CardsThreeIcon, FlagIcon, type Icon, MapPinIcon, PlusIcon, SquaresFourIcon, TextTIcon, XIcon} from '@phosphor-icons/react'
-import {keepPreviousData, useQuery, useQueryClient, useSuspenseQuery} from '@tanstack/react-query'
+import {useQuery, useSuspenseQuery} from '@tanstack/react-query'
 import {parseAsString, parseAsStringLiteral, useQueryState} from 'nuqs'
 
 import {CityCard} from '@/app/views/city/card'
@@ -64,22 +64,16 @@ export default function CitiesPage() {
 
     // query
     const trpc = useTRPC()
-    const queryClient = useQueryClient()
 
     const {data: allCountry} = useSuspenseQuery(trpc.GetAllCountry.queryOptions({sort: 'city_count'}))
 
     const {status: searchStatus, data: searchResult} = useQuery(trpc.SearchCityFilter.queryOptions({query}))
     const {status: allCityStatus, data: allCity} = useQuery(
-        trpc.GetAllCity.queryOptions(
-            {
-                filter: {countrySlug: selectedCountrySlug.value},
-                query,
-                sort: selectedSort,
-            },
-            {
-                placeholderData: keepPreviousData,
-            }
-        )
+        trpc.GetAllCity.queryOptions({
+            filter: {countrySlug: selectedCountrySlug.value},
+            query,
+            sort: selectedSort,
+        })
     )
 
     // derived state
@@ -90,21 +84,11 @@ export default function CitiesPage() {
 
     // active filter
     const activeFilter: ActiveFilter[] = [
-        ...selectedCountrySlug.value.map(countrySlug => {
-            queryClient.prefetchQuery(
-                trpc.GetAllCity.queryOptions({
-                    filter: {countrySlug: selectedCountrySlug.getToggledValue(countrySlug)},
-                    query,
-                    sort: selectedSort,
-                })
-            )
-
-            return {
-                title: allCountry.find(country => country.slug === countrySlug)?.name || countrySlug,
-                type: 'country' as const,
-                onRemove: () => selectedCountrySlug.remove(countrySlug),
-            }
-        }),
+        ...selectedCountrySlug.value.map(countrySlug => ({
+            title: allCountry.find(country => country.slug === countrySlug)?.name || countrySlug,
+            type: 'country' as const,
+            onRemove: () => selectedCountrySlug.remove(countrySlug),
+        })),
     ]
 
     return (
@@ -134,15 +118,6 @@ export default function CitiesPage() {
                     toImage={country => ({imageURL: countryFlag(country.code)})}
                     toTitle={country => country.name}
                     toSubtitle={country => `${country.city_count} cities`}
-                    onScreen={country =>
-                        queryClient.prefetchQuery(
-                            trpc.GetAllCity.queryOptions({
-                                filter: {countrySlug: selectedCountrySlug.getToggledValue(country.slug)},
-                                query,
-                                sort: selectedSort,
-                            })
-                        )
-                    }
                 />
 
                 <div className="grow" />
@@ -157,15 +132,6 @@ export default function CitiesPage() {
                     toId={option => option}
                     toImage={option => ({icon: sortIcon[option]})}
                     toTitle={option => sortTitle[option]}
-                    onScreen={sort =>
-                        queryClient.prefetchQuery(
-                            trpc.GetAllCity.queryOptions({
-                                filter: {countrySlug: selectedCountrySlug.value},
-                                query,
-                                sort,
-                            })
-                        )
-                    }
                 />
 
                 <MenuBarSelect<View>
@@ -199,17 +165,6 @@ export default function CitiesPage() {
                                 }[result.type]
 
                                 const Icon = getIcon(result.type)
-
-                                // prefetch
-                                if (result.type === 'country') {
-                                    queryClient.prefetchQuery(
-                                        trpc.GetAllCity.queryOptions({
-                                            filter: {countrySlug: selectedCountrySlug.getToggledValue(result.id)},
-                                            query: '',
-                                            sort: selectedSort,
-                                        })
-                                    )
-                                }
 
                                 return (
                                     <button
