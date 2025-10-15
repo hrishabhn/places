@@ -2,17 +2,15 @@ import {HomeContentBookmarks, HomeContentCities, HomeContentPlaces} from './cont
 
 import {CityIcon, MapPinIcon} from '@phosphor-icons/react/ssr'
 import Link from 'next/link'
-import {Suspense} from 'react'
 
 import {appSubtitle, appTitle} from '@/model/app'
 
-import {Loading} from '@/components/views/loading'
+import {Section} from '@/components/views/section'
+import {SectionHeader, SectionHeaderStack} from '@/components/views/section-header'
 import {Splash, SplashIcon} from '@/components/views/splash'
 import {PageStack} from '@/components/views/stack'
 
 const backdrop = new URL('https://images.unsplash.com/photo-1675757275576-c387423d1391')
-
-export const dynamic = 'force-dynamic'
 
 export default function Home() {
     return (
@@ -34,11 +32,21 @@ export default function Home() {
             />
 
             <PageStack padding>
-                <Suspense fallback={<Loading />}>
-                    <HomeContentBookmarks />
+                <HomeContentBookmarks />
+
+                <SectionHeaderStack>
+                    <Section>
+                        <SectionHeader title="Cities" href="/cities" />
+                    </Section>
                     <HomeContentCities />
+                </SectionHeaderStack>
+
+                <SectionHeaderStack>
+                    <Section>
+                        <SectionHeader title="Suggested Places" href="/places" />
+                    </Section>
                     <HomeContentPlaces />
-                </Suspense>
+                </SectionHeaderStack>
             </PageStack>
         </>
     )

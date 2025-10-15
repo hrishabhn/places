@@ -2,15 +2,14 @@
 
 import {PlaceCard} from '../views/place/card'
 
-import {useQueryClient, useSuspenseQuery} from '@tanstack/react-query'
+import {useQuery, useQueryClient} from '@tanstack/react-query'
 import {parseAsStringLiteral, useQueryState} from 'nuqs'
 
 import {useTRPC} from '@/lib/trpc'
 
 import {MenuBarItem, MenuBarTray} from '@/components/views/menu-bar'
 import {ScrollStack} from '@/components/views/scroll'
-import {Section} from '@/components/views/section'
-import {SectionHeader, SectionHeaderStack} from '@/components/views/section-header'
+import {ErrorView, LoadingView} from '@/components/views/state'
 
 const allPlacesView = ['recent', 'random'] as const
 type PlacesView = (typeof allPlacesView)[number]
@@ -20,22 +19,10 @@ const placesViewSort: Record<PlacesView, 'first_visit' | 'random'> = {recent: 'f
 const limit = 5
 
 export function HomeContentPlaces() {
-    // state
     const [selectedView, setSelectedView] = useQueryState('places', parseAsStringLiteral(allPlacesView).withOptions({clearOnDefault: false}).withDefault(allPlacesView[0]))
 
-    // query
-    const trpc = useTRPC()
-    const queryClient = useQueryClient()
-
-    const {data: allPlace} = useSuspenseQuery(trpc.GetAllPlace.queryOptions({sort: placesViewSort[selectedView], limit}))
-
-    allPlacesView.forEach(view => queryClient.prefetchQuery(trpc.GetAllPlace.queryOptions({sort: placesViewSort[view], limit})))
-
     return (
-        <SectionHeaderStack>
-            <Section>
-                <SectionHeader title="Suggested Places" href="/places" />
-            </Section>
+        <>
             <MenuBarTray>
                 {allPlacesView.map(view => (
                     <button key={view} onClick={() => setSelectedView(view)} className="active:opacity-60">
@@ -43,11 +30,27 @@ export function HomeContentPlaces() {
                     </button>
                 ))}
             </MenuBarTray>
-            <ScrollStack>
-                {allPlace.map(place => (
-                    <PlaceCard key={place.id} place={place} />
-                ))}
-            </ScrollStack>
-        </SectionHeaderStack>
+            <Items view={selectedView} />
+        </>
+    )
+}
+
+function Items({view}: {view: PlacesView}) {
+    const trpc = useTRPC()
+    const queryClient = useQueryClient()
+
+    const {status: allPlaceStatus, data: allPlace} = useQuery(trpc.GetAllPlace.queryOptions({sort: placesViewSort[view], limit}))
+
+    if (allPlaceStatus === 'pending') return <LoadingView />
+    if (allPlaceStatus === 'error') return <ErrorView />
+
+    allPlace.forEach(place => queryClient.prefetchQuery(trpc.GetPlace.queryOptions({id: place.id})))
+
+    return (
+        <ScrollStack>
+            {allPlace.map(place => (
+                <PlaceCard key={place.id} place={place} />
+            ))}
+        </ScrollStack>
     )
 }
