@@ -2,7 +2,7 @@
 
 import {getPlaceIcon} from './place-icon'
 
-import {CityIcon, ForkKnifeIcon, HeartIcon, ImageIcon, LinkIcon, MapPinIcon, PencilIcon, StarIcon, TagIcon, TextTIcon} from '@phosphor-icons/react'
+import {CityIcon, ForkKnifeIcon, HeartIcon, ImageIcon, LinkIcon, MapTrifoldIcon, PencilIcon, StarIcon, TagIcon, TextTIcon} from '@phosphor-icons/react'
 import Link from 'next/link'
 
 import {type Place} from '@/server/types'
@@ -120,7 +120,7 @@ export function PlaceTable({allPlace, bookmarks, onToggleBookmark}: PlaceTablePr
                             <TD>
                                 <Link href={googleMapsUrl({name: place.name, city_name: place.city_name, maps_id: place.maps_id})} target="_blank" className="active:opacity-60">
                                     <Badge size="sm">
-                                        <MapPinIcon weight="bold" />
+                                        <MapTrifoldIcon weight="bold" />
                                         <p>Open in Maps</p>
                                     </Badge>
                                 </Link>
