@@ -2,10 +2,11 @@
 
 import {ArrowRightIcon} from '@phosphor-icons/react'
 import Link from 'next/link'
+import {type UrlObject} from 'url'
 
 type SectionHeaderProps = {
     title: string
-    href?: string
+    href?: string | UrlObject
 }
 
 export function SectionHeader({title, href}: SectionHeaderProps) {

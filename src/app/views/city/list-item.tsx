@@ -29,7 +29,7 @@ export function CityListItem({city}: {city: City}) {
     )
 
     return (
-        <Link ref={ref} href={`/places?city=${city.slug}`} className="active:opacity-60">
+        <Link ref={ref} href={{pathname: '/places', query: {city: city.slug}}} className="active:opacity-60">
             <ListItem image={<CityListItemImage url={city.icon} />} title={city.name} subtitle={[city.country_name, `${city.place_count} places`].join(' • ')} />
         </Link>
     )

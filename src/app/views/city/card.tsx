@@ -27,7 +27,7 @@ export function CityCard({city}: {city: City}) {
     )
 
     return (
-        <Link ref={ref} href={`/places?city=${city.slug}`} className="active:opacity-60">
+        <Link ref={ref} href={{pathname: '/places', query: {city: city.slug}}} className="active:opacity-60">
             <SimpleCard
                 //
                 image={city.image}

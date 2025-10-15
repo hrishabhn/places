@@ -28,7 +28,7 @@ function Items({bookmarks}: {bookmarks: Bookmarks}) {
     return (
         <SectionHeaderStack>
             <Section>
-                <SectionHeader title="Your Bookmarks" href="/places?bookmarks=true" />
+                <SectionHeader title="Your Bookmarks" href={{pathname: '/places', query: {bookmarks: true}}} />
             </Section>
             <ScrollStack>
                 {allPlaceBookmark.map(place => (
