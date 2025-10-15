@@ -31,7 +31,7 @@ export default function Home() {
                 image={backdrop.toString()}
             />
 
-            <PageStack padding>
+            <PageStack>
                 <HomeContentBookmarks />
 
                 <SectionHeaderStack>

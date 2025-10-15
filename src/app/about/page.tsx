@@ -15,7 +15,7 @@ const notionDatabaseId = process.env.NOTION_DATABASE_ID
 
 export default function About() {
     return (
-        <PageStack padding>
+        <PageStack>
             <Section>
                 <Heading size="h1" serif>
                     About

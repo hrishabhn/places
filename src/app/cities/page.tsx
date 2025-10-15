@@ -108,7 +108,7 @@ export default function CitiesPage() {
     ]
 
     return (
-        <PageStack padding>
+        <PageStack>
             <MenuBarTray>
                 {activeFilter.map(filter => {
                     const Icon = getIcon(filter.type)

@@ -50,7 +50,7 @@ export function PlacePageContent({id}: {id: string}) {
                 subtitle={place.city_name}
                 image={place.image ?? undefined}
             />
-            <PageStack padding>
+            <PageStack>
                 <SectionHeaderStack>
                     <Section>
                         {tags.length > 0 ? <p className="line-clamp-1 text-sm font-semibold uppercase opacity-60">{tags.join(' • ')}</p> : null}

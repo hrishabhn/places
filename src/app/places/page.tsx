@@ -263,7 +263,7 @@ export default function PlacesPage() {
     return (
         <>
             {singleCity ? <SingleCity city={singleCity} /> : null}
-            <PageStack padding>
+            <PageStack>
                 <MenuBarTray>
                     {activeFilter.map(filter => {
                         const Icon = getIcon(filter.type)
