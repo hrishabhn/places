@@ -563,7 +563,7 @@ export default function PlacesPage() {
                 <div className="fixed inset-x-0 bottom-4 z-10 mx-auto w-fit">
                     <button
                         onClick={() => setShowMap(!showMap)}
-                        className="flex items-center gap-2 rounded-full bg-olive px-3 py-2 text-base font-medium text-cream shadow-md dark:bg-cream dark:text-olive"
+                        className="flex items-center gap-2 rounded-full bg-accent-dark px-3 py-2 text-base font-medium text-accent-light shadow-md"
                     >
                         <MapTrifoldIcon weight="bold" />
                         <p>View on Map</p>
@@ -593,9 +593,11 @@ function PlacesStack({allPlace, view}: {allPlace: Place[]; view: View}) {
 
         case 'table':
             return (
-                <Section>
-                    <PlaceTable allPlace={allPlace} bookmarks={bookmarks} onToggleBookmark={id => toggleBookmark(id)} />
-                </Section>
+                <div className="w-full overflow-hidden">
+                    <Section>
+                        <PlaceTable allPlace={allPlace} bookmarks={bookmarks} onToggleBookmark={id => toggleBookmark(id)} />
+                    </Section>
+                </div>
             )
     }
 }

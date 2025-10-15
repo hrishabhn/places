@@ -43,8 +43,8 @@ export default {
                         dark: colors.zinc[900],
                     },
                 },
-                olive: '#292718',
-                cream: '#F4F1DE',
+                // olive: '#292718',
+                // cream: '#F4F1DE',
                 accent: {
                     dark: colors.blue[800],
                     light: colors.white,

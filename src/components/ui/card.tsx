@@ -42,7 +42,7 @@ export function Card({
 
     const ringClass = (() => {
         if (!ring) return ''
-        if (active) return tw`ring-2 ring-olive dark:ring-cream`
+        if (active) return tw`ring-2 ring-accent-dark dark:ring-accent-light`
         return tw`ring-1 ring-line dark:ring-line-dark`
     })()
 

@@ -89,7 +89,7 @@ function MapActions({onClose, bounds, coordinates}: MapActionsProps) {
 
 function MapButton({icon: Icon}: {icon: Icon}) {
     return (
-        <div className="flex size-8 items-center justify-center rounded-xl bg-cream text-olive shadow backdrop-blur dark:bg-cream/50 dark:text-olive">
+        <div className="flex size-8 items-center justify-center rounded-xl bg-accent-dark text-accent-light shadow backdrop-blur">
             <Icon size={20} weight="bold" />
         </div>
     )

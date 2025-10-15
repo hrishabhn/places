@@ -52,7 +52,7 @@ function CardImage({image, fallbackIcon: Icon}: CardImageProps) {
         )
 
     return (
-        <div className="flex aspect-video items-center justify-center bg-olive/20 text-olive dark:bg-cream/10 dark:text-cream">
+        <div className="flex aspect-video items-center justify-center bg-accent-dark/20">
             <Icon size={24} weight="bold" />
         </div>
     )
