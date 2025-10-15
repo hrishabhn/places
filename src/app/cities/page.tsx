@@ -239,7 +239,7 @@ export default function CitiesPage() {
 }
 
 function CitiesStack({allCity, view}: {allCity: City[]; view: View}) {
-    if (allCity.length === 0) return <NoResults title="No cities found." subtitle="Try changing your query." />
+    if (allCity.length === 0) return <NoResults title="No cities found" subtitle="Try changing your query" />
     switch (view) {
         case 'list':
             return (

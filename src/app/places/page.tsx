@@ -577,7 +577,7 @@ export default function PlacesPage() {
 function PlacesStack({allPlace, view}: {allPlace: Place[]; view: View}) {
     const {bookmarks, toggleBookmark} = useBookmarks()
 
-    if (allPlace.length === 0) return <NoResults title="No places found." subtitle="Try changing your query." />
+    if (allPlace.length === 0) return <NoResults title="No places found" subtitle="Try changing your query" />
 
     switch (view) {
         case 'list':
