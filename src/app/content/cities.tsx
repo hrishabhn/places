@@ -1,7 +1,6 @@
 'use client'
 
 import {CityListItem} from '../views/city/list-item'
-import {SectionHeader} from './section-header'
 
 import {useSuspenseQuery} from '@tanstack/react-query'
 
@@ -9,6 +8,7 @@ import {useTRPC} from '@/lib/trpc'
 
 import {ListGrid} from '@/components/views/list'
 import {Section} from '@/components/views/section'
+import {SectionHeader, SectionHeaderStack} from '@/components/views/section-header'
 
 export function HomeContentCities() {
     const trpc = useTRPC()
@@ -16,13 +16,17 @@ export function HomeContentCities() {
     const {data: allCity} = useSuspenseQuery(trpc.GetAllCity.queryOptions({sort: 'place_count', limit: 6}))
 
     return (
-        <Section>
-            <SectionHeader title="Top Cities" href="/cities" />
-            <ListGrid>
-                {allCity.map(city => (
-                    <CityListItem key={city.slug} city={city} />
-                ))}
-            </ListGrid>
-        </Section>
+        <SectionHeaderStack>
+            <Section>
+                <SectionHeader title="Top Cities" href="/cities" />
+            </Section>
+            <Section>
+                <ListGrid>
+                    {allCity.map(city => (
+                        <CityListItem key={city.slug} city={city} />
+                    ))}
+                </ListGrid>
+            </Section>
+        </SectionHeaderStack>
     )
 }

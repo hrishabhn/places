@@ -2,7 +2,7 @@ import {type Icon} from '@phosphor-icons/react'
 
 export function ListGrid({children}: {children?: React.ReactNode}) {
     return (
-        <div className="grid auto-cols-auto grid-flow-row grid-cols-[repeat(auto-fill,minmax(180px,1fr))] gap-3 py-3 sm:grid-cols-[repeat(auto-fill,minmax(200px,1fr))] lg:grid-cols-[repeat(auto-fill,minmax(240px,1fr))]">
+        <div className="grid auto-cols-auto grid-flow-row grid-cols-[repeat(auto-fill,minmax(170px,1fr))] gap-3 sm:grid-cols-[repeat(auto-fill,minmax(200px,1fr))] lg:grid-cols-[repeat(auto-fill,minmax(240px,1fr))]">
             {children}
         </div>
     )
@@ -33,8 +33,8 @@ export function ListItemImageContainer({children}: {children?: React.ReactNode})
 export function ListItemIcon({icon: Icon}: {icon: Icon}) {
     return (
         <ListItemImageContainer>
-            <div className="flex size-12 items-center justify-center">
-                <Icon size={24} />
+            <div className="flex size-10 items-center justify-center">
+                <Icon size={20} />
             </div>
         </ListItemImageContainer>
     )

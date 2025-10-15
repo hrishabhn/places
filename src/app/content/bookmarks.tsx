@@ -1,7 +1,6 @@
 'use client'
 
 import {PlaceCard} from '../views/place/card'
-import {SectionHeader} from './section-header'
 
 import {useSuspenseQuery} from '@tanstack/react-query'
 
@@ -11,6 +10,7 @@ import {useTRPC} from '@/lib/trpc'
 
 import {ScrollStack} from '@/components/views/scroll'
 import {Section} from '@/components/views/section'
+import {SectionHeader, SectionHeaderStack} from '@/components/views/section-header'
 
 export function HomeContentBookmarks() {
     const {bookmarks} = useBookmarks()
@@ -26,7 +26,7 @@ function Items({bookmarks}: {bookmarks: Bookmarks}) {
     if (allPlaceBookmark.length === 0) return null
 
     return (
-        <>
+        <SectionHeaderStack>
             <Section>
                 <SectionHeader title="Your Bookmarks" href="/places?bookmarks=true" />
             </Section>
@@ -35,6 +35,6 @@ function Items({bookmarks}: {bookmarks: Bookmarks}) {
                     <PlaceCard key={place.id} place={place} />
                 ))}
             </ScrollStack>
-        </>
+        </SectionHeaderStack>
     )
 }

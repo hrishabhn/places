@@ -1,0 +1,14 @@
+.gradient-mask {
+    --stop: 0;
+
+    --linear-gradient: linear-gradient(to bottom left, transparent var(--stop), black 100%);
+
+    -webkit-mask-image: var(--linear-gradient);
+    mask-image: var(--linear-gradient);
+}
+
+@screen sm {
+    .gradient-mask {
+        --stop: 50%;
+    }
+}

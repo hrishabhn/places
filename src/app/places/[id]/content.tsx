@@ -10,9 +10,9 @@ import {googleMapsUrl, notionUrl} from '@/model/util'
 
 import {useTRPC} from '@/lib/trpc'
 
-import {Heading} from '@/components/layout'
 import {MenuBarItem, MenuBarTray} from '@/components/views/menu-bar'
 import {Section} from '@/components/views/section'
+import {SectionHeader, SectionHeaderStack} from '@/components/views/section-header'
 import {Splash} from '@/components/views/splash'
 import {PageStack} from '@/components/views/stack'
 
@@ -25,44 +25,49 @@ export function PlacePageContent({id}: {id: string}) {
 
     if (place === null) return notFound()
 
+    const tags: string[] = [...place.type, ...place.tags]
+
     return (
-        <PageStack padding>
-            <Splash title={place.name} subtitle={place.city_name} description={place.description ?? undefined} image={place.image ?? undefined} />
+        <>
+            <Splash title={place.name} subtitle={place.city_name} image={place.image ?? undefined} />
+            <PageStack padding>
+                <SectionHeaderStack>
+                    <Section>
+                        {tags.length > 0 ? <p className="line-clamp-1 text-sm font-semibold uppercase opacity-60">{tags.join(' • ')}</p> : null}
+                        {place.description ? <p>{place.description}</p> : null}
+                    </Section>
 
-            <Section>
-                <Heading size="h2" serif>
-                    Links
-                </Heading>
-            </Section>
+                    <MenuBarTray>
+                        <Link href={googleMapsUrl({name: place.name, city_name: place.city_name, maps_id: place.maps_id})} target="_blank">
+                            <MenuBarItem>
+                                <MapTrifoldIcon weight="bold" />
+                                <p>Open in Google Maps</p>
+                            </MenuBarItem>
+                        </Link>
+                        <Link href={notionUrl(place.id)} target="_blank">
+                            <MenuBarItem>
+                                <PencilIcon weight="bold" />
+                                <p>Edit</p>
+                            </MenuBarItem>
+                        </Link>
+                    </MenuBarTray>
+                </SectionHeaderStack>
 
-            <MenuBarTray>
-                <Link href={googleMapsUrl({name: place.name, city_name: place.city_name, maps_id: place.maps_id})} target="_blank">
-                    <MenuBarItem>
-                        <MapTrifoldIcon weight="bold" />
-                        <p>Open in Google Maps</p>
-                    </MenuBarItem>
-                </Link>
-                <Link href={notionUrl(place.id)} target="_blank">
-                    <MenuBarItem>
-                        <PencilIcon weight="bold" />
-                        <p>Edit</p>
-                    </MenuBarItem>
-                </Link>
-            </MenuBarTray>
+                <SectionHeaderStack>
+                    <Section>
+                        <SectionHeader title="Actions" />
+                    </Section>
 
-            <Section>
-                <Heading size="h2" serif>
-                    Actions
-                </Heading>
-            </Section>
-            <MenuBarTray>
-                <button onClick={() => toggleBookmark(place.id)} className="active:opacity-60">
-                    <MenuBarItem active={bookmarks.includes(place.id)}>
-                        <HeartIcon weight={bookmarks.includes(place.id) ? 'fill' : 'bold'} />
-                        <p>Bookmark</p>
-                    </MenuBarItem>
-                </button>
-            </MenuBarTray>
-        </PageStack>
+                    <MenuBarTray>
+                        <button onClick={() => toggleBookmark(place.id)} className="active:opacity-60">
+                            <MenuBarItem active={bookmarks.includes(place.id)}>
+                                <HeartIcon weight={bookmarks.includes(place.id) ? 'fill' : 'bold'} />
+                                <p>Bookmark</p>
+                            </MenuBarItem>
+                        </button>
+                    </MenuBarTray>
+                </SectionHeaderStack>
+            </PageStack>
+        </>
     )
 }
