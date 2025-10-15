@@ -17,7 +17,7 @@ import {useTRPC} from '@/lib/trpc'
 import {type ActiveFilter} from '@/components/views/filter'
 import {getIcon} from '@/components/views/get-icon'
 import {GridStack} from '@/components/views/grid'
-import {ListGrid} from '@/components/views/list'
+import {ListGridStack} from '@/components/views/list'
 import {Loading} from '@/components/views/loading'
 import {MenuBarItem, MenuBarSelect, MenuBarTray} from '@/components/views/menu-bar'
 import {NoResults} from '@/components/views/no-results'
@@ -254,11 +254,11 @@ function CitiesStack({allCity, view}: {allCity: City[]; view: View}) {
         case 'grid':
             return (
                 <Section>
-                    <ListGrid>
+                    <ListGridStack>
                         {allCity.map(city => (
                             <CityListItem key={city.slug} city={city} />
                         ))}
-                    </ListGrid>
+                    </ListGridStack>
                 </Section>
             )
     }

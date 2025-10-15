@@ -46,8 +46,8 @@ export default {
                 olive: '#292718',
                 cream: '#F4F1DE',
                 accent: {
-                    dark: '#292718',
-                    light: '#F4F1DE',
+                    dark: colors.blue[800],
+                    light: colors.white,
                 },
             },
             keyframes: {

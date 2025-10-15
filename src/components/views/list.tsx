@@ -1,8 +1,16 @@
 import {type Icon} from '@phosphor-icons/react'
 
-export function ListGrid({children}: {children?: React.ReactNode}) {
+export function ListGridStack({children}: {children?: React.ReactNode}) {
     return (
         <div className="grid auto-cols-auto grid-flow-row grid-cols-[repeat(auto-fill,minmax(170px,1fr))] gap-3 sm:grid-cols-[repeat(auto-fill,minmax(200px,1fr))] lg:grid-cols-[repeat(auto-fill,minmax(240px,1fr))]">
+            {children}
+        </div>
+    )
+}
+
+export function ListScrollStack({children}: {children?: React.ReactNode}) {
+    return (
+        <div className="grid snap-x snap-mandatory scroll-px-4 auto-cols-[240px] grid-flow-col grid-rows-3 gap-3 overflow-x-auto px-4 sm:scroll-px-10 sm:px-10 [&>*]:snap-start">
             {children}
         </div>
     )
