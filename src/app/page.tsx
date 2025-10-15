@@ -10,6 +10,8 @@ import {PageStack} from '@/components/views/stack'
 
 const backdrop = new URL('https://images.unsplash.com/photo-1675757275576-c387423d1391')
 
+export const dynamic = 'force-dynamic'
+
 export default function Home() {
     return (
         <>
