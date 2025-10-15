@@ -2,7 +2,9 @@
 
 import {BeerSteinIcon, BookOpenIcon, BreadIcon, CoffeeIcon, DiscoBallIcon, ForkKnifeIcon, IceCreamIcon, type Icon, MapPinIcon, TreeIcon} from '@phosphor-icons/react'
 
-export function getPlaceIcon(placeType: string | undefined): Icon {
+export function getPlaceIcon(placeType: string | undefined, options: {returnDefault: true}): Icon
+export function getPlaceIcon(placeType: string | undefined, options: {returnDefault: false}): Icon | undefined
+export function getPlaceIcon(placeType: string | undefined, {returnDefault}: {returnDefault: boolean}): Icon | undefined {
     switch (placeType) {
         // food
         case 'Restaurant':
@@ -39,6 +41,6 @@ export function getPlaceIcon(placeType: string | undefined): Icon {
 
         // default
         default:
-            return MapPinIcon
+            return returnDefault ? MapPinIcon : undefined
     }
 }

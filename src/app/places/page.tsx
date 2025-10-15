@@ -356,7 +356,7 @@ export default function PlacesPage() {
                         onSelect={placeType => selectedPlaceType.toggle(placeType.type_name)}
                         isActive={placeType => selectedPlaceType.value.includes(placeType.type_name)}
                         toId={placeType => placeType.type_name}
-                        toImage={placeType => ({icon: getPlaceIcon(placeType.type_name)})}
+                        toImage={placeType => ({icon: getPlaceIcon(placeType.type_name, {returnDefault: true})})}
                         toTitle={placeType => placeType.type_name}
                         toSubtitle={placeType => `${placeType.place_count} places`}
                         onScreen={placeType =>

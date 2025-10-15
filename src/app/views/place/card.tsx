@@ -32,7 +32,7 @@ export function PlaceCard({place}: {place: Place}) {
             <SimpleCard
                 //
                 image={place.image}
-                fallbackIcon={getPlaceIcon(place.type.at(0))}
+                fallbackIcon={getPlaceIcon(place.type.at(0), {returnDefault: true})}
                 title={place.name}
                 subtitle={place.city_name}
                 tags={[...place.type, ...place.tags]}

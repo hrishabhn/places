@@ -97,7 +97,7 @@ export function PlaceTable({allPlace, bookmarks, onToggleBookmark}: PlaceTablePr
 
                             <TD>
                                 {place.type.map(p => {
-                                    const Icon = getPlaceIcon(p)
+                                    const Icon = getPlaceIcon(p, {returnDefault: true})
                                     return (
                                         <Badge key={p} size="sm" theme="g" border={false}>
                                             <Icon weight="duotone" />

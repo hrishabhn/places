@@ -40,7 +40,7 @@ export function PlacesMapModal({isOpen, onClose, allPlace}: {isOpen: boolean; on
                                 subtitle: place.type.at(0),
                                 lat: place.lat,
                                 lon: place.lon,
-                                icon: getPlaceIcon(place.type.at(0)),
+                                icon: getPlaceIcon(place.type.at(0), {returnDefault: false}),
                             }))}
                         />
                     </motion.div>
