@@ -113,7 +113,7 @@ export default function CitiesPage() {
                 {activeFilter.map(filter => {
                     const Icon = getIcon(filter.type)
                     return (
-                        <button key={filter.title} className="shrink-0 active:opacity-60" onClick={() => filter.onRemove()}>
+                        <button key={filter.title} className="active:opacity-60" onClick={() => filter.onRemove()}>
                             <MenuBarItem active>
                                 <Icon weight="duotone" />
                                 <p>{filter.title}</p>

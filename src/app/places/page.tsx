@@ -268,7 +268,7 @@ export default function PlacesPage() {
                     {activeFilter.map(filter => {
                         const Icon = getIcon(filter.type)
                         return (
-                            <button key={filter.title} onClick={() => filter.onRemove()} className="shrink-0 active:opacity-60">
+                            <button key={filter.title} onClick={() => filter.onRemove()} className="active:opacity-60">
                                 <MenuBarItem active>
                                     <Icon weight="duotone" />
                                     <p>{filter.title}</p>
