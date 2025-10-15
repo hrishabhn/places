@@ -1,37 +1,42 @@
 import './style.css'
 
+import {type Icon} from '@phosphor-icons/react'
+
 import {SimpleImage} from '@/components/ui'
 
 type SplashProps = {
+    icon?: React.ReactNode
     title: string
     subtitle?: string
     image?: string
 }
 
-export function Splash({title, subtitle, image}: SplashProps) {
+export function Splash({icon, title, subtitle, image}: SplashProps) {
     return (
         <>
-            <div className="relative aspect-square sm:aspect-video">
+            <div className="relative aspect-[4/5] w-full sm:aspect-video">
                 <div className="gradient-mask absolute inset-0 z-10 bg-black/60 backdrop-blur" />
                 <SimpleImage url={image} alt={title} />
                 <div className="absolute inset-0 z-10 flex flex-col items-start justify-end p-4 text-white sm:p-10">
-                    <SplashTextbox title={title} subtitle={subtitle} />
+                    {icon}
+                    <p className="line-clamp-3 font-heading text-6xl lg:text-9xl">{title}</p>
+                    {subtitle ? <p className="line-clamp-3 font-heading text-4xl lg:text-6xl">{subtitle}</p> : null}
                 </div>
             </div>
         </>
     )
 }
 
-type SplashTextboxProps = {
-    title: string
-    subtitle?: string
+export function SplashIconContainer({children}: {children?: React.ReactNode}) {
+    return <div className="my-2 rounded-full bg-white/10 ring-1 ring-white/20 backdrop-blur-sm">{children}</div>
 }
 
-export function SplashTextbox({title, subtitle}: SplashTextboxProps) {
+export function SplashIcon({icon: Icon}: {icon: Icon}) {
     return (
-        <>
-            <p className="line-clamp-3 font-heading text-6xl lg:text-9xl">{title}</p>
-            {subtitle ? <p className="line-clamp-3 font-heading text-4xl lg:text-6xl">{subtitle}</p> : null}
-        </>
+        <SplashIconContainer>
+            <div className="flex size-12 items-center justify-center">
+                <Icon size={24} />
+            </div>
+        </SplashIconContainer>
     )
 }

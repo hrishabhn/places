@@ -1,6 +1,7 @@
 'use client'
 
 import {PlacesMapModal} from './map'
+import {SingleCity} from './single-city'
 
 import {
     ArrowsDownUpIcon,
@@ -42,7 +43,6 @@ import {MenuBarItem, MenuBarSelect, MenuBarTray} from '@/components/views/menu-b
 import {NoResults} from '@/components/views/no-results'
 import {SearchBarFilter} from '@/components/views/search'
 import {Section} from '@/components/views/section'
-import {Splash} from '@/components/views/splash'
 import {PageStack} from '@/components/views/stack'
 
 const allSort = ['name', 'country', 'city'] as const
@@ -262,7 +262,7 @@ export default function PlacesPage() {
 
     return (
         <>
-            {singleCity ? <Splash title={singleCity.name} subtitle={singleCity.country_name} image={singleCity.image ?? undefined} /> : null}
+            {singleCity ? <SingleCity city={singleCity} /> : null}
             <PageStack padding>
                 <MenuBarTray>
                     {activeFilter.map(filter => {

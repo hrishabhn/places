@@ -38,12 +38,12 @@ export function CityListItem({city}: {city: City}) {
 function CityListItemImage({url}: {url: string | null}) {
     const [error, setError] = useState<boolean>(false)
 
-    if (url !== null && !error)
-        return (
-            <ListItemImageContainer>
-                <Image src={url} alt="City Icon" width={40} height={40} className="brightness-200 contrast-200 grayscale" onError={() => setError(true)} />
-            </ListItemImageContainer>
-        )
+    if (url === null || error) return <ListItemIcon icon={CityIcon} />
 
-    return <ListItemIcon icon={CityIcon} />
+    const size = 40
+    return (
+        <ListItemImageContainer>
+            <Image src={url} alt="City Icon" width={size} height={size} className="brightness-200 contrast-200 grayscale" onError={() => setError(true)} />
+        </ListItemImageContainer>
+    )
 }
