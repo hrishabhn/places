@@ -8,7 +8,7 @@ import {type City} from '@/server/types'
 import {Splash, SplashIconContainer} from '@/components/views/splash'
 
 export function SingleCity({city}: {city: City}) {
-    return <Splash icon={city.icon !== null ? <SingleCityIcon url={city.icon} /> : undefined} title={city.name} subtitle={city.country_name} image={city.image ?? undefined} />
+    return <Splash actions={city.icon !== null ? <SingleCityIcon url={city.icon} /> : undefined} title={city.name} subtitle={city.country_name} image={city.image ?? undefined} />
 }
 
 function SingleCityIcon({url}: {url: string}) {
