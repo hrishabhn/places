@@ -1,6 +1,6 @@
 'use client'
 
-import {CityIcon, FlagIcon, ForkKnifeIcon, HeartIcon, MapTrifoldIcon, PencilIcon, TagIcon} from '@phosphor-icons/react'
+import {CityIcon, FlagIcon, ForkKnifeIcon, HeartIcon, MapTrifoldIcon, PencilIcon, StarIcon, TagIcon} from '@phosphor-icons/react'
 import {useSuspenseQuery} from '@tanstack/react-query'
 import Link from 'next/link'
 import {notFound} from 'next/navigation'
@@ -37,6 +37,7 @@ export function PlacePageContent({id}: {id: string}) {
             <Splash
                 actions={
                     <>
+                        {place.top ? <SplashIcon icon={StarIcon} /> : null}
                         <SplashIcon icon={getPlaceIcon(place.type.at(0), {returnDefault: true})} />
                         <Link href={googleMaps} target="_blank" className="active:opacity-60">
                             <SplashIcon icon={MapTrifoldIcon} />
