@@ -2,13 +2,14 @@ import type {NextConfig} from 'next'
 
 const nextConfig: NextConfig = {
     experimental: {
-        dynamicIO: true,
-        useCache: true,
         reactCompiler: true,
         ppr: true,
     },
     images: {
-        domains: ['images.unsplash.com'],
+        remotePatterns: ['images.unsplash.com', 'images.lumacdn.com'].map(hostname => ({
+            protocol: 'https',
+            hostname,
+        })),
     },
 }
 

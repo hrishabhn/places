@@ -1,120 +1,92 @@
 'use client'
 
-import {CityIcon, HouseIcon, type Icon, InfoIcon, ListIcon, MapPinIcon, XIcon} from '@phosphor-icons/react'
-import {usePrefetchQuery} from '@tanstack/react-query'
+import {CityIcon, HouseIcon, type Icon, InfoIcon, MapPinIcon} from '@phosphor-icons/react'
+import {AnimatePresence, motion} from 'motion/react'
 import Link from 'next/link'
-import {useState} from 'react'
+import {usePathname} from 'next/navigation'
+import {useEffect, useState} from 'react'
 
 import {appTitle} from '@/model/app'
 
-import {useTRPC} from '@/lib/trpc'
-
 export function Navbar() {
     const [open, setOpen] = useState<boolean>(false)
+    const pathname = usePathname()
 
-    // prefetch
-    const trpc = useTRPC()
-
-    // cities page
-    usePrefetchQuery(trpc.GetAllCountry.queryOptions({sort: 'city_count'}))
-
-    usePrefetchQuery(trpc.SearchCityFilter.queryOptions({query: ''}))
-    usePrefetchQuery(
-        trpc.GetAllCity.queryOptions({
-            filter: {countrySlug: []},
-            query: '',
-            sort: 'place_count',
-        })
-    )
-
-    // places page
-    usePrefetchQuery(trpc.GetAllCountry.queryOptions({sort: 'place_count'}))
-    usePrefetchQuery(trpc.GetAllCity.queryOptions({sort: 'place_count'}))
-    usePrefetchQuery(trpc.GetAllPlaceType.queryOptions())
-    usePrefetchQuery(trpc.GetAllPlaceTag.queryOptions())
-
-    usePrefetchQuery(trpc.SearchPlaceFilter.queryOptions({query: ''}))
-    usePrefetchQuery(
-        trpc.GetAllPlace.queryOptions({
-            filter: {
-                id: undefined,
-                top: false,
-                countrySlug: [],
-                citySlug: [],
-                placeType: [],
-                placeTag: [],
-            },
-            query: '',
-            sort: 'name',
-        })
-    )
+    useEffect(() => {
+        setOpen(false)
+    }, [pathname])
 
     return (
         <>
-            <div className="hidden w-full items-center gap-4 border-b border-cream/10 bg-olive p-4 text-cream sm:grid sm:grid-cols-[1fr,auto,1fr] sm:px-10">
-                <div className="flex items-center justify-start">
-                    <Link href="/" className="active:opacity-60">
-                        <p className="font-serif text-2xl font-bold">{appTitle}</p>
-                    </Link>
-                </div>
-                <div className="flex items-center justify-center gap-4">
-                    <NavbarItemDesktop href="/" icon={HouseIcon} title="Home" />
-                    <NavbarItemDesktop href="/cities" icon={CityIcon} title="Cities" />
-                    <NavbarItemDesktop href="/places" icon={MapPinIcon} title="Places" />
-                </div>
-                <div className="flex items-center justify-end">
-                    <NavbarItemDesktop href="/about" icon={InfoIcon} title="About" />
-                </div>
-            </div>
-
-            <div className="w-full border-b border-cream/10 bg-olive py-4 text-cream sm:hidden">
-                <div className="flex w-full items-center px-4 text-2xl">
-                    <Link href="/" className="active:opacity-60">
-                        <p className="font-serif text-2xl font-bold">{appTitle}</p>
-                    </Link>
+            <div className="sticky top-0 z-50">
+                <div className="flex w-full items-center border-b border-accent-light/20 bg-accent-dark p-4 text-accent-light sm:px-6">
+                    <AppTitle />
                     <div className="grow" />
-                    <button onClick={() => setOpen(!open)} className="active:opacity-60">
-                        {open ? <XIcon weight="bold" /> : <ListIcon weight="bold" />}
+                    <button onClick={() => setOpen(!open)} className="active:opacity-60" aria-label="Toggle menu">
+                        <HamburgerIcon open={open} />
                     </button>
                 </div>
-                {open && (
-                    <div className="flex w-full flex-col px-4 pt-4">
-                        <NavbarItemMobile href="/" icon={HouseIcon} title="Home" onClick={() => setOpen(false)} />
-                        <NavbarItemMobile href="/cities" icon={CityIcon} title="Cities" onClick={() => setOpen(false)} />
-                        <NavbarItemMobile href="/places" icon={MapPinIcon} title="Places" onClick={() => setOpen(false)} />
-                        <NavbarItemMobile href="/about" icon={InfoIcon} title="About" onClick={() => setOpen(false)} />
-                    </div>
-                )}
+
+                <AnimatePresence>
+                    {open && (
+                        <>
+                            <motion.div
+                                initial={{translateY: '-100%'}}
+                                animate={{translateY: 0}}
+                                exit={{translateY: '-100%', transition: {duration: 0.1}}}
+                                transition={{ease: 'easeInOut', duration: 0.2}}
+                                className="absolute inset-x-0 top-full -z-10 flex flex-col border-b border-accent-light/20 bg-accent-dark p-4 text-accent-light shadow-lg sm:px-6"
+                            >
+                                <NavbarItem href="/" title="Home" icon={HouseIcon} />
+                                <NavbarItem href="/cities" title="Cities" icon={CityIcon} />
+                                <NavbarItem href="/places" title="Places" icon={MapPinIcon} />
+                                <NavbarItem href="/about" title="About" icon={InfoIcon} />
+                            </motion.div>
+                        </>
+                    )}
+                </AnimatePresence>
             </div>
         </>
+    )
+}
+
+function AppTitle() {
+    return (
+        <Link href="/" className="line-clamp-1 font-heading text-4xl font-medium active:opacity-60">
+            {appTitle}
+        </Link>
+    )
+}
+
+function HamburgerIconLine({open, type}: {open: boolean; type: 'top' | 'bottom'}) {
+    return (
+        <div
+            className={`absolute h-0.5 w-full bg-current transition-all duration-300 ease-in-out ${open ? {top: 'rotate-45', bottom: '-rotate-45'}[type] : {top: 'translate-y-[-3px]', bottom: 'translate-y-[3px]'}[type]}`}
+        />
+    )
+}
+
+function HamburgerIcon({open}: {open: boolean}) {
+    return (
+        <div className="relative flex size-6 items-center justify-center">
+            <HamburgerIconLine open={open} type="top" />
+            <HamburgerIconLine open={open} type="bottom" />
+        </div>
     )
 }
 
 // shared
 type NavbarItemProps = {
     href: string
-    icon: Icon
     title: string
-    onClick?: () => void
+    icon: Icon
 }
 
-function NavbarItemDesktop({href, icon, title, onClick}: NavbarItemProps) {
-    const Icon = icon
+function NavbarItem({href, title, icon: Icon}: NavbarItemProps) {
     return (
-        <Link href={href} onClick={onClick} className="flex items-center gap-1 text-sm font-semibold active:opacity-60">
-            <Icon weight="bold" />
-            <p className="line-clamp-1">{title}</p>
-        </Link>
-    )
-}
-
-function NavbarItemMobile({href, icon, title, onClick}: NavbarItemProps) {
-    const Icon = icon
-    return (
-        <Link href={href} onClick={onClick} className="flex w-full items-center py-2 font-semibold active:opacity-60">
-            <p>{title}</p>
-            <div className="grow" />
-            <Icon weight="bold" />
+        <Link href={href} className="line-clamp-1 flex w-full items-center py-2 font-heading text-2xl font-medium hover:underline active:opacity-60">
+            <p className="grow">{title}</p>
+            <Icon weight="duotone" />
         </Link>
     )
 }

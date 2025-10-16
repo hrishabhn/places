@@ -30,25 +30,29 @@ type MenuBarSelectProps<T> = {
 export function MenuBarSelect<T>({icon: Icon, text, active = false, anchor, allItem, onSelect, isActive, toId, toImage, toTitle, toSubtitle, onScreen}: MenuBarSelectProps<T>) {
     return (
         <Menu>
-            <MenuButton className="active:opacity-60">
-                <MenuBarItem active={active}>
-                    <Icon weight="bold" className="shrink-0" />
-                    <p>{text}</p>
-                </MenuBarItem>
-            </MenuButton>
-            <DropdownMenuItems anchor={anchor}>
-                {allItem.map(item => (
-                    <Item
-                        key={toId(item)}
-                        onSelect={() => onSelect(item)}
-                        image={toImage ? toImage(item) : undefined}
-                        title={toTitle(item)}
-                        subtitle={toSubtitle ? toSubtitle(item) : undefined}
-                        active={isActive(item)}
-                        onScreen={() => onScreen?.(item)}
-                    />
-                ))}
-            </DropdownMenuItems>
+            {({open}) => (
+                <>
+                    <MenuButton className="active:opacity-60">
+                        <MenuBarItem active={active}>
+                            <Icon weight="bold" className="shrink-0" />
+                            <p>{text}</p>
+                        </MenuBarItem>
+                    </MenuButton>
+                    <DropdownMenuItems open={open} anchor={anchor}>
+                        {allItem.map(item => (
+                            <Item
+                                key={toId(item)}
+                                onSelect={() => onSelect(item)}
+                                image={toImage ? toImage(item) : undefined}
+                                title={toTitle(item)}
+                                subtitle={toSubtitle ? toSubtitle(item) : undefined}
+                                active={isActive(item)}
+                                onScreen={() => onScreen?.(item)}
+                            />
+                        ))}
+                    </DropdownMenuItems>
+                </>
+            )}
         </Menu>
     )
 }

@@ -13,7 +13,7 @@ type CustomDivIconProps = {
 
 export function customDivIcon({theme, icon: Icon}: CustomDivIconProps) {
     const themeClass = {
-        accent: tw`bg-olive text-cream dark:bg-cream dark:text-olive`,
+        accent: tw`bg-accent-dark text-accent-light dark:bg-accent-light dark:text-accent-dark`,
         blue: tw`bg-blue-500 text-white`,
     }[theme]
 

@@ -44,6 +44,7 @@ export const GetAllCity = publicProcedure.input(GetAllCityOptions).query(
                     country.name as country_name,
                     country.code as country_code,
                     city.image,
+                    city.icon,
                     (SELECT COUNT(*) FROM place WHERE place.city_slug = city.slug) as place_count
                     ${
                         query

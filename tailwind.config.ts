@@ -11,7 +11,21 @@ export default {
     theme: {
         extend: {
             fontFamily: {
+                sans: [
+                    'var(--font-sans)',
+                    '-apple-system',
+                    'BlinkMacSystemFont',
+                    '"Apple Color Emoji"',
+                    'Inter',
+                    'Roboto',
+                    'Segoe UI',
+                    'Helvetica Neue',
+                    'Arial',
+                    'Noto Sans',
+                    'sans-serif',
+                ],
                 serif: ['var(--font-serif)', 'serif'],
+                heading: ['var(--font-heading)', 'serif'],
             },
             colors: {
                 g: colors.stone,
@@ -21,16 +35,20 @@ export default {
                 },
                 layer: {
                     0: {
-                        DEFAULT: colors.stone[100],
-                        dark: colors.stone[950],
+                        DEFAULT: colors.white,
+                        dark: colors.zinc[950],
                     },
                     1: {
-                        DEFAULT: colors.white,
-                        dark: colors.stone[900],
+                        DEFAULT: colors.zinc[100],
+                        dark: colors.zinc[900],
                     },
                 },
-                olive: '#292718',
-                cream: '#F4F1DE',
+                // olive: '#292718',
+                // cream: '#F4F1DE',
+                accent: {
+                    dark: colors.blue[800],
+                    light: colors.white,
+                },
             },
             keyframes: {
                 blink: {

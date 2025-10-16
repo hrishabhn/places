@@ -5,7 +5,7 @@ import {Heading} from '@/components/layout'
 export function NoResults({title, subtitle}: {title: string; subtitle: string}) {
     return (
         <div className="flex flex-col items-center gap-4 py-12">
-            <div className="rounded-full bg-olive p-4 text-cream dark:bg-cream dark:text-olive">
+            <div className="rounded-full bg-accent-dark p-4 text-accent-light dark:bg-accent-light dark:text-accent-dark">
                 <QuestionMarkIcon weight="bold" className="text-3xl" />
             </div>
             <div className="flex flex-col items-center">

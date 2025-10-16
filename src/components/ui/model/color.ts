@@ -37,7 +37,7 @@ export const getCardThemeClass = (theme: CardTheme, active: boolean): string =>
             : tw`hover:bg-black/5 active:bg-black/10 dark:hover:bg-white/5 dark:active:bg-white/10`,
 
         // custom
-        accent: tw`bg-olive text-cream dark:bg-cream dark:text-olive`,
+        accent: tw`bg-accent-dark text-accent-light dark:bg-accent-light dark:text-accent-dark`,
         g: tw`bg-g-500/25`,
 
         // tailwind

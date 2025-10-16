@@ -1,65 +1,38 @@
 'use client'
 
-import {TagTray, type Tags} from './tags'
-
-import {HeartIcon, type Icon} from '@phosphor-icons/react'
-import Link from 'next/link'
+import {ArrowRightIcon, type Icon} from '@phosphor-icons/react'
 import {useState} from 'react'
 
-import {Heading} from '@/components/layout'
-import {Badge, Card, SimpleImage} from '@/components/ui'
+import {SimpleImage} from '@/components/ui'
+import {HLine} from '@/components/views/h-line'
 
 type SimpleCardProps = {
     image?: string | null
     fallbackIcon: Icon
+
     title: string
-    tags?: Tags
-    bookmark?: boolean
-    onBookmark?: () => void
-    links?: CardLinkProps[]
-    description?: string | null
+    subtitle?: string
+    tags?: string[]
 }
 
-export function SimpleCard({image, fallbackIcon, title, tags = [], bookmark, onBookmark, links = [], description}: SimpleCardProps) {
+export function SimpleCard({image, fallbackIcon, title, subtitle, tags = []}: SimpleCardProps) {
     return (
-        <Card rounded="md" ring>
+        <div className="group">
             <CardImage image={image} fallbackIcon={fallbackIcon} />
 
-            <div className="h-px w-full bg-line dark:bg-line-dark" />
-
-            <div className="flex flex-col items-start gap-1 py-3">
-                <div className="flex w-full items-start gap-1 px-4">
-                    <div className="space-y-1">
-                        <Heading size="h3" withoutPadding serif>
-                            <p className="line-clamp-2 font-bold text-olive dark:text-cream">{title}</p>
-                        </Heading>
-                        <TagTray tags={tags} size="sm" />
-                    </div>
-
-                    <div className="grow" />
-
-                    {bookmark !== undefined && (
-                        <button className="active:opacity-60" onClick={() => onBookmark?.()}>
-                            <HeartIcon weight={bookmark ? 'fill' : 'bold'} className={`text-lg ${bookmark ? 'text-red-500' : 'text-g-500'}`} />
-                        </button>
-                    )}
+            <div className="grid grid-cols-[1fr_auto] items-center py-2">
+                <div>
+                    {subtitle ? <p className="line-clamp-1 font-serif text-sm font-bold uppercase opacity-60">{subtitle}</p> : null}
+                    <p className="line-clamp-1 font-serif text-xl font-semibold">{title}</p>
+                    <p className="line-clamp-1 text-xs font-semibold uppercase opacity-60">{tags.join(' • ')}</p>
                 </div>
-
-                {links.length > 0 && (
-                    <div className="flex w-full flex-wrap gap-2 px-4 py-2">
-                        {links.map((link, i) => (
-                            <CardLink key={i} {...link} />
-                        ))}
-                    </div>
-                )}
-                {description && (
-                    <>
-                        <div className="my-1 h-px w-full bg-line dark:bg-line-dark" />
-                        <p className="px-4 text-sm font-semibold opacity-60">{description}</p>
-                    </>
-                )}
+                <div className="-translate-x-1 scale-95 p-2 opacity-0 transition group-hover:translate-x-0 group-hover:scale-100 group-hover:opacity-100">
+                    <ArrowRightIcon weight="bold" className="text-xl" />
+                </div>
             </div>
-        </Card>
+
+            <HLine />
+        </div>
     )
 }
 
@@ -73,32 +46,14 @@ function CardImage({image, fallbackIcon: Icon}: CardImageProps) {
 
     if (image && !error)
         return (
-            <Card aspect="video">
+            <div className="aspect-video">
                 <SimpleImage url={image} alt="maps" onError={() => setError(true)} />
-            </Card>
+            </div>
         )
 
     return (
-        <div className="flex aspect-video items-center justify-center bg-olive/20 text-olive dark:bg-cream/10 dark:text-cream">
+        <div className="flex aspect-video items-center justify-center bg-accent-dark/20">
             <Icon size={24} weight="bold" />
         </div>
-    )
-}
-
-type CardLinkProps = {
-    url: string
-    icon: Icon
-    title: string
-}
-
-function CardLink({url, icon, title}: CardLinkProps) {
-    const Icon = icon
-    return (
-        <Link href={url} target={url.startsWith('http') ? '_blank' : undefined} className="active:opacity-60">
-            <Badge size="sm" rounded="xl">
-                <Icon weight="bold" />
-                <p>{title}</p>
-            </Badge>
-        </Link>
     )
 }

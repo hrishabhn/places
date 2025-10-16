@@ -29,8 +29,8 @@ export const Badge = ({children, size = 'md', theme = 'accent', border = true, r
 
         // custom
         accent: active
-            ? tw`border-transparent bg-olive text-cream dark:bg-cream dark:text-olive`
-            : tw`border-olive/80 bg-olive/10 text-olive dark:border-cream/80 dark:bg-cream/10 dark:text-cream`,
+            ? tw`border-transparent bg-accent-dark text-accent-light dark:bg-accent-light dark:text-accent-dark`
+            : tw`border-accent-dark/80 bg-accent-dark/10 text-accent-dark dark:border-accent-light/80 dark:bg-accent-light/10 dark:text-accent-light`,
         g: tw`border-g-500/80 bg-g-500/25`,
 
         // tailwind
@@ -55,5 +55,5 @@ export const Badge = ({children, size = 'md', theme = 'accent', border = true, r
 
     const roundedClass = getRoundedClass(rounded)
 
-    return <div className={`flex shrink-0 items-center gap-1 text-nowrap rounded-full font-bold ${sizeClass} ${themeClass} ${roundedClass}`}>{children}</div>
+    return <div className={`flex items-center gap-1 text-nowrap rounded-full font-bold ${sizeClass} ${themeClass} ${roundedClass}`}>{children}</div>
 }

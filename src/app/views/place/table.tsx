@@ -2,14 +2,15 @@
 
 import {getPlaceIcon} from './place-icon'
 
-import {CityIcon, ForkKnifeIcon, HeartIcon, ImageIcon, LinkIcon, MapPinIcon, PencilIcon, StarIcon, TagIcon, TextTIcon} from '@phosphor-icons/react'
+import {CityIcon, ForkKnifeIcon, HeartIcon, ImageIcon, LinkIcon, MapTrifoldIcon, PencilIcon, StarIcon, TagIcon, TextTIcon} from '@phosphor-icons/react'
 import Link from 'next/link'
 
 import {type Place} from '@/server/types'
 
 import {countryFlag, googleMapsUrl, notionUrl} from '@/model/util'
 
-import {Badge, SimpleImage} from '@/components/ui'
+import {SimpleImage} from '@/components/ui'
+import {MenuBarItem} from '@/components/views/menu-bar'
 
 type PlaceTableProps = {
     allPlace: Place[]
@@ -79,12 +80,12 @@ export function PlaceTable({allPlace, bookmarks, onToggleBookmark}: PlaceTablePr
                             <TD>{place.top && <StarIcon weight="fill" className="text-yellow-400" />}</TD>
 
                             <TD>
-                                <Badge size="sm" theme="g" border={false}>
+                                <MenuBarItem>
                                     <div className="size-[1em]">
                                         <SimpleImage url={countryFlag(place.country_code)} />
                                     </div>
                                     <p>{place.city_name}</p>
-                                </Badge>
+                                </MenuBarItem>
                             </TD>
 
                             <TD>
@@ -97,21 +98,19 @@ export function PlaceTable({allPlace, bookmarks, onToggleBookmark}: PlaceTablePr
 
                             <TD>
                                 {place.type.map(p => {
-                                    const Icon = getPlaceIcon(p)
+                                    const Icon = getPlaceIcon(p, {returnDefault: false})
                                     return (
-                                        <Badge key={p} size="sm" theme="g" border={false}>
-                                            <Icon weight="duotone" />
+                                        <MenuBarItem key={p}>
+                                            {Icon !== undefined && <Icon weight="duotone" />}
                                             <p>{p}</p>
-                                        </Badge>
+                                        </MenuBarItem>
                                     )
                                 })}
                             </TD>
 
                             <TD>
                                 {place.tags.map(t => (
-                                    <Badge key={t} size="sm" theme="g" border={false}>
-                                        {t}
-                                    </Badge>
+                                    <MenuBarItem key={t}>{t}</MenuBarItem>
                                 ))}
                             </TD>
 
@@ -119,16 +118,16 @@ export function PlaceTable({allPlace, bookmarks, onToggleBookmark}: PlaceTablePr
 
                             <TD>
                                 <Link href={googleMapsUrl({name: place.name, city_name: place.city_name, maps_id: place.maps_id})} target="_blank" className="active:opacity-60">
-                                    <Badge size="sm">
-                                        <MapPinIcon weight="bold" />
+                                    <MenuBarItem>
+                                        <MapTrifoldIcon weight="bold" />
                                         <p>Open in Maps</p>
-                                    </Badge>
+                                    </MenuBarItem>
                                 </Link>
                                 <Link href={notionUrl(place.id)} target="_blank" className="active:opacity-60">
-                                    <Badge size="sm">
+                                    <MenuBarItem>
                                         <PencilIcon weight="bold" />
                                         <p>Edit</p>
-                                    </Badge>
+                                    </MenuBarItem>
                                 </Link>
                             </TD>
                         </tr>

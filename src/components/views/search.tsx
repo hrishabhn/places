@@ -2,10 +2,16 @@
 
 import {MagnifyingGlassIcon, XIcon} from '@phosphor-icons/react'
 
-import {Button} from '@/components/ui'
+import {HLine} from '@/components/views/h-line'
+import {Section} from '@/components/views/section'
 
 function Container({children}: {children?: React.ReactNode}) {
-    return <div className="rounded-xl bg-layer-1 px-3 py-2 ring-1 ring-line dark:bg-layer-1-dark dark:ring-line-dark">{children}</div>
+    return (
+        <div className="grid size-full grid-rows-[auto_1fr] gap-2">
+            <HLine />
+            {children}
+        </div>
+    )
 }
 
 type SearchBarFilterProps = {
@@ -16,33 +22,31 @@ type SearchBarFilterProps = {
 
 export function SearchBarFilter({query, setQuery, resultCount}: SearchBarFilterProps) {
     return (
-        <div className="grid grid-cols-[1fr_auto] gap-3">
-            <Container>
-                <div className="grid size-full auto-cols-auto grid-flow-col grid-cols-[auto_1fr] items-center gap-2">
-                    <MagnifyingGlassIcon weight="bold" />
-                    <input type="text" value={query} onChange={e => setQuery(e.target.value)} placeholder="Search" className="w-full text-balance bg-transparent outline-none" />
-                    {query.length > 0 && (
-                        <button type="button" onClick={() => setQuery('')} className="active:opacity-60">
-                            <XIcon weight="bold" />
-                        </button>
-                    )}
-                </div>
-            </Container>
-            {resultCount ? (
+        <Section>
+            <div className="grid grid-cols-[1fr_auto] gap-3">
                 <Container>
-                    <div className="flex size-full items-center justify-center text-sm font-medium text-g-500">
-                        <p className="">{`${resultCount} results`}</p>
+                    <div className="grid size-full auto-cols-auto grid-flow-col grid-cols-[auto_1fr] items-center gap-2">
+                        <MagnifyingGlassIcon weight="bold" />
+                        <input
+                            type="text"
+                            value={query}
+                            onChange={e => setQuery(e.target.value)}
+                            placeholder="Search"
+                            className="w-full text-balance bg-transparent text-base font-medium outline-none placeholder:text-g-500"
+                        />
+                        {query.length > 0 && (
+                            <button type="button" onClick={() => setQuery('')} className="active:opacity-60">
+                                <XIcon weight="bold" />
+                            </button>
+                        )}
                     </div>
                 </Container>
-            ) : null}
-        </div>
-    )
-}
-
-export function SearchBarButton({active = false, children}: {active?: boolean; children?: React.ReactNode}) {
-    return (
-        <Button ring={!active} rounded="xl" theme={active ? 'accent' : 'layer-1'}>
-            {children}
-        </Button>
+                {resultCount ? (
+                    <Container>
+                        <p className="flex size-full items-center justify-center text-sm font-medium text-g-500">{resultCount}</p>
+                    </Container>
+                ) : null}
+            </div>
+        </Section>
     )
 }

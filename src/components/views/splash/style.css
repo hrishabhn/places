@@ -1,11 +1,16 @@
 .gradient-mask {
-    --stop: 25%;
-    -webkit-mask-image: linear-gradient(to bottom, transparent var(--stop), black 100%);
-    mask-image: linear-gradient(to bottom, transparent var(--stop), black 100%);
+    --start: 25%;
+    --end: 75%;
+
+    --linear-gradient: linear-gradient(to bottom, transparent var(--start), black var(--end));
+
+    -webkit-mask-image: var(--linear-gradient);
+    mask-image: var(--linear-gradient);
 }
 
 @screen sm {
     .gradient-mask {
-        --stop: 70%;
+        --start: 50%;
+        --end: 100%;
     }
 }
