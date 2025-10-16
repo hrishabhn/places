@@ -23,7 +23,7 @@ import {NoResults} from '@/components/views/no-results'
 import {SearchBarFilter} from '@/components/views/search'
 import {Section} from '@/components/views/section'
 import {PageStack} from '@/components/views/stack'
-import {LoadingView} from '@/components/views/state'
+import {ErrorView, LoadingView} from '@/components/views/state'
 
 const allSort = ['place_count', 'country', 'name'] as const
 type Sort = (typeof allSort)[number]
@@ -80,7 +80,7 @@ export default function CitiesPage() {
     const isPending = searchStatus === 'pending' || allCityStatus === 'pending'
     const isError = searchStatus === 'error' || allCityStatus === 'error'
 
-    if (isError) throw new Error('Failed to load data')
+    if (isError) return <ErrorView />
 
     // active filter
     const activeFilter: ActiveFilter[] = [

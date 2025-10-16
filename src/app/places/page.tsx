@@ -43,7 +43,7 @@ import {NoResults} from '@/components/views/no-results'
 import {SearchBarFilter} from '@/components/views/search'
 import {Section} from '@/components/views/section'
 import {PageStack} from '@/components/views/stack'
-import {LoadingView} from '@/components/views/state'
+import {ErrorView, LoadingView} from '@/components/views/state'
 
 const allSort = ['name', 'country', 'city'] as const
 type Sort = (typeof allSort)[number]
@@ -123,7 +123,7 @@ export default function PlacesPage() {
     const isPending = searchStatus === 'pending' || allPlaceStatus === 'pending'
     const isError = searchStatus === 'error' || allPlaceStatus === 'error'
 
-    if (isError) throw new Error('Failed to load data')
+    if (isError) return <ErrorView />
 
     // single city for image
     const singleCity: City | undefined = (() => {

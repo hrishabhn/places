@@ -16,7 +16,7 @@ import {NoResults} from '@/components/views/no-results'
 import {SearchBarFilter} from '@/components/views/search'
 import {Section} from '@/components/views/section'
 import {SectionHeader, SectionHeaderStack} from '@/components/views/section-header'
-import {LoadingView} from '@/components/views/state'
+import {ErrorView, LoadingView} from '@/components/views/state'
 
 export function HomeContent() {
     // state
@@ -56,10 +56,10 @@ export function HomeContent() {
 function Search({query}: {query: string}) {
     const trpc = useTRPC()
 
-    const {status: searchStatus, data: searchResult, error} = useQuery(trpc.SearchAll.queryOptions({query}))
+    const {status: searchStatus, data: searchResult} = useQuery(trpc.SearchAll.queryOptions({query}))
 
     if (searchStatus === 'pending') return <LoadingView />
-    if (searchStatus === 'error') throw error
+    if (searchStatus === 'error') return <ErrorView />
 
     if (searchResult.length === 0) return <NoResults title="No results found" subtitle="Try changing your query" />
 
