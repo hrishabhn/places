@@ -1,6 +1,6 @@
 'use client'
 
-import {ArrowRightIcon, type Icon} from '@phosphor-icons/react'
+import {ArrowRightIcon, type Icon, StarIcon} from '@phosphor-icons/react'
 import {useState} from 'react'
 
 import {SimpleImage} from '@/components/ui'
@@ -13,9 +13,10 @@ type SimpleCardProps = {
     title: string
     subtitle?: string
     tags?: string[]
+    top?: boolean
 }
 
-export function SimpleCard({image, fallbackIcon, title, subtitle, tags = []}: SimpleCardProps) {
+export function SimpleCard({image, fallbackIcon, title, subtitle, tags = [], top = false}: SimpleCardProps) {
     return (
         <div className="group">
             <CardImage image={image} fallbackIcon={fallbackIcon} />
@@ -23,7 +24,14 @@ export function SimpleCard({image, fallbackIcon, title, subtitle, tags = []}: Si
             <div className="grid grid-cols-[1fr_auto] items-center py-2">
                 <div>
                     {subtitle ? <p className="line-clamp-1 font-serif text-sm font-bold uppercase opacity-60">{subtitle}</p> : null}
-                    <p className="line-clamp-1 font-serif text-xl font-semibold">{title}</p>
+                    {top ? (
+                        <div className="flex items-center gap-1">
+                            <StarIcon weight="fill" size={18} className="text-accent-dark" />
+                            <Title title={title} />
+                        </div>
+                    ) : (
+                        <Title title={title} />
+                    )}
                     <p className="line-clamp-1 text-xs font-semibold uppercase opacity-60">{tags.join(' • ')}</p>
                 </div>
                 <div className="-translate-x-1 scale-95 p-2 opacity-0 transition group-hover:translate-x-0 group-hover:scale-100 group-hover:opacity-100">
@@ -56,4 +64,8 @@ function CardImage({image, fallbackIcon: Icon}: CardImageProps) {
             <Icon size={24} weight="bold" />
         </div>
     )
+}
+
+function Title({title}: {title: string}) {
+    return <p className="line-clamp-1 font-serif text-xl font-semibold">{title}</p>
 }
