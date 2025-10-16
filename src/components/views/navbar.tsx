@@ -8,6 +8,8 @@ import {useEffect, useState} from 'react'
 
 import {appTitle} from '@/model/app'
 
+import {HamburgerIcon} from '@/components/views/hamburger'
+
 export function Navbar() {
     const [open, setOpen] = useState<boolean>(false)
     const pathname = usePathname()
@@ -55,23 +57,6 @@ function AppTitle() {
         <Link href="/" className="line-clamp-1 font-heading text-4xl font-medium active:opacity-60">
             {appTitle}
         </Link>
-    )
-}
-
-function HamburgerIconLine({open, type}: {open: boolean; type: 'top' | 'bottom'}) {
-    return (
-        <div
-            className={`absolute h-0.5 w-full bg-current transition-all duration-300 ease-in-out ${open ? {top: 'rotate-45', bottom: '-rotate-45'}[type] : {top: 'translate-y-[-3px]', bottom: 'translate-y-[3px]'}[type]}`}
-        />
-    )
-}
-
-function HamburgerIcon({open}: {open: boolean}) {
-    return (
-        <div className="relative flex size-6 items-center justify-center">
-            <HamburgerIconLine open={open} type="top" />
-            <HamburgerIconLine open={open} type="bottom" />
-        </div>
     )
 }
 
