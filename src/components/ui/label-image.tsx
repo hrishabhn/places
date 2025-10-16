@@ -27,8 +27,8 @@ export function LabelImage({image, size}: LabelImageProps) {
 
         return (
             <div className={sizeClass}>
-                <Card aspect="square" ring rounded="full">
-                    <SimpleImage url={imageURL} />
+                <Card ring rounded="full">
+                    <SimpleImage src={imageURL} aspect="square" />
                 </Card>
             </div>
         )

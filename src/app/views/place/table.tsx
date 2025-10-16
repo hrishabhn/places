@@ -81,8 +81,8 @@ export function PlaceTable({allPlace, bookmarks, onToggleBookmark}: PlaceTablePr
 
                             <TD>
                                 <MenuBarItem>
-                                    <div className="size-[1em]">
-                                        <SimpleImage url={countryFlag(place.country_code)} />
+                                    <div className="w-[1em]">
+                                        <SimpleImage src={countryFlag(place.country_code)} aspect="square" />
                                     </div>
                                     <p>{place.city_name}</p>
                                 </MenuBarItem>
@@ -90,8 +90,8 @@ export function PlaceTable({allPlace, bookmarks, onToggleBookmark}: PlaceTablePr
 
                             <TD>
                                 {place.image && (
-                                    <div className="aspect-video h-8 overflow-hidden rounded-md">
-                                        <SimpleImage url={place.image} />
+                                    <div className="w-20 overflow-hidden rounded-md">
+                                        <SimpleImage src={place.image} aspect="video" />
                                     </div>
                                 )}
                             </TD>

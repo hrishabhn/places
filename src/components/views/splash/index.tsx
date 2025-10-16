@@ -27,7 +27,7 @@ export function Splash({actions, title, subtitle, image}: SplashProps) {
         <>
             <div className="relative aspect-[4/5] w-full sm:aspect-video">
                 <div className="gradient-mask absolute inset-0 z-10 bg-black/60 backdrop-blur" />
-                <SimpleImage url={image} alt={title} />
+                <SimpleImage src={image} />
                 <div className="absolute inset-0 z-10 flex flex-col items-start justify-end p-4 text-white sm:p-10">
                     <SplashTextBox actions={actions} title={title} subtitle={subtitle} />
                 </div>

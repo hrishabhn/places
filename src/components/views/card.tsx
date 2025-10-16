@@ -52,18 +52,14 @@ type CardImageProps = {
 function CardImage({image, fallbackIcon: Icon}: CardImageProps) {
     const [error, setError] = useState<boolean>(false)
 
-    if (image && !error)
+    if (!image || error)
         return (
-            <div className="aspect-video">
-                <SimpleImage url={image} alt="maps" onError={() => setError(true)} />
+            <div className="flex aspect-video items-center justify-center bg-accent-dark/20">
+                <Icon size={24} weight="bold" />
             </div>
         )
 
-    return (
-        <div className="flex aspect-video items-center justify-center bg-accent-dark/20">
-            <Icon size={24} weight="bold" />
-        </div>
-    )
+    return <SimpleImage src={image} aspect="video" onError={() => setError(true)} />
 }
 
 function Title({title}: {title: string}) {

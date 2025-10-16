@@ -1,43 +1,28 @@
+import {type AspectRatio, getAspectClass} from './model'
+
 import Image from 'next/image'
 import {type ReactEventHandler} from 'react'
 
-import {Heading} from '@/components/layout'
+import {isAllowedImageHost} from '@/model/image'
 
 type SimpleImageProps = {
-    url?: string
-    alt?: string
-    verticalAlign?: 'top' | 'center' | 'bottom'
+    src: string
+    aspect?: AspectRatio
     onError?: ReactEventHandler<HTMLImageElement>
 }
 
-function Container({children}: {children?: React.ReactNode}) {
-    return <div className="relative flex size-full items-center justify-center">{children}</div>
+export function SimpleImage({src, aspect, onError}: SimpleImageProps) {
+    if (aspect !== undefined)
+        return (
+            <SimpleImageContainer aspect={aspect}>
+                <SimpleImage src={src} onError={onError} />
+            </SimpleImageContainer>
+        )
+
+    return <Image src={src} alt="Simple Image" className="size-full object-cover object-center" fill={true} unoptimized={!isAllowedImageHost(src)} onError={onError} />
 }
 
-export function SimpleImage({url, alt = 'Simple Image', verticalAlign = 'center', onError}: SimpleImageProps) {
-    if (url) {
-        const verticalAlignClass = {
-            top: 'object-top',
-            center: 'object-center',
-            bottom: 'object-bottom',
-        }[verticalAlign]
-
-        return (
-            <Container>
-                <Image className={`size-full object-cover ${verticalAlignClass}`} src={url} alt={alt} fill={true} onError={onError} />
-            </Container>
-        )
-    }
-
-    if (alt) {
-        return (
-            <Container>
-                <div className="p-2 text-center">
-                    <Heading size="h5">{alt}</Heading>
-                </div>
-            </Container>
-        )
-    }
-
-    return <Container />
+export function SimpleImageContainer({aspect, children}: {aspect: AspectRatio; children?: React.ReactNode}) {
+    const aspectClass = getAspectClass(aspect)
+    return <div className={`relative size-full ${aspectClass}`}>{children}</div>
 }
