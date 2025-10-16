@@ -24,7 +24,7 @@ export function SimpleImage({url, alt = 'Simple Image', verticalAlign = 'center'
 
         return (
             <Container>
-                <Image className={`size-full object-cover ${verticalAlignClass}`} src={url} alt={alt} fill={true} unoptimized onError={onError} />
+                <Image className={`size-full object-cover ${verticalAlignClass}`} src={url} alt={alt} fill={true} onError={onError} />
             </Container>
         )
     }
