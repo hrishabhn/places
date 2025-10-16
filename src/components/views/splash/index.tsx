@@ -1,8 +1,10 @@
 import './style.css'
+import {SplashTextBox} from './textbox'
 
 import {type Icon} from '@phosphor-icons/react'
 
 import {SimpleImage} from '@/components/ui'
+import {Section} from '@/components/views/section'
 
 type SplashProps = {
     actions?: React.ReactNode
@@ -12,15 +14,22 @@ type SplashProps = {
 }
 
 export function Splash({actions, title, subtitle, image}: SplashProps) {
+    if (image === undefined)
+        return (
+            <Section>
+                <div className="flex flex-col items-start pt-6 sm:pt-8">
+                    <SplashTextBox actions={actions} title={title} subtitle={subtitle} />
+                </div>
+            </Section>
+        )
+
     return (
         <>
             <div className="relative aspect-[4/5] w-full sm:aspect-video">
                 <div className="gradient-mask absolute inset-0 z-10 bg-black/60 backdrop-blur" />
                 <SimpleImage url={image} alt={title} />
                 <div className="absolute inset-0 z-10 flex flex-col items-start justify-end p-4 text-white sm:p-10">
-                    <div className="grid auto-cols-auto grid-flow-col gap-2 py-2">{actions}</div>
-                    <p className="line-clamp-3 font-heading text-6xl lg:text-9xl">{title}</p>
-                    {subtitle ? <p className="line-clamp-3 font-heading text-4xl lg:text-6xl">{subtitle}</p> : null}
+                    <SplashTextBox actions={actions} title={title} subtitle={subtitle} />
                 </div>
             </div>
         </>
