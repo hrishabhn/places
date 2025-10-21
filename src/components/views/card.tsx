@@ -34,7 +34,7 @@ export function SimpleCard({image, fallbackIcon, title, subtitle, tags = [], top
                     )}
                     <p className="line-clamp-1 text-xs font-semibold uppercase opacity-60">{tags.join(' • ')}</p>
                 </div>
-                <div className="-translate-x-1 scale-95 p-2 opacity-0 transition group-hover:translate-x-0 group-hover:scale-100 group-hover:opacity-100">
+                <div className="-translate-x-1 scale-95 opacity-0 transition group-hover:translate-x-0 group-hover:scale-100 group-hover:opacity-100">
                     <ArrowRightIcon weight="bold" className="text-xl" />
                 </div>
             </div>
