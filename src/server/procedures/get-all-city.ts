@@ -1,7 +1,7 @@
 import {publicProcedure} from '../trpc'
 import {type City, CitySchema} from '../types'
 
-import {z} from 'zod/v3'
+import {z} from 'zod/v4'
 
 import {sql} from '@/model/neon'
 
@@ -10,7 +10,7 @@ export const GetAllCityOptions = z.object({
         .object({
             countrySlug: z.array(z.string()).default([]),
         })
-        .default({}),
+        .prefault({}),
     query: z.string().default(''),
     sort: z.enum(['place_count', 'country', 'name']),
     limit: z.number().optional(),

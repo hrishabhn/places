@@ -1,7 +1,7 @@
 import {publicProcedure} from '../trpc'
 import {type Country, CountrySchema} from '../types'
 
-import {z} from 'zod/v3'
+import {z} from 'zod/v4'
 
 import {sql} from '@/model/neon'
 

@@ -1,12 +1,12 @@
 import {publicProcedure} from '../trpc'
 import {type Place, PlaceSchema} from '../types'
 
-import {z} from 'zod/v3'
+import {z} from 'zod/v4'
 
 import {sql} from '@/model/neon'
 
 export const GetPlaceOptions = z.object({
-    id: z.string().uuid(),
+    id: z.uuid(),
 })
 
 export const GetPlace = publicProcedure.input(GetPlaceOptions).query(async ({input: {id}}): Promise<Place | null> => {

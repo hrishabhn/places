@@ -2,21 +2,21 @@ import {getSeed} from '../seed'
 import {publicProcedure} from '../trpc'
 import {type Place, PlaceSchema} from '../types'
 
-import {z} from 'zod/v3'
+import {z} from 'zod/v4'
 
 import {sql} from '@/model/neon'
 
 export const GetAllPlaceOptions = z.object({
     filter: z
         .object({
-            id: z.array(z.string().uuid()).default([]),
+            id: z.array(z.uuid()).default([]),
             top: z.boolean().default(false),
             countrySlug: z.array(z.string()).default([]),
             citySlug: z.array(z.string()).default([]),
             placeType: z.array(z.string()).default([]),
             placeTag: z.array(z.string()).default([]),
         })
-        .default({}),
+        .prefault({}),
     query: z.string().default(''),
     sort: z.enum(['name', 'country', 'city', 'first_visit', 'random']),
     limit: z.number().optional(),
