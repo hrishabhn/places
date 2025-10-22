@@ -1,4 +1,4 @@
-import {z} from 'zod/v4'
+import * as z from 'zod'
 
 export const CountrySchema = z.object({
     slug: z.string(),
@@ -24,7 +24,7 @@ export const CitySchema = z.object({
 export type City = z.infer<typeof CitySchema>
 
 export const PlaceSchema = z.object({
-    id: z.uuid(),
+    id: z.string().uuid(),
     name: z.string(),
     top: z.boolean(),
     city_slug: z.string(),

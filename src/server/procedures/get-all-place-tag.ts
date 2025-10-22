@@ -1,7 +1,7 @@
 import {publicProcedure} from '../trpc'
 import {type PlaceTag, PlaceTagSchema} from '../types'
 
-import {z} from 'zod/v4'
+import * as z from 'zod'
 
 import {sql} from '@/model/neon'
 
