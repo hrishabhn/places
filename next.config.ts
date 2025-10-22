@@ -3,9 +3,11 @@ import type {NextConfig} from 'next'
 import {allowedImageHosts} from '@/model/image'
 
 const nextConfig: NextConfig = {
+    reactCompiler: true,
+    // cacheComponents: true,
     experimental: {
-        reactCompiler: true,
-        ppr: true,
+        turbopackFileSystemCacheForDev: true,
+        // turbopackFileSystemCacheForBuild: true,
     },
     images: {
         remotePatterns: allowedImageHosts.map(hostname => ({
