@@ -1,16 +1,11 @@
-import {type SearchInput} from '../types'
+import {type SearchInput, SearchResult} from '../types'
 
 import * as z from 'zod'
 
 import {sql} from '@/model/neon'
 
-const SearchResultSchema = z.object({
-    name: z.string(),
-    id: z.string(),
-    type: z.enum(['country', 'city', 'place', 'place_type', 'place_tag']),
-    score: z.coerce.number(),
-})
-
+const types = ['country', 'city', 'place', 'place_type', 'place_tag'] as const
+const SearchResultSchema = SearchResult(types)
 type SearchResult = z.infer<typeof SearchResultSchema>
 
 export const SearchAll = async ({query}: SearchInput): Promise<SearchResult[]> => {

@@ -62,9 +62,18 @@ export const PlaceTagSchema = z.object({
 
 export type PlaceTag = z.infer<typeof PlaceTagSchema>
 
-// input
+// search
 export const SearchInputSchema = z.object({
     query: z.string(),
 })
 
 export type SearchInput = z.infer<typeof SearchInputSchema>
+
+// search result constructor
+export const SearchResult = <T extends readonly [string, ...string[]]>(types: T) =>
+    z.object({
+        name: z.string(),
+        id: z.string(),
+        type: z.enum<T>(types),
+        score: z.coerce.number(),
+    })

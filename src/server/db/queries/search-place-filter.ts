@@ -1,25 +1,20 @@
-import {type SearchInput} from '../types'
+import {type SearchInput, SearchResult} from '../types'
 
 import * as z from 'zod'
 
 import {sql} from '@/model/neon'
 
-const PlaceFilterSchema = z.object({
-    name: z.string(),
-    id: z.string(),
-    type: z.enum(['country', 'city', 'place_type', 'place_tag']),
-    score: z.coerce.number(),
-})
+const types = ['country', 'city', 'place_type', 'place_tag'] as const
+const SearchResultSchema = SearchResult(types)
+type SearchResult = z.infer<typeof SearchResultSchema>
 
-type PlaceFilter = z.infer<typeof PlaceFilterSchema>
-
-export const SearchPlaceFilter = async ({query}: SearchInput): Promise<PlaceFilter[]> => {
+export const SearchPlaceFilter = async ({query}: SearchInput): Promise<SearchResult[]> => {
     if (!query) return []
 
     // set limit for similarity
     await sql`select set_limit(0.3)`
 
-    return z.array(PlaceFilterSchema).parse(
+    return z.array(SearchResultSchema).parse(
         await sql`
         select name, id, type, similarity(name, ${query}) as score
         from (
