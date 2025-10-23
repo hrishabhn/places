@@ -24,7 +24,7 @@ export const CitySchema = z.object({
 export type City = z.infer<typeof CitySchema>
 
 export const PlaceSchema = z.object({
-    id: z.string().uuid(),
+    id: z.uuid(),
     name: z.string(),
     top: z.boolean(),
     city_slug: z.string(),
@@ -66,3 +66,5 @@ export type PlaceTag = z.infer<typeof PlaceTagSchema>
 export const SearchInputSchema = z.object({
     query: z.string(),
 })
+
+export type SearchInput = z.infer<typeof SearchInputSchema>

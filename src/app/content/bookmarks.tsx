@@ -30,7 +30,7 @@ export function HomeContentBookmarks() {
 function Items({bookmarks}: {bookmarks: Bookmarks}) {
     const trpc = useTRPC()
 
-    const {status: allPlaceBookmarkStatus, data: allPlaceBookmark} = useQuery(trpc.GetAllPlace.queryOptions({filter: {id: bookmarks}, sort: 'name'}))
+    const {status: allPlaceBookmarkStatus, data: allPlaceBookmark} = useQuery(trpc.place.getAll.queryOptions({filter: {id: bookmarks}, sort: 'name'}))
 
     if (allPlaceBookmarkStatus === 'pending') return <LoadingView />
     if (allPlaceBookmarkStatus === 'error') return <ErrorView />

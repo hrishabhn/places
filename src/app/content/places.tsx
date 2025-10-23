@@ -38,7 +38,7 @@ export function HomeContentPlaces() {
 function Items({view}: {view: PlacesView}) {
     const trpc = useTRPC()
 
-    const {status: allPlaceStatus, data: allPlace} = useQuery(trpc.GetAllPlace.queryOptions({sort: placesViewSort[view], limit}))
+    const {status: allPlaceStatus, data: allPlace} = useQuery(trpc.place.getAll.queryOptions({sort: placesViewSort[view], limit}))
 
     if (allPlaceStatus === 'pending') return <LoadingView />
     if (allPlaceStatus === 'error') return <ErrorView />

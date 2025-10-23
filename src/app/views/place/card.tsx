@@ -4,7 +4,7 @@ import {getPlaceIcon} from './place-icon'
 
 import Link from 'next/link'
 
-import {type Place} from '@/server/types'
+import {type Place} from '@/server/db/types'
 
 import {SimpleCard} from '@/components/views/card'
 

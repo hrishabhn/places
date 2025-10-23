@@ -3,7 +3,7 @@
 import Image from 'next/image'
 import {useState} from 'react'
 
-import {type City} from '@/server/types'
+import {type City} from '@/server/db/types'
 
 import {Splash, SplashIconContainer} from '@/components/views/splash'
 

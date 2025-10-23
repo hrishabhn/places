@@ -7,7 +7,7 @@
         "dev": "next dev",
         "build": "next build",
         "start": "next start",
-        "lint": "next lint"
+        "lint": "eslint ."
     },
     "dependencies": {
         "@headlessui/react": "^2.2.9",
@@ -45,7 +45,7 @@
         "@typescript-eslint/parser": "^8.46.2",
         "babel-plugin-react-compiler": "^1.0.0",
         "eslint": "^8.57.1",
-        "eslint-config-next": "16.0.0",
+        "eslint-config-next": "15.5.6",
         "eslint-plugin-deprecation": "^3.0.0",
         "eslint-plugin-react-compiler": "19.1.0-rc.2",
         "eslint-plugin-tailwindcss": "^3.18.2",

@@ -56,7 +56,7 @@ export function HomeContent() {
 function Search({query}: {query: string}) {
     const trpc = useTRPC()
 
-    const {status: searchStatus, data: searchResult} = useQuery(trpc.SearchAll.queryOptions({query}))
+    const {status: searchStatus, data: searchResult} = useQuery(trpc.search.all.queryOptions({query}))
 
     if (searchStatus === 'pending') return <LoadingView />
     if (searchStatus === 'error') return <ErrorView />

@@ -27,7 +27,7 @@ import {PlaceCard} from '@/app/views/place/card'
 import {getPlaceIcon} from '@/app/views/place/place-icon'
 import {PlaceTable} from '@/app/views/place/table'
 
-import {type City, type Country, type Place, type PlaceTag, type PlaceType} from '@/server/types'
+import {type City, type Country, type Place, type PlaceTag, type PlaceType} from '@/server/db/types'
 
 import {useBookmarks} from '@/model/bookmarks'
 import {countryFlag} from '@/model/util'
@@ -98,14 +98,14 @@ export default function PlacesPage() {
         if (bookmarks.length === 0) setShowBookmarks(false)
     }, [bookmarks.length, setShowBookmarks])
 
-    const {data: allCountry} = useSuspenseQuery(trpc.GetAllCountry.queryOptions({sort: 'place_count'}))
-    const {data: allCity} = useSuspenseQuery(trpc.GetAllCity.queryOptions({sort: 'place_count'}))
-    const {data: allPlaceType} = useSuspenseQuery(trpc.GetAllPlaceType.queryOptions())
-    const {data: allPlaceTag} = useSuspenseQuery(trpc.GetAllPlaceTag.queryOptions())
+    const {data: allCountry} = useSuspenseQuery(trpc.country.getAll.queryOptions({sort: 'place_count'}))
+    const {data: allCity} = useSuspenseQuery(trpc.city.getAll.queryOptions({sort: 'place_count'}))
+    const {data: allPlaceType} = useSuspenseQuery(trpc.placeType.getAll.queryOptions())
+    const {data: allPlaceTag} = useSuspenseQuery(trpc.placeTag.getAll.queryOptions())
 
-    const {status: searchStatus, data: searchResult} = useQuery(trpc.SearchPlaceFilter.queryOptions({query}))
+    const {status: searchStatus, data: searchResult} = useQuery(trpc.search.placeFilter.queryOptions({query}))
     const {status: allPlaceStatus, data: allPlace} = useQuery(
-        trpc.GetAllPlace.queryOptions({
+        trpc.place.getAll.queryOptions({
             filter: {
                 id: showBookmarks ? bookmarks : undefined,
                 top,

@@ -21,7 +21,7 @@ import {PageStack} from '@/components/views/stack'
 export function PlacePageContent({id}: {id: string}) {
     const trpc = useTRPC()
 
-    const {data: place} = useSuspenseQuery(trpc.GetPlace.queryOptions({id}))
+    const {data: place} = useSuspenseQuery(trpc.place.get.queryOptions({id}))
 
     const {bookmarks, toggleBookmark} = useBookmarks()
 

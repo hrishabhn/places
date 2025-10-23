@@ -3,7 +3,7 @@
 import {CityIcon} from '@phosphor-icons/react'
 import Link from 'next/link'
 
-import {type City} from '@/server/types'
+import {type City} from '@/server/db/types'
 
 import {SimpleCard} from '@/components/views/card'
 

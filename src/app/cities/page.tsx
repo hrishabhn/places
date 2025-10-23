@@ -7,7 +7,7 @@ import {parseAsString, parseAsStringLiteral, useQueryState} from 'nuqs'
 import {CityCard} from '@/app/views/city/card'
 import {CityListItem} from '@/app/views/city/list-item'
 
-import {type City, type Country} from '@/server/types'
+import {type City, type Country} from '@/server/db/types'
 
 import {countryFlag} from '@/model/util'
 
@@ -65,11 +65,11 @@ export default function CitiesPage() {
     // query
     const trpc = useTRPC()
 
-    const {data: allCountry} = useSuspenseQuery(trpc.GetAllCountry.queryOptions({sort: 'city_count'}))
+    const {data: allCountry} = useSuspenseQuery(trpc.country.getAll.queryOptions({sort: 'city_count'}))
 
-    const {status: searchStatus, data: searchResult} = useQuery(trpc.SearchCityFilter.queryOptions({query}))
+    const {status: searchStatus, data: searchResult} = useQuery(trpc.search.cityFilter.queryOptions({query}))
     const {status: allCityStatus, data: allCity} = useQuery(
-        trpc.GetAllCity.queryOptions({
+        trpc.city.getAll.queryOptions({
             filter: {countrySlug: selectedCountrySlug.value},
             query,
             sort: selectedSort,

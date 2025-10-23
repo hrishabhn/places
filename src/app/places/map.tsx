@@ -5,7 +5,7 @@ import {getPlaceIcon} from '../views/place/place-icon'
 import {Dialog} from '@headlessui/react'
 import {AnimatePresence, motion} from 'motion/react'
 
-import {type Place} from '@/server/types'
+import {type Place} from '@/server/db/types'
 
 import {MapView} from '@/components/views/map'
 

@@ -5,7 +5,7 @@ import {getPlaceIcon} from './place-icon'
 import {CityIcon, ForkKnifeIcon, HeartIcon, ImageIcon, LinkIcon, MapTrifoldIcon, PencilIcon, StarIcon, TagIcon, TextTIcon} from '@phosphor-icons/react'
 import Link from 'next/link'
 
-import {type Place} from '@/server/types'
+import {type Place} from '@/server/db/types'
 
 import {countryFlag, googleMapsUrl, notionUrl} from '@/model/util'
 

@@ -1,6 +1,6 @@
 'use client'
 
-import {type Place} from '@/server/types'
+import {type Place} from '@/server/db/types'
 
 import {BarChart} from '@/components/views/bar-chart'
 

@@ -1,5 +1,4 @@
-import {publicProcedure} from '../trpc'
-import {SearchInputSchema} from '../types'
+import {type SearchInput} from '../types'
 
 import * as z from 'zod'
 
@@ -14,7 +13,7 @@ const CityFilterSchema = z.object({
 
 type CityFilter = z.infer<typeof CityFilterSchema>
 
-export const SearchCityFilter = publicProcedure.input(SearchInputSchema).query(async ({input: {query}}): Promise<CityFilter[]> => {
+export const SearchCityFilter = async ({query}: SearchInput): Promise<CityFilter[]> => {
     if (!query) return []
 
     // set limit for similarity
@@ -31,4 +30,4 @@ export const SearchCityFilter = publicProcedure.input(SearchInputSchema).query(a
         limit 10
         `
     )
-})
+}
