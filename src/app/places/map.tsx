@@ -34,7 +34,7 @@ export function PlacesMapModal({isOpen, onClose, allPlace}: {isOpen: boolean; on
                     >
                         <MapView
                             onClose={onClose}
-                            allPlace={allPlace.filter(isPlaceWithCoordinates).map(place => ({
+                            pins={allPlace.filter(isPlaceWithCoordinates).map(place => ({
                                 id: place.id,
                                 title: place.name,
                                 subtitle: place.type.at(0),
