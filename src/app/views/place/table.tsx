@@ -65,7 +65,7 @@ export function PlaceTable({allPlace, bookmarks, onToggleBookmark}: PlaceTablePr
                     {allPlace.map(place => (
                         <tr key={place.id}>
                             <TD>
-                                <p className="text-nowrap text-lg font-bold">{place.name}</p>
+                                <p className="text-lg font-bold text-nowrap">{place.name}</p>
                             </TD>
 
                             <TD>
@@ -149,7 +149,7 @@ function TH({children}: {children?: React.ReactNode}) {
 
 function TD({children}: {children?: React.ReactNode}) {
     return (
-        <td className="border-r border-t border-line px-2 py-1.5 last:border-r-0 dark:border-line-dark">
+        <td className="border-t border-r border-line px-2 py-1.5 last:border-r-0 dark:border-line-dark">
             <div className="flex items-center gap-1.5">{children}</div>
         </td>
     )

@@ -40,9 +40,9 @@ export function Heading({size, theme = 'default', withoutPadding = false, serif 
     const paddingClass = withoutPadding
         ? ''
         : {
-              h1: tw`pb-2 pt-6`,
-              h2: tw`pb-2 pt-4`,
-              h3: tw`pb-2 pt-3`,
+              h1: tw`pt-6 pb-2`,
+              h2: tw`pt-4 pb-2`,
+              h3: tw`pt-3 pb-2`,
               h4: tw`py-1.5`,
               h5: tw`py-1`,
               h6: tw`py-1`,

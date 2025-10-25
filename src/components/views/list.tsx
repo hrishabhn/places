@@ -6,7 +6,7 @@ export function ListGridStack({children}: {children?: React.ReactNode}) {
 
 export function ListScrollStack({children}: {children?: React.ReactNode}) {
     return (
-        <div className="grid snap-x snap-mandatory scroll-px-4 auto-cols-[240px] grid-flow-col grid-rows-3 gap-3 overflow-x-auto px-4 sm:scroll-px-10 sm:px-10 [&>*]:snap-start">
+        <div className="grid snap-x snap-mandatory scroll-px-4 auto-cols-[240px] grid-flow-col grid-rows-3 gap-3 overflow-x-auto px-4 *:snap-start sm:scroll-px-10 sm:px-10">
             {children}
         </div>
     )

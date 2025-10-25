@@ -32,7 +32,7 @@ export function SearchBarFilter({query, setQuery, resultCount}: SearchBarFilterP
                             value={query}
                             onChange={e => setQuery(e.target.value)}
                             placeholder="Search"
-                            className="w-full text-balance bg-transparent text-base font-medium outline-none placeholder:text-g-500"
+                            className="w-full bg-transparent text-base font-medium text-balance outline-hidden placeholder:text-g-500"
                         />
                         {query.length > 0 && (
                             <button type="button" onClick={() => setQuery('')} className="active:opacity-60">

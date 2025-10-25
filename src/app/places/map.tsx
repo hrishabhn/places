@@ -22,7 +22,7 @@ export function PlacesMapModal({isOpen, onClose, allPlace}: {isOpen: boolean; on
                         animate={{opacity: 1}}
                         exit={{opacity: 0, transition: {duration: 0.1}}}
                         transition={{ease: 'easeInOut', duration: 0.2}}
-                        className="fixed inset-0 size-full bg-black/40 backdrop-blur"
+                        className="fixed inset-0 size-full bg-black/40 backdrop-blur-sm"
                         onClick={() => onClose()}
                     />
                     <motion.div

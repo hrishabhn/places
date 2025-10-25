@@ -25,8 +25,8 @@ export function Splash({actions, title, subtitle, image}: SplashProps) {
 
     return (
         <>
-            <div className="relative aspect-[4/5] w-full sm:aspect-video">
-                <div className="gradient-mask absolute inset-0 z-10 bg-black/60 backdrop-blur" />
+            <div className="relative aspect-4/5 w-full sm:aspect-video">
+                <div className="gradient-mask absolute inset-0 z-10 bg-black/60 backdrop-blur-sm" />
                 <SimpleImage src={image} />
                 <div className="absolute inset-0 z-10 flex flex-col items-start justify-end p-4 text-white sm:p-10">
                     <SplashTextBox actions={actions} title={title} subtitle={subtitle} />
@@ -37,7 +37,7 @@ export function Splash({actions, title, subtitle, image}: SplashProps) {
 }
 
 export function SplashIconContainer({children}: {children?: React.ReactNode}) {
-    return <div className="rounded-full ring-1 ring-white/20 backdrop-blur-sm backdrop-brightness-50 backdrop-saturate-200">{children}</div>
+    return <div className="rounded-full ring-1 ring-white/20 backdrop-blur-xs backdrop-brightness-50 backdrop-saturate-200">{children}</div>
 }
 
 export function SplashIcon({icon: Icon}: {icon: Icon}) {

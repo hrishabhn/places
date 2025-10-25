@@ -16,7 +16,7 @@ export function MapActions({onClose, bounds}: MapActionsProps) {
     const {data: userCoordinates} = useCoordinates()
 
     return (
-        <div className="absolute right-4 top-4 z-[1000] grid auto-cols-auto grid-flow-row gap-1.5">
+        <div className="absolute top-4 right-4 z-1000 grid auto-cols-auto grid-flow-row gap-1.5">
             {onClose ? (
                 <button onClick={onClose} className="active:opacity-60">
                     <MapButton icon={XIcon} />
@@ -50,7 +50,7 @@ export function MapActions({onClose, bounds}: MapActionsProps) {
 
 function MapButton({icon: Icon}: {icon: Icon}) {
     return (
-        <div className="flex size-8 items-center justify-center rounded-xl bg-accent-dark text-accent-light shadow backdrop-blur">
+        <div className="flex size-8 items-center justify-center rounded-xl bg-accent-dark text-accent-light shadow-sm backdrop-blur-sm">
             <Icon size={20} weight="bold" />
         </div>
     )

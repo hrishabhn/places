@@ -55,5 +55,5 @@ export const Badge = ({children, size = 'md', theme = 'accent', border = true, r
 
     const roundedClass = getRoundedClass(rounded)
 
-    return <div className={`flex items-center gap-1 text-nowrap rounded-full font-bold ${sizeClass} ${themeClass} ${roundedClass}`}>{children}</div>
+    return <div className={`flex items-center gap-1 rounded-full font-bold text-nowrap ${sizeClass} ${themeClass} ${roundedClass}`}>{children}</div>
 }
