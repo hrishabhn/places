@@ -30,7 +30,7 @@ export function PlacesMapModal({isOpen, onClose, allPlace}: {isOpen: boolean; on
                         animate={{translateY: 0, opacity: 1}}
                         exit={{translateY: 100, opacity: 0, transition: {duration: 0.1}}}
                         transition={{ease: 'easeInOut', duration: 0.2}}
-                        className="fixed inset-x-0 bottom-0 z-50 h-4/5 overflow-hidden rounded-t-xl bg-layer-0 ring-1 ring-line dark:bg-layer-0-dark dark:ring-line-dark"
+                        className="fixed inset-x-0 bottom-0 z-50 h-4/5 overflow-hidden rounded-t-xl bg-layer-0 ring-1 ring-line"
                     >
                         <MapView
                             onClose={onClose}

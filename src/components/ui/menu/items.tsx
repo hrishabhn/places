@@ -27,7 +27,7 @@ export function DropdownMenuItems({open, anchor = 'bottom start', children}: Dro
                     animate={final}
                     exit={initial}
                     anchor={{to: anchor, gap: 8}}
-                    className="z-50 origin-top rounded-2xl bg-layer-0 shadow-md ring-1 ring-line outline-hidden dark:bg-layer-1-dark dark:ring-line-dark"
+                    className="z-50 origin-top rounded-2xl bg-layer-0 shadow-md ring-1 ring-line outline-hidden"
                 >
                     <div className="max-h-96 w-64 overflow-y-auto py-1">{children}</div>
                 </MenuItems>

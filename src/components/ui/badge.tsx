@@ -22,8 +22,8 @@ export const Badge = ({children, size = 'md', theme = 'accent', border = true, r
 
     const themeClass = {
         // custom
-        'layer-0': tw`bg-layer-0 dark:bg-layer-0-dark`,
-        'layer-1': tw`bg-layer-1 dark:bg-layer-1-dark`,
+        'layer-0': tw`bg-layer-0`,
+        'layer-1': tw`bg-layer-1`,
         foreground: tw`bg-layer-1-dark text-white dark:bg-white dark:text-black`,
         hover: tw`bg-black/5 hover:bg-black/10 dark:bg-white/5 dark:hover:bg-white/10`,
 

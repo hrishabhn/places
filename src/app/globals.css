@@ -20,13 +20,14 @@
   --color-g-950: var(--color-stone-950);
 
   /* theme */
-  --color-line: var(--color-g-200);
+  --color-line-light: var(--color-g-200);
   --color-line-dark: var(--color-g-800);
 
-  --color-layer-0: --color-white;
+
+  --color-layer-0-light: var(--color-white);
   --color-layer-0-dark: var(--color-g-950);
 
-  --color-layer-1: var(--color-g-50);
+  --color-layer-1-light: var(--color-g-50);
   --color-layer-1-dark: var(--color-g-900);
 
   /* --color-olive: #292718; */
@@ -34,9 +35,23 @@
 
   --color-accent-dark: var(--color-blue-800);
   --color-accent-light: var(--color-white);
+
+  --color-line: var(--color-line-light);
+  --color-layer-0: var(--color-layer-0-light);
+  --color-layer-1: var(--color-layer-1-light);
+  --color-accent: var(--color-accent-light);
 }
 
-
+@layer theme {
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --color-line: var(--color-line-dark);
+      --color-layer-0: var(--color-layer-0-dark);
+      --color-layer-1: var(--color-layer-1-dark);
+      --color-accent: var(--color-accent-dark);
+    }
+  }
+}
 
 /* Hide scrollbar for Chrome, Safari and Opera */
 :root::-webkit-scrollbar,

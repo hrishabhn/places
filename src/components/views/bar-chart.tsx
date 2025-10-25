@@ -40,7 +40,7 @@ export function BarChart({title, data}: BarChartProps) {
                         return (
                             <Fragment key={i}>
                                 <div className="relative flex w-full items-center rounded-md bg-black/5 px-1.5 py-1 text-xs font-bold dark:bg-white/5">
-                                    <div className="absolute inset-0 h-full rounded-[inherit] bg-layer-0-dark dark:bg-layer-0" style={{width: `${width}%`}} />
+                                    <div className="absolute inset-0 h-full rounded-[inherit] bg-layer-0-dark dark:bg-layer-0-light" style={{width: `${width}%`}} />
 
                                     <p className="relative text-white mix-blend-difference">{name}</p>
                                     <div className="w-4 grow" />

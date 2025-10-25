@@ -29,8 +29,8 @@ export type CardTheme = (typeof cardThemes)[number] | TailwindColor
 export const getCardThemeClass = (theme: CardTheme, active: boolean): string =>
     ({
         // card themes
-        'layer-0': tw`bg-layer-0 dark:bg-layer-0-dark`,
-        'layer-1': tw`bg-layer-1 dark:bg-layer-1-dark`,
+        'layer-0': tw`bg-layer-0`,
+        'layer-1': tw`bg-layer-1`,
         foreground: tw`bg-layer-1-dark text-white dark:bg-white dark:text-black`,
         hover: active
             ? tw`bg-black/5 active:bg-black/10 dark:bg-white/5 dark:active:bg-white/10`

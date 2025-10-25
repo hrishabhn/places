@@ -37,7 +37,7 @@ export default function RootLayout({
             <SpeedInsights />
             <Providers>
                 <body
-                    className={`${inter.variable} ${serif.variable} ${heading.variable} flex min-h-screen w-full flex-col bg-layer-0 font-sans text-black antialiased dark:bg-layer-0-dark dark:text-white`}
+                    className={`${inter.variable} ${serif.variable} ${heading.variable} flex min-h-screen w-full flex-col bg-layer-0 font-sans text-black antialiased dark:text-white`}
                 >
                     <Navbar />
                     {children}
