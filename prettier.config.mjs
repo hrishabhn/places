@@ -16,8 +16,6 @@ export default {
         'prettier-plugin-tailwindcss',
     ],
 
-    tailwindFunctions: ['tw'],
-
     importOrder: [
         //
         '^server-only$',
@@ -32,5 +30,6 @@ export default {
     importOrderSeparation: true,
     importOrderSortSpecifiers: true,
 
+    tailwindFunctions: ['tw'],
     tailwindStylesheet: './src/app/globals.css',
 }

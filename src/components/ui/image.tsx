@@ -22,7 +22,7 @@ export function SimpleImage({src, aspect, onError}: SimpleImageProps) {
     return <Image src={src} alt="Simple Image" className="size-full object-cover object-center" fill={true} unoptimized={!isAllowedImageHost(src)} onError={onError} />
 }
 
-export function SimpleImageContainer({aspect, children}: {aspect: AspectRatio; children?: React.ReactNode}) {
+function SimpleImageContainer({aspect, children}: {aspect: AspectRatio; children?: React.ReactNode}) {
     const aspectClass = getAspectClass(aspect)
     return <div className={`relative size-full ${aspectClass}`}>{children}</div>
 }

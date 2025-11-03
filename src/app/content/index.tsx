@@ -43,7 +43,7 @@ export function HomeContent() {
 
                     <SectionHeaderStack>
                         <Section>
-                            <SectionHeader title="Suggested Places" href="/places" />
+                            <SectionHeader title="Places" href="/places" />
                         </Section>
                         <HomeContentPlaces />
                     </SectionHeaderStack>
