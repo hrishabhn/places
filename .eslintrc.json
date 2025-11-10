@@ -2,12 +2,17 @@
     "extends": [
         "next/core-web-vitals",
         "next/typescript",
-        "plugin:tailwindcss/recommended"
+        "plugin:better-tailwindcss/recommended"
     ],
     "plugins": [
         "react-compiler",
         "deprecation"
     ],
+    "settings": {
+        "better-tailwindcss": {
+            "entryPoint": "src/app/globals.css"
+        }
+    },
     "parser": "@typescript-eslint/parser",
     "parserOptions": {
         "project": "./tsconfig.json"
@@ -50,6 +55,7 @@
                 "prefer": "type-imports"
             }
         ],
-        "react-compiler/react-compiler": "error"
+        "react-compiler/react-compiler": "error",
+        "better-tailwindcss/enforce-consistent-line-wrapping": "off"
     }
 }

@@ -69,7 +69,7 @@ export function TypeWords({text, words}: TypeWordsProps) {
         <div className="flex">
             {text}
             <p className="pl-1">{typedText}</p>
-            <span className="animate-blink">|</span>
+            <span className="animate-pulse">|</span>
         </div>
     )
 }
