@@ -2,7 +2,7 @@
 
 import {type CookiesFn, getCookie, setCookie} from 'cookies-next'
 import {useLocalStorage} from 'usehooks-ts'
-import * as z from 'zod'
+import * as z from 'zod/v4'
 
 const BookmarksSchema = z
     .string()

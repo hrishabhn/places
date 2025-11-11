@@ -2,7 +2,6 @@ import {ImageResponse} from 'next/og'
 import {readFile} from 'node:fs/promises'
 import {join} from 'node:path'
 import {type CSSProperties} from 'react'
-import colors from 'tailwindcss/colors'
 
 import {appTitle} from '@/model/app'
 
@@ -12,8 +11,17 @@ export const size = {width: 1200, height: 630}
 
 export const contentType = 'image/png'
 
+const colors = {
+    white: '#ffffff',
+    zinc: {
+        100: '#f1f5f9',
+        200: '#e2e8f0',
+        300: '#cbd5e1',
+    },
+}
+
 // config
-const accent = colors.red[800]
+const accent = '#1e40af'
 const stack = (flexDirection: 'row' | 'column' = 'column'): CSSProperties => ({
     display: 'flex',
     flexDirection,

@@ -17,14 +17,14 @@ export const CitySchema = z.object({
     country_name: z.string(),
     country_code: z.string(),
     image: z.string().nullable(),
-    icon: z.url().nullable(),
+    icon: z.string().url().nullable(),
     place_count: z.coerce.number(),
 })
 
 export type City = z.infer<typeof CitySchema>
 
 export const PlaceSchema = z.object({
-    id: z.uuid(),
+    id: z.string().uuid(),
     name: z.string(),
     top: z.boolean(),
     city_slug: z.string(),
@@ -74,6 +74,6 @@ export const SearchResult = <T extends readonly [string, ...string[]]>(types: T)
     z.object({
         name: z.string(),
         id: z.string(),
-        type: z.enum<T>(types),
+        type: z.enum<string, T>(types),
         score: z.coerce.number(),
     })

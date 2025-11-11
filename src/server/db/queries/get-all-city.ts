@@ -9,7 +9,7 @@ export const GetAllCityOptions = z.object({
         .object({
             countrySlug: z.array(z.string()).default([]),
         })
-        .prefault({}),
+        .default({}),
     query: z.string().default(''),
     sort: z.enum(['place_count', 'country', 'name']),
     limit: z.number().optional(),

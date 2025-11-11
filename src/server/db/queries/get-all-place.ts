@@ -8,14 +8,14 @@ import {sql} from '@/model/neon'
 export const GetAllPlaceOptions = z.object({
     filter: z
         .object({
-            id: z.array(z.uuid()).default([]),
+            id: z.array(z.string().uuid()).default([]),
             top: z.boolean().default(false),
             countrySlug: z.array(z.string()).default([]),
             citySlug: z.array(z.string()).default([]),
             placeType: z.array(z.string()).default([]),
             placeTag: z.array(z.string()).default([]),
         })
-        .prefault({}),
+        .default({}),
     query: z.string().default(''),
     sort: z.enum(['name', 'country', 'city', 'first_visit', 'random']),
     limit: z.number().optional(),
