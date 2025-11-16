@@ -78,6 +78,7 @@ function Search({query}: {query: string}) {
                                 place_tag: {pathname: '/places', query: {tag: result.id}},
                             }[result.type]
                         }
+                        className="active:opacity-60"
                     >
                         <ListItem
                             image={<ListItemIcon icon={getIcon(result.type)} />}

@@ -59,13 +59,13 @@ export function PlacePageContent({id}: {id: string}) {
                     </Section>
 
                     <MenuBarTray>
-                        <Link href={googleMaps} target="_blank">
+                        <Link href={googleMaps} target="_blank" className="active:opacity-60">
                             <MenuBarItem>
                                 <MapTrifoldIcon weight="bold" />
                                 <p>Open in Google Maps</p>
                             </MenuBarItem>
                         </Link>
-                        <Link href={notion} target="_blank">
+                        <Link href={notion} target="_blank" className="active:opacity-60">
                             <MenuBarItem>
                                 <PencilIcon weight="bold" />
                                 <p>Edit</p>
