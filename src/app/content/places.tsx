@@ -16,7 +16,7 @@ type PlacesView = (typeof allPlacesView)[number]
 const placesViewTitle: Record<PlacesView, string> = {recent: 'Recently Added', random: 'Random Picks'}
 const placesViewSort: Record<PlacesView, 'first_visit' | 'random'> = {recent: 'first_visit', random: 'random'}
 
-const limit = 5
+const limit = 8
 
 export function HomeContentPlaces() {
     const [selectedView, setSelectedView] = useQueryState('places', parseAsStringLiteral(allPlacesView).withOptions({clearOnDefault: false}).withDefault(allPlacesView[0]))
