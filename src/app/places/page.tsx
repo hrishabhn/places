@@ -315,7 +315,7 @@ export default function PlacesPage() {
                 <div className="fixed inset-x-0 bottom-4 z-10 mx-auto w-fit">
                     <button
                         onClick={() => setShowMap(!showMap)}
-                        className="flex items-center gap-2 rounded-full bg-accent-dark px-3 py-2 text-base font-medium text-accent-light shadow-md"
+                        className="flex items-center gap-2 rounded-full bg-accent-dark px-3 py-2 text-base font-medium text-accent-light shadow-md transition-transform active:scale-95"
                     >
                         <MapTrifoldIcon weight="bold" />
                         <p>View on Map</p>
