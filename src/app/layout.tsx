@@ -11,13 +11,9 @@ import {appDescription, appTitle} from '@/model/app'
 import {Navbar} from '@/components/views/navbar'
 
 // fonts
-const inter = Inter({subsets: ['latin'], variable: '--font-sans'})
+const sans = Inter({subsets: ['latin'], variable: '--font-sans'})
 const serif = Lora({subsets: ['latin'], variable: '--font-serif'})
-const heading = Gupter({
-    subsets: ['latin'],
-    variable: '--font-heading',
-    weight: ['400', '500', '700'],
-})
+const heading = Gupter({subsets: ['latin'], variable: '--font-heading', weight: ['400', '500', '700']})
 
 // metadata
 export const metadata: Metadata = {
@@ -37,7 +33,7 @@ export default function RootLayout({
             <SpeedInsights />
             <Providers>
                 <body
-                    className={`${inter.variable} ${serif.variable} ${heading.variable} flex min-h-screen w-full flex-col bg-layer-0 font-sans text-black antialiased dark:text-white`}
+                    className={`${sans.variable} ${serif.variable} ${heading.variable} flex min-h-screen w-full flex-col bg-layer-0 font-sans text-black antialiased dark:text-white`}
                 >
                     <Navbar />
                     {children}
