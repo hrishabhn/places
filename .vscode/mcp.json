@@ -1,21 +1,8 @@
 {
     "servers": {
-        "Neon": {
-            "command": "npx",
-            "args": [
-                "-y",
-                "mcp-remote",
-                "https://mcp.neon.tech/sse"
-            ]
-        },
         "Places": {
             "command": "npx",
-            "args": [
-                "mcp-remote",
-                "http://localhost:3000/api/mcp/mcp",
-                "--transport",
-                "http-only",
-            ]
+            "args": ["mcp-remote", "http://localhost:3000/api/mcp/mcp", "--transport", "http-only"]
         }
     }
 }
