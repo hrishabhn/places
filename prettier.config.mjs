@@ -12,9 +12,12 @@ export default {
     arrowParens: 'avoid',
     plugins: [
         //
-        '@trivago/prettier-plugin-sort-imports',
         'prettier-plugin-tailwindcss',
+        '@trivago/prettier-plugin-sort-imports',
     ],
+
+    tailwindFunctions: ['tw'],
+    tailwindStylesheet: './src/app/globals.css',
 
     importOrder: [
         //
@@ -29,7 +32,4 @@ export default {
     ],
     importOrderSeparation: true,
     importOrderSortSpecifiers: true,
-
-    tailwindFunctions: ['tw'],
-    tailwindStylesheet: './src/app/globals.css',
 }
