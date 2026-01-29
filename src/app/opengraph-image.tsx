@@ -1,9 +1,8 @@
 import {ImageResponse} from 'next/og'
 import {readFile} from 'node:fs/promises'
 import {join} from 'node:path'
-import {type CSSProperties} from 'react'
 
-import {appTitle} from '@/model/app'
+import {appDescription, appTitle} from '@/model/app'
 
 // Image metadata
 export const alt = `${appTitle} Preview`
@@ -11,128 +10,61 @@ export const size = {width: 1200, height: 630}
 
 export const contentType = 'image/png'
 
-const colors = {
-    white: '#ffffff',
-    zinc: {
-        100: '#f1f5f9',
-        200: '#e2e8f0',
-        300: '#cbd5e1',
-    },
-}
-
-// config
-const accent = '#1e40af'
-const stack = (flexDirection: 'row' | 'column' = 'column'): CSSProperties => ({
-    display: 'flex',
-    flexDirection,
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: '0',
-    margin: '0',
-    boxSizing: 'border-box',
-})
-
 // Image generation
 export default async function Image() {
     return new ImageResponse(
         <div
             style={{
-                ...stack(),
+                display: 'flex',
                 height: '100%',
                 width: '100%',
-                padding: '1.5em',
-                paddingBottom: '0',
-                background: colors.zinc[300],
-                fontSize: 64,
             }}
         >
+            <img
+                src="https://images.unsplash.com/photo-1675757275576-c387423d1391"
+                alt="App Logo"
+                style={{
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'cover',
+                }}
+            />
             <div
                 style={{
-                    ...stack(),
+                    position: 'absolute',
+                    inset: '0',
+                    height: '100%',
                     width: '100%',
-                    flexGrow: 1,
-                    backgroundColor: colors.white,
-                    borderRadius: '0.5em 0.5em 0 0',
-                    boxShadow: '0 0 32px #00000033',
-                    overflow: 'hidden',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'flex-end',
+                    alignItems: 'flex-start',
+                    padding: '0.5em',
+                    backgroundImage: 'linear-gradient(to bottom, #00000033, #000000cc 50%, #000000cc)',
                     color: 'white',
+                    fontSize: '4em',
                     fontWeight: 'bold',
+                    backdropFilter: 'blur(40px)',
+                    WebkitBackdropFilter: 'blur(40px)',
                 }}
             >
-                <div
+                <p
                     style={{
-                        display: 'flex',
-                        width: '100%',
-                        backgroundColor: accent,
-                        color: 'white',
-                        flexShrink: 0,
-                        padding: '0.5em 1em',
+                        margin: 0,
+                        fontSize: '1.75em',
                     }}
                 >
-                    <p style={{margin: 0, fontSize: '1.5em'}}>{appTitle}</p>
-                </div>
-
-                <div
+                    {appTitle}
+                </p>
+                <p
                     style={{
-                        ...stack(),
-                        width: '100%',
-                        flexGrow: 1,
-                        flexBasis: 0,
-                        gap: '0.75em',
-                        padding: '0.5em 1em',
-                        paddingBottom: 0,
+                        margin: 0,
+                        fontSize: '0.8em',
+                        opacity: 0.8,
                     }}
                 >
-                    <div
-                        style={{
-                            ...stack('row'),
-                            width: '100%',
-                            flexGrow: 1,
-                            flexBasis: 0,
-                            gap: '0.5em',
-                        }}
-                    >
-                        {Array.from({length: 3}).map((_, i) => (
-                            <div
-                                key={i}
-                                style={{
-                                    flexGrow: 1,
-                                    flexBasis: 0,
-                                    height: '100%',
-                                    padding: '1em',
-                                    border: `1px solid ${colors.zinc[200]}`,
-                                    borderRadius: '0.5em',
-                                    backgroundColor: colors.zinc[100],
-                                }}
-                            />
-                        ))}
-                    </div>
-                    <div
-                        style={{
-                            ...stack('row'),
-                            width: '100%',
-                            flexGrow: 0.5,
-                            flexBasis: 0,
-                            gap: '0.5em',
-                        }}
-                    >
-                        {Array.from({length: 3}).map((_, i) => (
-                            <div
-                                key={i}
-                                style={{
-                                    flexGrow: 1,
-                                    flexBasis: 0,
-                                    height: '100%',
-                                    padding: '1em',
-                                    border: `1px solid ${colors.zinc[200]}`,
-                                    borderBottom: 'none',
-                                    borderRadius: '0.5em 0.5em 0 0',
-                                    backgroundColor: colors.zinc[100],
-                                }}
-                            />
-                        ))}
-                    </div>
-                </div>
+                    {appDescription}
+                </p>
             </div>
         </div>,
         {
