@@ -3,12 +3,10 @@ import {HomeContent} from './content'
 import {CityIcon, MapPinIcon} from '@phosphor-icons/react/ssr'
 import Link from 'next/link'
 
-import {appSubtitle, appTitle} from '@/model/app'
+import {appSplash, appSubtitle, appTitle} from '@/model/app'
 
 import {Splash, SplashIcon} from '@/components/views/splash'
 import {PageStack} from '@/components/views/stack'
-
-const backdrop = new URL('https://images.unsplash.com/photo-1675757275576-c387423d1391')
 
 export default function Home() {
     return (
@@ -26,7 +24,7 @@ export default function Home() {
                 }
                 title={appTitle}
                 subtitle={appSubtitle}
-                image={backdrop.toString()}
+                image={appSplash}
             />
 
             <PageStack>

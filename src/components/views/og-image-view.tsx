@@ -3,7 +3,7 @@ import {ImageResponse} from 'next/og'
 import {readFile} from 'node:fs/promises'
 import {join} from 'node:path'
 
-import {appSubtitle, appTitle} from '@/model/app'
+import {appSplash, appSubtitle, appTitle} from '@/model/app'
 
 export const alt = `${appTitle} Preview`
 export const size = {width: 1200, height: 630}
@@ -25,7 +25,7 @@ export async function OGImageView({city}: {city?: City} = {}): Promise<ImageResp
             }}
         >
             <img
-                src={city?.image ?? 'https://images.unsplash.com/photo-1675757275576-c387423d1391'}
+                src={city?.image ?? appSplash}
                 alt="App Logo"
                 style={{
                     width: '100%',
