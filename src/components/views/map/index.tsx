@@ -38,10 +38,10 @@ export function MapView({pins, onClose}: MapViewProps) {
     return (
         <Map
             minZoom={1}
-            initialViewState={{
-                bounds,
-                fitBoundsOptions: {padding: 50},
-            }}
+            // initialViewState={{
+            //     bounds,
+            //     fitBoundsOptions: {padding: 50},
+            // }}
             mapStyle={mapStyle}
             attributionControl={false}
         >
