@@ -3,8 +3,6 @@ import {type AspectRatio, getAspectClass} from './model'
 import Image from 'next/image'
 import {type ReactEventHandler} from 'react'
 
-import {isAllowedImageHost} from '@/model/image'
-
 type SimpleImageProps = {
     src: string
     aspect?: AspectRatio
@@ -19,7 +17,7 @@ export function SimpleImage({src, aspect, onError}: SimpleImageProps) {
             </SimpleImageContainer>
         )
 
-    return <Image src={src} alt="Simple Image" className="size-full object-cover object-center" fill={true} unoptimized={!isAllowedImageHost(src)} onError={onError} />
+    return <Image src={src} alt="Simple Image" className="size-full object-cover object-center" fill={true} unoptimized onError={onError} />
 }
 
 function SimpleImageContainer({aspect, children}: {aspect: AspectRatio; children?: React.ReactNode}) {

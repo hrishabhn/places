@@ -59,7 +59,16 @@ function CardImage({image, fallbackIcon: Icon}: CardImageProps) {
             </div>
         )
 
-    return <SimpleImage src={image} aspect="video" onError={() => setError(true)} />
+    return (
+        <SimpleImage
+            src={image}
+            aspect="video"
+            onError={() => {
+                console.error(`Failed to load image: ${image}`)
+                setError(true)
+            }}
+        />
+    )
 }
 
 function Title({title}: {title: string}) {
