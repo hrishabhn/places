@@ -66,6 +66,8 @@ export const GetAllPlace = async ({filter: {id, top, countrySlug, citySlug, plac
                     GREATEST(
                         similarity(place.name, ${query})
                         ,
+                        similarity(place.branch_name, ${query}) * 0.9
+                        ,
                         similarity(city.name, ${query}) * 0.9
                         ,
                         similarity(country.name, ${query}) * 0.9
@@ -90,6 +92,8 @@ export const GetAllPlace = async ({filter: {id, top, countrySlug, citySlug, plac
                 query
                     ? sql`(
                     (place.name % ${query} OR place.name ILIKE ${`%${query}%`})
+                    OR
+                    (place.branch_name % ${query} OR place.branch_name ILIKE ${`%${query}%`})
                     OR
                     (city.name % ${query} OR city.name ILIKE ${`%${query}%`})
                     OR
