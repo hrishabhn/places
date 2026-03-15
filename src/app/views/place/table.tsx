@@ -65,7 +65,12 @@ export function PlaceTable({allPlace, bookmarks, onToggleBookmark}: PlaceTablePr
                     {allPlace.map(place => (
                         <tr key={place.id}>
                             <TD>
-                                <p className="text-lg font-bold text-nowrap">{place.name}</p>
+                                <Link href={`/places/${place.id}`} className="hover:underline active:opacity-60">
+                                    <p className="text-lg font-bold text-nowrap">
+                                        {place.name}
+                                        {place.branch_name ? <span className="opacity-60"> {place.branch_name}</span> : null}
+                                    </p>
+                                </Link>
                             </TD>
 
                             <TD>

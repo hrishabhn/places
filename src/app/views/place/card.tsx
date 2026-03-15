@@ -15,6 +15,7 @@ export function PlaceCard({place}: {place: Place}) {
                 image={place.image}
                 fallbackIcon={getPlaceIcon(place.type.at(0), {returnDefault: true})}
                 title={place.name}
+                secondaryTitle={place.branch_name || undefined}
                 subtitle={place.city_name}
                 tags={[...place.type, ...place.tags]}
                 top={place.top}

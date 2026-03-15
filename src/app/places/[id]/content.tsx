@@ -48,7 +48,7 @@ export function PlacePageContent({id}: {id: string}) {
                     </>
                 }
                 title={place.name}
-                subtitle={place.city_name}
+                subtitle={place.branch_name ? `${place.branch_name} • ${place.city_name}` : place.city_name}
                 image={place.image ?? undefined}
             />
             <PageStack>
