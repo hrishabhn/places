@@ -26,6 +26,7 @@ export type City = z.infer<typeof CitySchema>
 export const PlaceSchema = z.object({
     id: z.string().uuid(),
     name: z.string(),
+    branch_name: z.string().nullable(),
     top: z.boolean(),
     city_slug: z.string(),
     city_name: z.string(),

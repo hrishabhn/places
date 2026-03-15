@@ -46,6 +46,7 @@ export const GetAllPlace = async ({filter: {id, top, countrySlug, citySlug, plac
         SELECT
             place.id,
             place.name,
+            place.branch_name,
             place.top,
             place.city_slug,
             city.name as city_name,
