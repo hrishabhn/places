@@ -11,12 +11,13 @@ type SimpleCardProps = {
     fallbackIcon: Icon
 
     title: string
+    secondaryTitle?: string
     subtitle?: string
     tags?: string[]
     top?: boolean
 }
 
-export function SimpleCard({image, fallbackIcon, title, subtitle, tags = [], top = false}: SimpleCardProps) {
+export function SimpleCard({image, fallbackIcon, title, secondaryTitle, subtitle, tags = [], top = false}: SimpleCardProps) {
     return (
         <div className="group">
             <CardImage image={image} fallbackIcon={fallbackIcon} />
@@ -25,12 +26,12 @@ export function SimpleCard({image, fallbackIcon, title, subtitle, tags = [], top
                 <div>
                     {subtitle ? <p className="line-clamp-1 font-serif text-sm font-bold uppercase opacity-60">{subtitle}</p> : null}
                     {top ? (
-                        <div className="flex items-center gap-1">
+                        <div className="grid grid-cols-[auto_1fr] items-center gap-1">
                             <StarIcon weight="fill" size={18} className="text-accent-dark" />
-                            <Title title={title} />
+                            <Title title={title} secondaryTitle={secondaryTitle} />
                         </div>
                     ) : (
-                        <Title title={title} />
+                        <Title title={title} secondaryTitle={secondaryTitle} />
                     )}
                     {tags.length > 0 ? <p className="line-clamp-1 text-xs font-semibold uppercase opacity-60">{tags.join(' • ')}</p> : null}
                 </div>
@@ -71,6 +72,11 @@ function CardImage({image, fallbackIcon: Icon}: CardImageProps) {
     )
 }
 
-function Title({title}: {title: string}) {
-    return <p className="line-clamp-1 font-serif text-xl font-semibold">{title}</p>
+function Title({title, secondaryTitle}: {title: string; secondaryTitle?: string}) {
+    return (
+        <p className="line-clamp-1 font-serif text-xl font-semibold">
+            {title}
+            {secondaryTitle ? <span className="opacity-60"> {secondaryTitle}</span> : null}
+        </p>
+    )
 }
