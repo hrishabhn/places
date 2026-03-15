@@ -1,13 +1,6 @@
 {
-    "extends": [
-        "next/core-web-vitals",
-        "next/typescript",
-        "plugin:better-tailwindcss/recommended"
-    ],
-    "plugins": [
-        "react-compiler",
-        "deprecation"
-    ],
+    "extends": ["next/core-web-vitals", "next/typescript", "plugin:better-tailwindcss/legacy-recommended"],
+    "plugins": ["react-compiler", "deprecation"],
     "settings": {
         "better-tailwindcss": {
             "entryPoint": "src/app/globals.css"
@@ -43,10 +36,7 @@
                 "default": "array"
             }
         ],
-        "@typescript-eslint/consistent-type-definitions": [
-            "error",
-            "type"
-        ],
+        "@typescript-eslint/consistent-type-definitions": ["error", "type"],
         "@typescript-eslint/consistent-type-exports": "error",
         "@typescript-eslint/consistent-type-imports": [
             "error",

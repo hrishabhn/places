@@ -27,21 +27,20 @@ type MapViewProps = {
 export function MapView({pins, onClose}: MapViewProps) {
     const mapStyle = useMapStyle()
 
-    const bounds =
-        pins.length > 0
-            ? new LngLatBounds(
-                  new LngLat(Math.min(...pins.map(({lon}) => lon)), Math.min(...pins.map(({lat}) => lat))),
-                  new LngLat(Math.max(...pins.map(({lon}) => lon)), Math.max(...pins.map(({lat}) => lat)))
-              )
-            : undefined
+    const bounds: [number, number, number, number] | undefined = (() => {
+        if (pins.length === 0) return undefined
+        const bounds = new LngLatBounds()
+        for (const pin of pins) bounds.extend(new LngLat(pin.lon, pin.lat))
+        return [bounds.getWest(), bounds.getSouth(), bounds.getEast(), bounds.getNorth()]
+    })()
 
     return (
         <Map
             minZoom={1}
-            // initialViewState={{
-            //     bounds,
-            //     fitBoundsOptions: {padding: 50},
-            // }}
+            initialViewState={{
+                bounds,
+                fitBoundsOptions: {padding: 50},
+            }}
             mapStyle={mapStyle}
             attributionControl={false}
         >

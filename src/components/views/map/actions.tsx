@@ -1,14 +1,14 @@
 'use client'
 
 import {ArrowsInSimpleIcon, type Icon, NavigationArrowIcon, XIcon} from '@phosphor-icons/react'
-import {type LngLatBounds} from 'maplibre-gl'
+import {type LngLatBoundsLike} from 'maplibre-gl'
 import {useMap} from 'react-map-gl/maplibre'
 
 import {useCoordinates} from '@/lib/hooks'
 
 type MapActionsProps = {
     onClose?: () => void
-    bounds: LngLatBounds | undefined
+    bounds: LngLatBoundsLike | undefined
 }
 
 export function MapActions({onClose, bounds}: MapActionsProps) {
