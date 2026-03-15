@@ -1,6 +1,6 @@
 'use client'
 
-import {getPlaceIcon} from '../views/place/place-icon'
+import {getPlaceColor, getPlaceIcon} from '../views/place/place-icon'
 
 import {Dialog} from '@headlessui/react'
 import {AnimatePresence, motion} from 'motion/react'
@@ -41,6 +41,7 @@ export function PlacesMapModal({isOpen, onClose, allPlace}: {isOpen: boolean; on
                                 lat: place.lat,
                                 lon: place.lon,
                                 icon: getPlaceIcon(place.type.at(0), {returnDefault: false}),
+                                color: getPlaceColor(place.type.at(0)),
                             }))}
                         />
                     </motion.div>

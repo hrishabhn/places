@@ -5,10 +5,12 @@ import {CustomMarker} from './custom-marker'
 import {LocationMarker} from './location'
 import {useMapStyle} from './map-style'
 
-import {type Icon, MapPinIcon} from '@phosphor-icons/react'
+import {type Icon} from '@phosphor-icons/react'
 import {LngLat, LngLatBounds} from 'maplibre-gl'
 import 'maplibre-gl/dist/maplibre-gl.css'
 import Map from 'react-map-gl/maplibre'
+
+import {type TailwindColor} from '@/components/ui'
 
 type MapPin = {
     id: string
@@ -17,6 +19,7 @@ type MapPin = {
     lat: number
     lon: number
     icon?: Icon
+    color?: TailwindColor
 }
 
 type MapViewProps = {
@@ -45,7 +48,7 @@ export function MapView({pins, onClose}: MapViewProps) {
             attributionControl={false}
         >
             {pins.map(pin => (
-                <CustomMarker key={pin.id} lat={pin.lat} lon={pin.lon} icon={pin.icon || MapPinIcon} title={pin.title} subtitle={pin.subtitle} />
+                <CustomMarker key={pin.id} lat={pin.lat} lon={pin.lon} icon={pin.icon} title={pin.title} subtitle={pin.subtitle} color={pin.color} />
             ))}
             <LocationMarker />
 
