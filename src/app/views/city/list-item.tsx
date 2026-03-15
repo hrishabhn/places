@@ -25,7 +25,7 @@ function CityListItemImage({url}: {url: string | null}) {
     const size = 40
     return (
         <ListItemImageContainer>
-            <Image src={url} alt="City Icon" width={size} height={size} className="brightness-200 contrast-200 grayscale" onError={() => setError(true)} />
+            <Image src={url} alt="City Icon" width={size} height={size} className="brightness-200 contrast-200 grayscale" unoptimized onError={() => setError(true)} />
         </ListItemImageContainer>
     )
 }

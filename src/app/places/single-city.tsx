@@ -19,7 +19,7 @@ function SingleCityIcon({url}: {url: string}) {
     const size = 48
     return (
         <SplashIconContainer>
-            <Image src={url} alt="City Icon" width={size} height={size} className="brightness-200 contrast-200 grayscale" onError={() => setError(true)} />
+            <Image src={url} alt="City Icon" width={size} height={size} className="brightness-200 contrast-200 grayscale" unoptimized onError={() => setError(true)} />
         </SplashIconContainer>
     )
 }
