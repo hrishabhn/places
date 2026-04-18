@@ -20,6 +20,8 @@ export const GetCity = async ({slug}: GetCityOptions): Promise<City | null> => {
         country.code as country_code,
         city.image,
         city.icon,
+        city.lat,
+        city.lon,
         (SELECT COUNT(*) FROM place WHERE place.city_slug = city.slug) as place_count
     FROM city
     JOIN country ON city.country_slug = country.slug

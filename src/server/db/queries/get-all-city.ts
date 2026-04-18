@@ -38,6 +38,8 @@ export const GetAllCity = async ({filter: {countrySlug}, query, sort, limit}: Ge
             country.code as country_code,
             city.image,
             city.icon,
+            city.lat,
+            city.lon,
             (SELECT COUNT(*) FROM place WHERE place.city_slug = city.slug) as place_count
             ${
                 query

@@ -18,6 +18,8 @@ export const CitySchema = z.object({
     country_code: z.string(),
     image: z.string().nullable(),
     icon: z.string().url().nullable(),
+    lat: z.coerce.number().nullable(),
+    lon: z.coerce.number().nullable(),
     place_count: z.coerce.number(),
 })
 
