@@ -26,7 +26,7 @@ export function Splash({actions, title, subtitle, image}: SplashProps) {
         <>
             <div className="relative aspect-4/5 w-full sm:aspect-video">
                 <div className="absolute inset-0 z-10 bg-black/60 mask-t-from-25% backdrop-blur-sm" />
-                <SimpleImage src={image} />
+                <SimpleImage src={image} preload />
                 <div className="absolute inset-0 z-10 flex flex-col items-start justify-end p-4 text-white sm:p-10">
                     <SplashTextBox actions={actions} title={title} subtitle={subtitle} />
                 </div>
