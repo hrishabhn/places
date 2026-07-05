@@ -51,8 +51,6 @@ export function Providers({children}: {children: React.ReactNode}) {
         })
     )
 
-    /* eslint-disable react-compiler/react-compiler */
-    // return <>{children}</>
     return (
         <NuqsAdapter>
             <QueryClientProvider client={queryClient}>
