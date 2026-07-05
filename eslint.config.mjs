@@ -1,17 +1,15 @@
 import nextVitals from 'eslint-config-next/core-web-vitals'
 import nextTs from 'eslint-config-next/typescript'
-import eslintPluginBetterTailwindcss from 'eslint-plugin-better-tailwindcss'
-import {defineConfig, globalIgnores} from 'eslint/config'
+import tailwind from 'eslint-plugin-tailwindcss'
+import {defineConfig} from 'eslint/config'
 
 export default defineConfig([
-    globalIgnores(['src/convex/_generated/**', 'postcss.config.js']),
-
     ...nextVitals,
     ...nextTs,
 
     {
         files: ['**/*.ts', '**/*.tsx'],
-        extends: [eslintPluginBetterTailwindcss.configs.recommended],
+        extends: [tailwind.configs.recommended],
         languageOptions: {
             parserOptions: {
                 projectService: true,
