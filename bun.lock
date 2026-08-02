@@ -18,6 +18,7 @@
         "@headlessui/react": "^2.2.10",
         "@modelcontextprotocol/server": "^2",
         "@phosphor-icons/react": "^2.1.10",
+        "@repo/api": "workspace:*",
         "@repo/db": "workspace:*",
         "@tanstack/react-query": "^5.101.4",
         "@trpc/client": "^11.18.0",
@@ -36,7 +37,6 @@
         "react-map-gl": "^8.1.2",
         "react-use": "^17.6.1",
         "slugify": "^1.6.9",
-        "superjson": "^2.2.6",
         "usehooks-ts": "^3.1.1",
         "zod": "^4.4.3",
       },
@@ -55,6 +55,19 @@
         "postcss": "^8.5.25",
         "prettier": "^3.9.6",
         "tailwindcss": "^4.3.3",
+        "typescript": "^6.0.3",
+      },
+    },
+    "packages/api": {
+      "name": "@repo/api",
+      "version": "0.0.0",
+      "dependencies": {
+        "@repo/db": "workspace:*",
+        "@trpc/server": "^11.18.0",
+        "server-only": "^0.0.1",
+        "superjson": "^2.2.6",
+      },
+      "devDependencies": {
         "typescript": "^6.0.3",
       },
     },
@@ -284,6 +297,8 @@
     "@react-aria/interactions": ["@react-aria/interactions@3.28.1", "", { "dependencies": { "@react-types/shared": "^3.34.0", "@swc/helpers": "^0.5.0", "react-aria": "^3.48.0" }, "peerDependencies": { "react": "^16.8.0 || ^17.0.0-rc.1 || ^18.0.0 || ^19.0.0-rc.1", "react-dom": "^16.8.0 || ^17.0.0-rc.1 || ^18.0.0 || ^19.0.0-rc.1" } }, "sha512-Bqb+HrD5I5MHS2SKBhISYqo2SW8Y2dfzgF/Y1lIJq7xqLxheo9vzxPGEHhz+XzkgGfoqEJx8A6a3C7uiqS3HWA=="],
 
     "@react-types/shared": ["@react-types/shared@3.36.1", "", { "peerDependencies": { "react": "^16.8.0 || ^17.0.0-rc.1 || ^18.0.0 || ^19.0.0-rc.1" } }, "sha512-AzsuD9OfxTOZMMvTRhlN3oHBwOmFN7tDh27LzqmHt4+uOgPhJT7ZM7/kVs/8/o0WxayMUIk3hBmCFRHv1FUoag=="],
+
+    "@repo/api": ["@repo/api@workspace:packages/api"],
 
     "@repo/db": ["@repo/db@workspace:packages/db"],
 

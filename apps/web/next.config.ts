@@ -2,7 +2,7 @@ import type {NextConfig} from 'next'
 
 const nextConfig: NextConfig = {
     reactCompiler: true,
-    transpilePackages: ['@repo/db'],
+    transpilePackages: ['@repo/api', '@repo/db'],
     // cacheComponents: true,
     experimental: {
         turbopackFileSystemCacheForDev: true,

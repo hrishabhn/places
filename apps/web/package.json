@@ -14,6 +14,7 @@
         "@headlessui/react": "^2.2.10",
         "@modelcontextprotocol/server": "^2",
         "@phosphor-icons/react": "^2.1.10",
+        "@repo/api": "workspace:*",
         "@repo/db": "workspace:*",
         "@tanstack/react-query": "^5.101.4",
         "@trpc/client": "^11.18.0",
@@ -32,7 +33,6 @@
         "react-map-gl": "^8.1.2",
         "react-use": "^17.6.1",
         "slugify": "^1.6.9",
-        "superjson": "^2.2.6",
         "usehooks-ts": "^3.1.1",
         "zod": "^4.4.3"
     },
