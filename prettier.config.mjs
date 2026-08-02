@@ -19,7 +19,7 @@ export default {
     ],
 
     tailwindFunctions: ['tw'],
-    tailwindStylesheet: './src/app/globals.css',
+    tailwindStylesheet: './apps/web/src/app/globals.css',
 
     importOrder: [
         //
