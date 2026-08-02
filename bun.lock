@@ -68,6 +68,7 @@
         "superjson": "^2.2.6",
       },
       "devDependencies": {
+        "@repo/tsconfig": "workspace:*",
         "@types/node": "^25.9.5",
         "typescript": "^6.0.3",
       },
@@ -81,9 +82,14 @@
         "zod": "^4.4.3",
       },
       "devDependencies": {
+        "@repo/tsconfig": "workspace:*",
         "@types/node": "^25.9.5",
         "typescript": "^6.0.3",
       },
+    },
+    "packages/tsconfig": {
+      "name": "@repo/tsconfig",
+      "version": "0.0.0",
     },
   },
   "packages": {
@@ -302,6 +308,8 @@
     "@repo/api": ["@repo/api@workspace:packages/api"],
 
     "@repo/db": ["@repo/db@workspace:packages/db"],
+
+    "@repo/tsconfig": ["@repo/tsconfig@workspace:packages/tsconfig"],
 
     "@repo/web": ["@repo/web@workspace:apps/web"],
 
