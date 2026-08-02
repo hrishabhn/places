@@ -2,7 +2,7 @@ import {type City, CitySchema} from '../types'
 
 import * as z from 'zod'
 
-import {sql} from '@/model/neon'
+import {sql} from '../neon'
 
 export const GetAllCityOptions = z.object({
     filter: z

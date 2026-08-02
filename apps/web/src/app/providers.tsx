@@ -4,9 +4,9 @@ import {QueryClient, QueryClientProvider, defaultShouldDehydrateQuery} from '@ta
 import {createTRPCClient, httpBatchStreamLink} from '@trpc/client'
 import {NuqsAdapter} from 'nuqs/adapters/next/app'
 import {useState} from 'react'
-import superjson from 'superjson'
 
-import {type AppRouter} from '@/server'
+import {type AppRouter} from '@repo/api/types'
+import {transformer} from '@repo/api/transformer'
 
 import {TRPCProvider} from '@/lib/trpc'
 
@@ -45,7 +45,7 @@ export function Providers({children}: {children: React.ReactNode}) {
             links: [
                 httpBatchStreamLink({
                     url: getUrl(),
-                    transformer: superjson,
+                    transformer,
                 }),
             ],
         })

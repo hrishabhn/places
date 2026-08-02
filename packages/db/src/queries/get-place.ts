@@ -2,7 +2,7 @@ import {type Place, PlaceSchema} from '../types'
 
 import * as z from 'zod'
 
-import {sql} from '@/model/neon'
+import {sql} from '../neon'
 
 export const GetPlaceOptions = z.object({
     id: z.uuid(),

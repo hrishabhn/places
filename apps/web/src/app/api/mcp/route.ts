@@ -1,6 +1,6 @@
 import {createMcpHandler} from 'mcp-handler'
 
-import {GetAllCityOptions, GetAllCountryOptions, GetAllPlaceOptions, db} from '@/server/db/client'
+import {db} from '@repo/db'
 
 // to content
 const toContent = <T>(data: T): {content: [{type: 'text'; text: string}]} => ({
@@ -9,17 +9,17 @@ const toContent = <T>(data: T): {content: [{type: 'text'; text: string}]} => ({
 
 const handler = createMcpHandler(server => {
     // get all country
-    server.registerTool('get_all_country', {inputSchema: GetAllCountryOptions}, async options => toContent(await db.country.getAll(options)))
+    server.registerTool('get_all_country', {inputSchema: db.country.getAll.input}, async options => toContent(await db.country.getAll.query(options)))
     // get all city
-    server.registerTool('get_all_city', {inputSchema: GetAllCityOptions}, async options => toContent(await db.city.getAll(options)))
+    server.registerTool('get_all_city', {inputSchema: db.city.getAll.input}, async options => toContent(await db.city.getAll.query(options)))
     // get all place type
-    server.registerTool('get_all_place_type', {}, async () => toContent(await db.placeType.getAll()))
+    server.registerTool('get_all_place_type', {}, async () => toContent(await db.placeType.getAll.query()))
     // get all place tag
-    server.registerTool('get_all_place_tag', {}, async () => toContent(await db.placeTag.getAll()))
+    server.registerTool('get_all_place_tag', {}, async () => toContent(await db.placeTag.getAll.query()))
     // get all place
-    server.registerTool('get_all_place', {inputSchema: GetAllPlaceOptions}, async options => toContent(await db.place.getAll(options)))
+    server.registerTool('get_all_place', {inputSchema: db.place.getAll.input}, async options => toContent(await db.place.getAll.query(options)))
     // get all place page URL
-    server.registerTool('get_all_place_page_url', {inputSchema: GetAllPlaceOptions}, async options => {
+    server.registerTool('get_all_place_page_url', {inputSchema: db.place.getAll.input}, async options => {
         const url = new URL(`${process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3000'}/places`)
         if (options.filter.top) url.searchParams.set('top', 'true')
         if (options.filter.countrySlug.length > 0) url.searchParams.set('country', options.filter.countrySlug.join(','))

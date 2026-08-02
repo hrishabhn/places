@@ -2,7 +2,7 @@ import {type Country, CountrySchema} from '../types'
 
 import * as z from 'zod'
 
-import {sql} from '@/model/neon'
+import {sql} from '../neon'
 
 export const GetAllCountryOptions = z.object({
     sort: z.enum(['name', 'city_count', 'place_count']),

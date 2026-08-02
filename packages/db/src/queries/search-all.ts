@@ -2,7 +2,7 @@ import {type SearchInput, SearchResult} from '../types'
 
 import * as z from 'zod'
 
-import {sql} from '@/model/neon'
+import {sql} from '../neon'
 
 const types = ['country', 'city', 'place', 'place_type', 'place_tag'] as const
 const SearchResultSchema = SearchResult(types)

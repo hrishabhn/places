@@ -2,7 +2,7 @@ import {type PlaceType, PlaceTypeSchema} from '../types'
 
 import * as z from 'zod'
 
-import {sql} from '@/model/neon'
+import {sql} from '../neon'
 
 export const GetAllPlaceType = async (): Promise<PlaceType[]> =>
     z.array(PlaceTypeSchema).parse(

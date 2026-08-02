@@ -27,7 +27,7 @@ import {PlaceCard} from '@/app/views/place/card'
 import {getPlaceIcon} from '@/app/views/place/place-icon'
 import {PlaceTable} from '@/app/views/place/table'
 
-import {type City, type Country, type Place, type PlaceTag, type PlaceType} from '@/server/db/types'
+import {type City, type Country, type Place, type PlaceTag, type PlaceType} from '@repo/db/types'
 
 import {useBookmarks} from '@/model/bookmarks'
 import {countryFlag} from '@/model/util'

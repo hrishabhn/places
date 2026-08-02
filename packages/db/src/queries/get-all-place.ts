@@ -3,7 +3,7 @@ import {type Place, PlaceSchema} from '../types'
 
 import * as z from 'zod'
 
-import {sql} from '@/model/neon'
+import {sql} from '../neon'
 
 export const GetAllPlaceOptions = z.object({
     filter: z

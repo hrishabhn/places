@@ -1,8 +1,9 @@
 import {initTRPC} from '@trpc/server'
-import superjson from 'superjson'
+
+import {transformer} from './transformer'
 
 const t = initTRPC.create({
-    transformer: superjson,
+    transformer,
 })
 
 export const router = t.router
