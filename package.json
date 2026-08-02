@@ -7,10 +7,13 @@
         "packages/*"
     ],
     "scripts": {
-        "dev": "bun run --filter '@repo/web' dev",
-        "build": "bun run --filter '@repo/web' build",
-        "start": "bun run --filter '@repo/web' start",
-        "lint": "bun run --filter '@repo/web' lint",
-        "compile": "bun run --filter '@repo/web' compile"
+        "dev": "turbo run dev",
+        "build": "turbo run build",
+        "start": "turbo run start",
+        "lint": "turbo run lint",
+        "compile": "turbo run compile"
+    },
+    "devDependencies": {
+        "turbo": "^2.10.8"
     }
 }
