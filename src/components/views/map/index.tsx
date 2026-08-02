@@ -6,9 +6,11 @@ import {LocationMarker} from './location'
 import {useMapStyle} from './map-style'
 
 import {type Icon} from '@phosphor-icons/react'
-import {LngLat, LngLatBounds} from 'maplibre-gl'
+import {LngLat, LngLatBounds, setWorkerUrl} from 'maplibre-gl'
 import 'maplibre-gl/dist/maplibre-gl.css'
 import Map from 'react-map-gl/maplibre'
+
+setWorkerUrl(new URL('maplibre-gl/dist/maplibre-gl-worker.mjs', import.meta.url).toString())
 
 import {type TailwindColor} from '@/components/ui'
 
