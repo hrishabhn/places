@@ -17,7 +17,7 @@ export const CitySchema = z.object({
     country_name: z.string(),
     country_code: z.string(),
     image: z.string().nullable(),
-    icon: z.string().url().nullable(),
+    icon: z.url().nullable(),
     lat: z.coerce.number().nullable(),
     lon: z.coerce.number().nullable(),
     place_count: z.coerce.number(),
@@ -26,7 +26,7 @@ export const CitySchema = z.object({
 export type City = z.infer<typeof CitySchema>
 
 export const PlaceSchema = z.object({
-    id: z.string().uuid(),
+    id: z.uuid(),
     name: z.string(),
     branch_name: z.string().nullable(),
     top: z.boolean(),
@@ -77,6 +77,6 @@ export const SearchResult = <T extends readonly [string, ...string[]]>(types: T)
     z.object({
         name: z.string(),
         id: z.string(),
-        type: z.enum<string, T>(types),
+        type: z.enum(types),
         score: z.coerce.number(),
     })

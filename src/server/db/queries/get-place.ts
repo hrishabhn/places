@@ -5,7 +5,7 @@ import * as z from 'zod'
 import {sql} from '@/model/neon'
 
 export const GetPlaceOptions = z.object({
-    id: z.string().uuid(),
+    id: z.uuid(),
 })
 
 type GetPlaceOptions = z.infer<typeof GetPlaceOptions>
