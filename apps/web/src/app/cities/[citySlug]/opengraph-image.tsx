@@ -1,4 +1,4 @@
-import {db} from '@/server/db/client'
+import {db} from '@repo/db'
 
 import {OGImageView} from '@/components/views/og-image-view'
 

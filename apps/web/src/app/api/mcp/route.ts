@@ -1,6 +1,6 @@
 import {createMcpHandler} from 'mcp-handler'
 
-import {GetAllCityOptions, GetAllCountryOptions, GetAllPlaceOptions, db} from '@/server/db/client'
+import {GetAllCityOptions, GetAllCountryOptions, GetAllPlaceOptions, db} from '@repo/db'
 
 // to content
 const toContent = <T>(data: T): {content: [{type: 'text'; text: string}]} => ({

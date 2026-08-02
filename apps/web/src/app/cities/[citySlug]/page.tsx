@@ -1,6 +1,6 @@
 import {notFound, redirect} from 'next/navigation'
 
-import {db} from '@/server/db/client'
+import {db} from '@repo/db'
 
 export default async function CityPage({params}: PageProps<'/cities/[citySlug]'>) {
     const {citySlug} = await params

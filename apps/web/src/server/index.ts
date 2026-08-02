@@ -1,5 +1,5 @@
-import {GetAllCityOptions, GetAllCountryOptions, GetAllPlaceOptions, GetCityOptions, GetPlaceOptions, db} from './db/client'
-import {SearchInputSchema} from './db/types'
+import {GetAllCityOptions, GetAllCountryOptions, GetAllPlaceOptions, GetCityOptions, GetPlaceOptions, SearchInputSchema, db} from '@repo/db'
+
 import {publicProcedure, router} from './trpc'
 
 export const appRouter = router({

@@ -7,7 +7,7 @@ import {parseAsString, parseAsStringLiteral, useQueryState} from 'nuqs'
 import {CityCard} from '@/app/views/city/card'
 import {CityListItem} from '@/app/views/city/list-item'
 
-import {type City, type Country} from '@/server/db/types'
+import {type City, type Country} from '@repo/db/types'
 
 import {countryFlag} from '@/model/util'
 

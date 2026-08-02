@@ -5,7 +5,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import {useState} from 'react'
 
-import {type City} from '@/server/db/types'
+import {type City} from '@repo/db/types'
 
 import {ListItem, ListItemIcon, ListItemImageContainer} from '@/components/views/list'
 
