@@ -1,0 +1,8 @@
+{
+    "extends": ["//"],
+    "tasks": {
+        "build": {
+            "env": ["NEON_DATABASE_URL", "NOTION_DATABASE_ID"]
+        }
+    }
+}

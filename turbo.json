@@ -7,8 +7,7 @@
         },
         "build": {
             "dependsOn": ["^build"],
-            "outputs": [".next/**", "!.next/cache/**"],
-            "env": ["NEON_DATABASE_URL", "NOTION_DATABASE_ID"]
+            "outputs": [".next/**", "!.next/cache/**"]
         },
         "start": {
             "cache": false,
